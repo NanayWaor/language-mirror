@@ -1,0 +1,251 @@
+{
+  "course_id": "mirror-weather-001",
+  "version": 1,
+  "updated": "2026-09-30",
+  "title": {
+    "es": "El tiempo",
+    "en": "Weather"
+  },
+  "directions": {
+    "es_en": {
+      "ui_language": "es",
+      "learning_language": "en",
+      "label": "Hablo español · aprendo inglés",
+      "intro": "Practica lo trabajado hoy. No traduzcas palabra por palabra: busca el patrón inglés.",
+      "items": [
+        {
+          "icon": "☀️",
+          "target": "It's sunny.",
+          "source": "Hace sol."
+        },
+        {
+          "icon": "🔥",
+          "target": "It's hot.",
+          "source": "Hace calor."
+        },
+        {
+          "icon": "🥶",
+          "target": "It's cold.",
+          "source": "Hace frío."
+        },
+        {
+          "icon": "💨",
+          "target": "It's windy.",
+          "source": "Hace viento."
+        },
+        {
+          "icon": "☁️",
+          "target": "It's cloudy.",
+          "source": "Está nublado."
+        },
+        {
+          "icon": "⛈️",
+          "target": "It's stormy.",
+          "source": "Hay tormenta."
+        },
+        {
+          "icon": "🌧️",
+          "target": "It's raining.",
+          "source": "Llueve / Está lloviendo."
+        },
+        {
+          "icon": "❄️",
+          "target": "It's snowing.",
+          "source": "Nieva / Está nevando."
+        }
+      ],
+      "why": "En español usamos varias construcciones para el tiempo. En inglés, muchas se expresan con el patrón “It is + adjective”. No traduzcas «hace»: aprende la frase completa.",
+      "traps": [
+        {
+          "wrong": "It makes sun.",
+          "right": "It's sunny.",
+          "note": "No traduzcas «hace» literalmente."
+        },
+        {
+          "wrong": "It is rain.",
+          "right": "It's raining.",
+          "note": "Para la acción que ocurre ahora, usa raining."
+        }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "prompt": "☀️ Hace sol.",
+          "options": [
+            "It's sunny.",
+            "It's sun.",
+            "It makes sunny."
+          ],
+          "answer": 0,
+          "skill": "weather_pattern"
+        },
+        {
+          "id": "q2",
+          "prompt": "💨 Hace viento.",
+          "options": [
+            "It's wind.",
+            "It's windy.",
+            "There is windly."
+          ],
+          "answer": 1,
+          "skill": "weather_pattern"
+        },
+        {
+          "id": "q3",
+          "prompt": "☁️ Está nublado.",
+          "options": [
+            "It's cloudy.",
+            "It has clouds.",
+            "It's cloud."
+          ],
+          "answer": 0,
+          "skill": "weather_pattern"
+        },
+        {
+          "id": "q4",
+          "prompt": "🌧️ Está lloviendo.",
+          "options": [
+            "It's rain.",
+            "It's raining.",
+            "There is raining."
+          ],
+          "answer": 1,
+          "skill": "rain_action"
+        }
+      ],
+      "ai_rules": [
+        "You are my English conversation practice partner.",
+        "I am a Spanish-speaking learner practising everyday English.",
+        "Practise ONLY this week's topic: weather.",
+        "Ask one short question at a time and wait for my answer.",
+        "Use mainly: It's sunny, hot, cold, windy, cloudy, stormy, raining and snowing.",
+        "If I make a mistake, correct only that sentence, explain briefly in Spanish, ask me to repeat the corrected English, then continue.",
+        "Do not introduce lots of new vocabulary. Keep the conversation natural and adult."
+      ]
+    },
+    "en_es": {
+      "ui_language": "en",
+      "learning_language": "es",
+      "label": "I speak English · I'm learning Spanish",
+      "intro": "Practise exactly what we worked on today. Don't translate “it is” first: choose the Spanish weather pattern.",
+      "items": [
+        {
+          "icon": "☀️",
+          "target": "Hace sol.",
+          "source": "It's sunny."
+        },
+        {
+          "icon": "🔥",
+          "target": "Hace calor.",
+          "source": "It's hot."
+        },
+        {
+          "icon": "🥶",
+          "target": "Hace frío.",
+          "source": "It's cold."
+        },
+        {
+          "icon": "💨",
+          "target": "Hace viento.",
+          "source": "It's windy."
+        },
+        {
+          "icon": "☁️",
+          "target": "Está nublado.",
+          "source": "It's cloudy."
+        },
+        {
+          "icon": "⛈️",
+          "target": "Hay tormenta.",
+          "source": "It's stormy / There's a storm."
+        },
+        {
+          "icon": "🌧️",
+          "target": "Llueve. / Está lloviendo.",
+          "source": "It's raining."
+        },
+        {
+          "icon": "❄️",
+          "target": "Nieva. / Está nevando.",
+          "source": "It's snowing."
+        }
+      ],
+      "why": "English can use “it is” for many weather expressions. Spanish does not use one single pattern. Learn small families: HACE (sol, calor, frío, viento), ESTÁ (nublado), HAY (tormenta), ACTION (llueve, nieva).",
+      "word_family": "lluvia = rain (noun) · llover = to rain (verb) · lloviendo = raining. Do not transform LLUVIA into LLOVIENDO letter by letter: learn lluvia and llover as related family words; then llover → lloviendo is the verb change.",
+      "traps": [
+        {
+          "wrong": "Está sol.",
+          "right": "Hace sol.",
+          "note": "English «it is» pushes you towards «está»."
+        },
+        {
+          "wrong": "Hace nublado.",
+          "right": "Está nublado.",
+          "note": "Cloudy belongs to the ESTÁ pattern here."
+        },
+        {
+          "wrong": "Está viento.",
+          "right": "Hace viento.",
+          "note": "Wind belongs to the HACE pattern in everyday Spanish."
+        }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "prompt": "☀️ It's sunny.",
+          "options": [
+            "Está sol.",
+            "Hace sol.",
+            "Hay sol."
+          ],
+          "answer": 1,
+          "skill": "hace_vs_esta"
+        },
+        {
+          "id": "q2",
+          "prompt": "☁️ It's cloudy.",
+          "options": [
+            "Hace nublado.",
+            "Está nublado.",
+            "Hay nublado."
+          ],
+          "answer": 1,
+          "skill": "hace_vs_esta"
+        },
+        {
+          "id": "q3",
+          "prompt": "💨 It's windy.",
+          "options": [
+            "Hace viento.",
+            "Está viento.",
+            "Es viento."
+          ],
+          "answer": 0,
+          "skill": "hace_vs_esta"
+        },
+        {
+          "id": "q4",
+          "prompt": "🌧️ It's raining.",
+          "options": [
+            "Está lluvia.",
+            "Hace lluvia.",
+            "Está lloviendo."
+          ],
+          "answer": 2,
+          "skill": "lluvia_llover"
+        }
+      ],
+      "ai_rules": [
+        "You are my Spanish conversation practice partner.",
+        "I am an older native English speaker and a beginner learning everyday Spanish as spoken in Spain.",
+        "Practise ONLY this week's topic: weather.",
+        "Ask one very short question at a time and wait for my answer.",
+        "Use mainly: hace sol, hace calor, hace frío, hace viento, está nublado, hay tormenta, llueve, nieva, está lloviendo and está nevando.",
+        "Deliberately give me chances to practise HACE versus ESTÁ.",
+        "I may incorrectly say «está sol», «hace nublado» or «está viento». Correct only that sentence.",
+        "If I make a mistake, explain briefly in English, ask me to repeat the corrected Spanish, then continue.",
+        "Speak slowly. Do not introduce lots of new vocabulary. Keep the conversation natural and adult."
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Language Mirror · Weather</title>
+<style>
+:root{--bg:#f5f4ef;--card:#fff;--text:#222;--muted:#6d706a;--line:#dedcd4;--accent:#386a5b;--soft:#e9f2ee;--bad:#fff0ed}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.45}
+main{max-width:760px;margin:auto;padding:18px 14px 70px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+h1{margin:4px 0;font-size:30px}.muted{color:var(--muted)}.tabs,.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn{border:1px solid var(--line);background:var(--card);padding:11px;border-radius:12px;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:white}.btn.active{outline:3px solid var(--soft);border-color:var(--accent)}
+.phrase{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--card)}.big{font-size:19px;font-weight:850}.small{font-size:12px}.why{background:var(--soft)}.trap{background:var(--bad);padding:10px;border-radius:12px;margin:7px 0}
+.opts{display:grid;gap:7px;margin-top:8px}.opt{text-align:left}.result{font-weight:800;margin-top:6px}.prompt{white-space:pre-wrap;background:var(--bg);padding:12px;border-radius:12px;font-size:13px}
+textarea{width:100%;min-height:85px;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit}
+@media(max-width:560px){.tabs,.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="muted">LANGUAGE MIRROR · PROTOTYPE 001</div><h1>Weather / El tiempo</h1><div id="updated" class="muted"></div>
+
+<div class="card"><b>Choose your side / Elige tu lado</b>
+<div class="tabs" style="margin-top:10px">
+<button id="tab-es_en" class="btn" onclick="setDirection('es_en')">🇪🇸 Hablo español · aprendo inglés</button>
+<button id="tab-en_es" class="btn" onclick="setDirection('en_es')">🇬🇧 I speak English · I'm learning Spanish</button>
+</div></div>
+
+<div id="app" style="display:none">
+<div class="card"><div id="intro"></div></div>
+<h2 id="learnTitle"></h2><div id="phrases" class="grid"></div>
+<div class="card why"><h2>WHY</h2><div id="why"></div><div id="wordFamily" style="margin-top:10px"></div></div>
+<div class="card"><h2 id="trapTitle"></h2><div id="traps"></div></div>
+<div class="card"><h2 id="practiceTitle"></h2><div id="quiz"></div><div id="score"></div></div>
+<div class="card"><h2>🎙️ AI practice</h2><div id="prompt" class="prompt"></div><button class="btn primary" style="margin-top:10px" onclick="copyPrompt()">Copy prompt</button><div id="copyStatus" class="small muted"></div></div>
+<div class="card"><h2 id="feedbackTitle"></h2>
+<div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn" onclick="rate('yes')">👍</button><button class="btn" onclick="rate('not_really')">🤔</button><button class="btn" onclick="rate('confused')">❓</button></div>
+<textarea id="feedback" style="margin-top:10px"></textarea>
+<button class="btn" onclick="saveFeedback()">Save / Guardar</button>
+<div id="fbStatus" class="small muted"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:15px 0">
+<button class="btn" onclick="copyReport()">Copy report</button>
+<button class="btn" onclick="exportReport()">Export report</button>
+</div></div>
+
+<script>
+let C=null,direction=localStorage.getItem('lm_direction')||'',answers={};
+const K='language_mirror_weather_001';
+const S=()=>{try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return{}}};
+const P=o=>localStorage.setItem(K,JSON.stringify(Object.assign(S(),o,{updatedAt:new Date().toISOString()})));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+fetch('course.json?ts='+Date.now()).then(r=>r.json()).then(x=>{C=x;document.getElementById('updated').textContent='Updated / Actualizado: '+C.updated;if(direction)setDirection(direction)}).catch(()=>document.body.innerHTML+='<p>Open through GitHub Pages.</p>');
+
+function setDirection(d){direction=d;localStorage.setItem('lm_direction',d);document.getElementById('app').style.display='block';document.querySelectorAll('[id^=tab-]').forEach(x=>x.classList.remove('active'));document.getElementById('tab-'+d).classList.add('active');answers={};render()}
+function t(es,en){return C.directions[direction].ui_language==='es'?es:en}
+function render(){
+ const D=C.directions[direction];
+ document.getElementById('intro').textContent=D.intro;
+ document.getElementById('learnTitle').textContent=t('1 · Aprende','1 · Learn');
+ document.getElementById('trapTitle').textContent=t('2 · Trampas de tu idioma','2 · Your language traps');
+ document.getElementById('practiceTitle').textContent=t('3 · Practica','3 · Practise');
+ document.getElementById('feedbackTitle').textContent=t('4 · ¿Te ha ayudado?','4 · Did this help?');
+ document.getElementById('feedback').placeholder=t('Escribe qué te ha costado o qué cambiarías...','Tell me what was difficult or what you would change...');
+ document.getElementById('phrases').innerHTML=D.items.map(x=>`<div class="phrase"><div>${x.icon}</div><div class="big">${esc(x.target)}</div><div class="small muted">${esc(x.source)}</div><button class="btn" style="margin-top:7px" onclick="speak(${JSON.stringify(x.target)},${JSON.stringify(D.learning_language)})">🔊</button></div>`).join('');
+ document.getElementById('why').textContent=D.why;
+ document.getElementById('wordFamily').textContent=D.word_family||'';
+ document.getElementById('traps').innerHTML=D.traps.map(x=>`<div class="trap">❌ ${esc(x.wrong)}<br><b>✅ ${esc(x.right)}</b><div class="small muted">${esc(x.note)}</div></div>`).join('');
+ document.getElementById('quiz').innerHTML=D.quiz.map((q,i)=>`<div style="margin:14px 0"><b>${i+1}. ${esc(q.prompt)}</b><div class="opts">${q.options.map((o,j)=>`<button class="btn opt" onclick="answer('${q.id}',${j})">${esc(o)}</button>`).join('')}</div><div id="r-${q.id}" class="result"></div></div>`).join('');
+ renderScore();renderPrompt();
+}
+function answer(id,ch){
+ const D=C.directions[direction],q=D.quiz.find(x=>x.id===id),ok=ch===q.answer;answers[id]=ch;
+ document.getElementById('r-'+id).textContent=ok?t('✓ Correcto','✓ Correct'):t('✗ Correcta: ','✗ Correct: ')+q.options[q.answer];
+ const s=S(),a=s.attempts||{};a[direction]=a[direction]||{};const z=a[direction][id]||{tries:0,wrong:0,skill:q.skill};z.tries++;if(!ok)z.wrong++;a[direction][id]=z;P({attempts:a});renderScore();renderPrompt();
+}
+function renderScore(){const q=C.directions[direction].quiz,done=Object.keys(answers).length,ok=q.filter(x=>answers[x.id]===x.answer).length;document.getElementById('score').innerHTML=done?`<b>${ok}/${done}</b> · ${t('No es una nota: buscamos qué repetir.','Not a grade: we are finding what to repeat.')}`:''}
+function weakSkills(){const a=(S().attempts||{})[direction]||{};return [...new Set(Object.values(a).filter(x=>x.wrong>0).map(x=>x.skill))]}
+function buildPrompt(){
+ const D=C.directions[direction];let x=[...D.ai_rules];
+ const w=weakSkills();
+ if(w.length)x.push('',direction==='en_es'?'I had difficulty with: '+w.join(', ')+'. Please reinforce these areas.':'He tenido dificultad con: '+w.join(', ')+'. Refuérzalo durante la conversación.');
+ return x.join('\n');
+}
+function renderPrompt(){document.getElementById('prompt').textContent=buildPrompt()}
+async function copyPrompt(){await navigator.clipboard.writeText(buildPrompt());document.getElementById('copyStatus').textContent=t('Prompt copiado.','Prompt copied.')}
+function rate(v){const s=S(),f=s.feedback||{};f[direction]=f[direction]||{};f[direction].rating=v;P({feedback:f});document.getElementById('fbStatus').textContent=t('Guardado en este navegador.','Saved on this browser.')}
+function saveFeedback(){const s=S(),f=s.feedback||{};f[direction]=f[direction]||{};f[direction].freeText=document.getElementById('feedback').value.trim();P({feedback:f});document.getElementById('fbStatus').textContent=t('Guardado en este navegador.','Saved on this browser.')}
+function report(){const s=S();return{report_type:'language_mirror_practice',course_id:C.course_id,version:C.version,direction,generated_at:new Date().toISOString(),attempts:(s.attempts||{})[direction]||{},feedback:(s.feedback||{})[direction]||{},detected_focus:weakSkills()}}
+async function copyReport(){await navigator.clipboard.writeText(JSON.stringify(report(),null,2));document.getElementById('fbStatus').textContent=t('Informe copiado.','Report copied.')}
+function exportReport(){const b=new Blob([JSON.stringify(report(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='language-mirror-report-'+direction+'.json';a.click();URL.revokeObjectURL(a.href)}
+function speak(text,lang){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang==='es'?'es-ES':'en-GB';u.rate=.82;speechSynthesis.speak(u)}
+</script></main></body></html>
