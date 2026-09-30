@@ -1,90 +1,726 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Language Mirror · Weather</title>
 <style>
-:root{--bg:#f5f4ef;--card:#fff;--text:#222;--muted:#6d706a;--line:#dedcd4;--accent:#386a5b;--soft:#e9f2ee;--bad:#fff0ed}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.45}
-main{max-width:760px;margin:auto;padding:18px 14px 70px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
-h1{margin:4px 0;font-size:30px}.muted{color:var(--muted)}.tabs,.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn{border:1px solid var(--line);background:var(--card);padding:11px;border-radius:12px;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:white}.btn.active{outline:3px solid var(--soft);border-color:var(--accent)}
-.phrase{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--card)}.big{font-size:19px;font-weight:850}.small{font-size:12px}.why{background:var(--soft)}.trap{background:var(--bad);padding:10px;border-radius:12px;margin:7px 0}
-.opts{display:grid;gap:7px;margin-top:8px}.opt{text-align:left}.result{font-weight:800;margin-top:6px}.prompt{white-space:pre-wrap;background:var(--bg);padding:12px;border-radius:12px;font-size:13px}
-textarea{width:100%;min-height:85px;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit}
-@media(max-width:560px){.tabs,.grid{grid-template-columns:1fr}}
+:root{
+  --bg:#f5f4ef;
+  --card:#ffffff;
+  --text:#20211f;
+  --muted:#62655f;
+  --line:#d9d7cf;
+  --accent:#2f6957;
+  --accent-soft:#e9f3ef;
+  --good:#e8f6ec;
+  --good-border:#5a9f70;
+  --bad:#fff0ed;
+  --bad-border:#c86d5c;
+  --why:#eef4ff;
+  --why-border:#8da7d8;
+  --shadow:0 3px 12px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:22px;
+  line-height:1.5;
+}
+button,textarea{font:inherit}
+main{max-width:840px;margin:auto;padding:22px 16px 90px}
+.hero{padding:8px 2px 18px}
+.eyebrow{font-size:18px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+h1{font-size:44px;line-height:1.08;margin:6px 0 8px}
+h2{font-size:31px;line-height:1.2;margin:0 0 14px}
+h3{font-size:25px;line-height:1.25;margin:0 0 10px}
+p{margin:8px 0 14px}
+.small{font-size:18px}
+.muted{color:var(--muted)}
+.card{
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  margin:16px 0;
+  box-shadow:var(--shadow);
+}
+.section-intro{
+  font-size:20px;
+  color:var(--muted);
+  margin-top:-4px;
+  margin-bottom:18px;
+}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.btn{
+  border:2px solid var(--line);
+  background:var(--card);
+  color:var(--text);
+  min-height:62px;
+  padding:14px 16px;
+  border-radius:16px;
+  font-weight:800;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible{outline:4px solid rgba(47,105,87,.25);outline-offset:2px}
+.btn.primary{
+  background:var(--accent);
+  color:white;
+  border-color:var(--accent);
+}
+.btn.active{outline:5px solid var(--accent-soft);border-color:var(--accent)}
+.btn.big{width:100%;font-size:24px;min-height:76px}
+.hidden{display:none!important}
+
+/* Flashcards */
+.flash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.flashcard{perspective:1000px;min-height:240px;cursor:pointer}
+.flash-inner{
+  position:relative;
+  width:100%;
+  min-height:240px;
+  transition:transform .45s;
+  transform-style:preserve-3d;
+}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-face{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border:2px solid var(--line);
+  border-radius:20px;
+  background:var(--card);
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+.flash-back{transform:rotateY(180deg);background:var(--accent-soft)}
+.weather-icon{font-size:64px;line-height:1;margin-bottom:12px}
+.flash-main{font-size:30px;font-weight:900;line-height:1.2}
+.flash-hint{font-size:17px;color:var(--muted);margin-top:12px}
+.audio-btn{
+  margin-top:14px;
+  border:0;
+  border-radius:14px;
+  background:var(--accent);
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+  padding:12px 18px;
+  cursor:pointer;
+  min-height:54px;
+}
+.audio-status{font-size:17px;color:var(--muted);min-height:26px;margin-top:8px}
+
+/* WHY */
+.why-card{background:var(--why);border-color:var(--why-border)}
+.family-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.family{
+  background:rgba(255,255,255,.75);
+  border:2px solid rgba(92,117,164,.22);
+  border-radius:16px;
+  padding:14px;
+}
+.family strong{display:block;font-size:25px;margin-bottom:4px}
+details{margin-top:14px}
+summary{cursor:pointer;font-weight:850;font-size:21px}
+
+/* Look and say */
+.say-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.say-card{
+  border:2px solid var(--line);
+  border-radius:20px;
+  padding:20px;
+  text-align:center;
+  background:var(--card);
+}
+.say-card .weather-icon{font-size:78px}
+.reveal{
+  margin-top:12px;
+  padding:15px;
+  border-radius:15px;
+  background:var(--accent-soft);
+  font-size:27px;
+  font-weight:900;
+}
+
+/* Quiz */
+.quizq{
+  padding:18px 0;
+  border-top:2px solid var(--line);
+}
+.quizq:first-child{border-top:0;padding-top:0}
+.quiz-prompt{font-size:27px;font-weight:900;margin-bottom:12px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font-size:22px}
+.opt.correct-choice{background:var(--good);border-color:var(--good-border)}
+.opt.wrong-choice{background:var(--bad);border-color:var(--bad-border)}
+.feedback-box{
+  margin-top:12px;
+  padding:16px;
+  border-radius:16px;
+  font-size:21px;
+}
+.feedback-box.good{background:var(--good);border:2px solid var(--good-border)}
+.feedback-box.bad{background:var(--bad);border:2px solid var(--bad-border)}
+.feedback-box b{font-size:24px}
+.score{font-size:28px;font-weight:900;margin-top:12px}
+
+/* AI */
+.steps{display:grid;gap:10px;margin:14px 0}
+.step{
+  display:grid;
+  grid-template-columns:46px 1fr;
+  gap:12px;
+  align-items:start;
+  background:var(--accent-soft);
+  border-radius:16px;
+  padding:14px;
+}
+.step-number{
+  width:46px;height:46px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--accent);color:#fff;font-weight:900;
+}
+.copy-success{
+  margin-top:12px;
+  padding:14px;
+  border-radius:14px;
+  background:var(--good);
+  border:2px solid var(--good-border);
+  font-weight:850;
+}
+.prompt{
+  white-space:pre-wrap;
+  background:#f0efe9;
+  border:2px solid var(--line);
+  border-radius:15px;
+  padding:14px;
+  font-size:16px;
+  max-height:300px;
+  overflow:auto;
+}
+
+/* Feedback */
+.feedback-buttons{display:grid;gap:10px}
+.feedback-buttons .btn{text-align:left}
+textarea{
+  width:100%;
+  min-height:130px;
+  border:2px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  border-radius:16px;
+  padding:14px;
+  font-size:21px;
+}
+
+/* accessibility */
+@media (prefers-reduced-motion: reduce){
+  *{scroll-behavior:auto!important;transition:none!important}
+}
+@media(max-width:650px){
+  body{font-size:21px}
+  main{padding:16px 12px 70px}
+  h1{font-size:38px}
+  h2{font-size:29px}
+  .tabs,.flash-grid,.family-grid,.say-grid{grid-template-columns:1fr}
+  .flashcard,.flash-inner{min-height:225px}
+  .flash-main{font-size:31px}
+  .weather-icon{font-size:70px}
+}
+@media(min-width:1000px){
+  body{font-size:23px}
+  main{max-width:900px}
+}
 </style>
 </head>
-<body><main>
-<div class="muted">LANGUAGE MIRROR · PROTOTYPE 001</div><h1>Weather / El tiempo</h1><div id="updated" class="muted"></div>
+<body>
+<main>
+  <header class="hero">
+    <div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE</div>
+    <h1>Weather / El tiempo</h1>
+    <div id="updated" class="muted small"></div>
+  </header>
 
-<div class="card"><b>Choose your side / Elige tu lado</b>
-<div class="tabs" style="margin-top:10px">
-<button id="tab-es_en" class="btn" onclick="setDirection('es_en')">🇪🇸 Hablo español · aprendo inglés</button>
-<button id="tab-en_es" class="btn" onclick="setDirection('en_es')">🇬🇧 I speak English · I'm learning Spanish</button>
-</div></div>
+  <section class="card">
+    <h2>Choose your side / Elige tu lado</h2>
+    <div class="tabs">
+      <button id="tab-es_en" class="btn" onclick="setDirection('es_en')">
+        🇪🇸 Hablo español<br><span class="small">aprendo inglés</span>
+      </button>
+      <button id="tab-en_es" class="btn" onclick="setDirection('en_es')">
+        🇬🇧 I speak English<br><span class="small">I'm learning Spanish</span>
+      </button>
+    </div>
+  </section>
 
-<div id="app" style="display:none">
-<div class="card"><div id="intro"></div></div>
-<h2 id="learnTitle"></h2><div id="phrases" class="grid"></div>
-<div class="card why"><h2>WHY</h2><div id="why"></div><div id="wordFamily" style="margin-top:10px"></div></div>
-<div class="card"><h2 id="trapTitle"></h2><div id="traps"></div></div>
-<div class="card"><h2 id="practiceTitle"></h2><div id="quiz"></div><div id="score"></div></div>
-<div class="card"><h2>🎙️ AI practice</h2><div id="prompt" class="prompt"></div><button class="btn primary" style="margin-top:10px" onclick="copyPrompt()">Copy prompt</button><div id="copyStatus" class="small muted"></div></div>
-<div class="card"><h2 id="feedbackTitle"></h2>
-<div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn" onclick="rate('yes')">👍</button><button class="btn" onclick="rate('not_really')">🤔</button><button class="btn" onclick="rate('confused')">❓</button></div>
-<textarea id="feedback" style="margin-top:10px"></textarea>
-<button class="btn" onclick="saveFeedback()">Save / Guardar</button>
-<div id="fbStatus" class="small muted"></div>
-<hr style="border:0;border-top:1px solid var(--line);margin:15px 0">
-<button class="btn" onclick="copyReport()">Copy report</button>
-<button class="btn" onclick="exportReport()">Export report</button>
-</div></div>
+  <div id="app" class="hidden">
+
+    <section>
+      <h2 id="learnTitle">1 · LEARN</h2>
+      <div id="learnIntro" class="section-intro"></div>
+      <div id="flashcards" class="flash-grid"></div>
+    </section>
+
+    <section id="whyCard" class="card why-card">
+      <h2>2 · WHY?</h2>
+      <div id="whyText"></div>
+      <div id="familyGrid" class="family-grid"></div>
+      <details id="wordFamilyDetails" class="hidden">
+        <summary id="wordFamilySummary"></summary>
+        <p id="wordFamily"></p>
+      </details>
+    </section>
+
+    <section>
+      <h2 id="sayTitle">3 · LOOK & SAY</h2>
+      <div id="sayIntro" class="section-intro"></div>
+      <div id="sayCards" class="say-grid"></div>
+    </section>
+
+    <section class="card">
+      <h2 id="practiceTitle">4 · PRACTISE</h2>
+      <div id="practiceIntro" class="section-intro"></div>
+      <div id="quiz"></div>
+      <div id="score" class="score"></div>
+    </section>
+
+    <section class="card">
+      <h2 id="aiTitle">5 · PRACTISE WITH YOUR AI TEACHER</h2>
+      <p id="aiIntro"></p>
+
+      <div class="steps">
+        <div class="step"><div class="step-number">1</div><div id="aiStep1"></div></div>
+        <div class="step"><div class="step-number">2</div><div id="aiStep2"></div></div>
+        <div class="step"><div class="step-number">3</div><div id="aiStep3"></div></div>
+      </div>
+
+      <button id="copyPromptBtn" class="btn primary big" onclick="copyPrompt()">📋 COPY PRACTICE TEXT</button>
+      <div id="copyStatus"></div>
+
+      <details>
+        <summary id="showPromptLabel"></summary>
+        <div id="prompt" class="prompt"></div>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2 id="feedbackTitle">6 · HELP US IMPROVE</h2>
+      <p id="feedbackIntro"></p>
+      <div class="feedback-buttons">
+        <button id="fbYes" class="btn" onclick="rate('yes')"></button>
+        <button id="fbMore" class="btn" onclick="rate('more_examples')"></button>
+        <button id="fbConfused" class="btn" onclick="rate('confused')"></button>
+      </div>
+
+      <p id="freeLabel" style="margin-top:18px"></p>
+      <textarea id="feedback"></textarea>
+      <button id="saveFeedbackBtn" class="btn primary big" style="margin-top:10px" onclick="saveFeedback()"></button>
+      <div id="fbStatus" class="small muted" style="margin-top:10px"></div>
+
+      <details style="margin-top:22px">
+        <summary id="creatorToolsLabel"></summary>
+        <div style="display:grid;gap:8px;margin-top:10px">
+          <button class="btn" onclick="copyReport()" id="copyReportBtn"></button>
+          <button class="btn" onclick="exportReport()" id="exportReportBtn"></button>
+        </div>
+      </details>
+    </section>
+
+  </div>
+</main>
 
 <script>
-let C=null,direction=localStorage.getItem('lm_direction')||'',answers={};
+let C=null;
+let direction=localStorage.getItem('lm_direction')||'';
+let answers={};
 const K='language_mirror_weather_001';
+
 const S=()=>{try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return{}}};
 const P=o=>localStorage.setItem(K,JSON.stringify(Object.assign(S(),o,{updatedAt:new Date().toISOString()})));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-fetch('course.json?ts='+Date.now()).then(r=>r.json()).then(x=>{C=x;document.getElementById('updated').textContent='Updated / Actualizado: '+C.updated;if(direction)setDirection(direction)}).catch(()=>document.body.innerHTML+='<p>Open through GitHub Pages.</p>');
+let voices=[];
+function loadVoices(){ voices=window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if('speechSynthesis' in window){
+  loadVoices();
+  speechSynthesis.onvoiceschanged=loadVoices;
+}
 
-function setDirection(d){direction=d;localStorage.setItem('lm_direction',d);document.getElementById('app').style.display='block';document.querySelectorAll('[id^=tab-]').forEach(x=>x.classList.remove('active'));document.getElementById('tab-'+d).classList.add('active');answers={};render()}
-function t(es,en){return C.directions[direction].ui_language==='es'?es:en}
+fetch('course.json?ts='+Date.now())
+  .then(r=>{if(!r.ok) throw new Error('course.json '+r.status); return r.json()})
+  .then(x=>{
+    C=x;
+    document.getElementById('updated').textContent='Updated / Actualizado: '+C.updated;
+    if(direction) setDirection(direction);
+  })
+  .catch(err=>{
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('app').innerHTML='<section class="card"><h2>Course could not load</h2><p>Please open this page through GitHub Pages.</p><p class="small muted">'+esc(err.message)+'</p></section>';
+  });
+
+function D(){return C.directions[direction]}
+function t(es,en){return D().ui_language==='es'?es:en}
+
+function setDirection(d){
+  direction=d;
+  localStorage.setItem('lm_direction',d);
+  answers={};
+  document.getElementById('app').classList.remove('hidden');
+  document.querySelectorAll('[id^=tab-]').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tab-'+d).classList.add('active');
+  render();
+}
+
 function render(){
- const D=C.directions[direction];
- document.getElementById('intro').textContent=D.intro;
- document.getElementById('learnTitle').textContent=t('1 · Aprende','1 · Learn');
- document.getElementById('trapTitle').textContent=t('2 · Trampas de tu idioma','2 · Your language traps');
- document.getElementById('practiceTitle').textContent=t('3 · Practica','3 · Practise');
- document.getElementById('feedbackTitle').textContent=t('4 · ¿Te ha ayudado?','4 · Did this help?');
- document.getElementById('feedback').placeholder=t('Escribe qué te ha costado o qué cambiarías...','Tell me what was difficult or what you would change...');
- document.getElementById('phrases').innerHTML=D.items.map(x=>`<div class="phrase"><div>${x.icon}</div><div class="big">${esc(x.target)}</div><div class="small muted">${esc(x.source)}</div><button class="btn" style="margin-top:7px" onclick="speak(${JSON.stringify(x.target)},${JSON.stringify(D.learning_language)})">🔊</button></div>`).join('');
- document.getElementById('why').textContent=D.why;
- document.getElementById('wordFamily').textContent=D.word_family||'';
- document.getElementById('traps').innerHTML=D.traps.map(x=>`<div class="trap">❌ ${esc(x.wrong)}<br><b>✅ ${esc(x.right)}</b><div class="small muted">${esc(x.note)}</div></div>`).join('');
- document.getElementById('quiz').innerHTML=D.quiz.map((q,i)=>`<div style="margin:14px 0"><b>${i+1}. ${esc(q.prompt)}</b><div class="opts">${q.options.map((o,j)=>`<button class="btn opt" onclick="answer('${q.id}',${j})">${esc(o)}</button>`).join('')}</div><div id="r-${q.id}" class="result"></div></div>`).join('');
- renderScore();renderPrompt();
+  document.documentElement.lang=D().ui_language;
+
+  document.getElementById('learnTitle').textContent=t('1 · APRENDE','1 · LEARN');
+  document.getElementById('learnIntro').textContent=t(
+    'Mira la expresión y escúchala. Toca la tarjeta para ver lo que significa.',
+    'Look at the Spanish expression and listen to it. Tap the card to see what it means.'
+  );
+
+  document.getElementById('sayTitle').textContent=t('3 · MIRA Y DI','3 · LOOK & SAY');
+  document.getElementById('sayIntro').textContent=t(
+    'Mira la imagen. Intenta decir la frase en inglés en voz alta antes de comprobarla.',
+    'Look at the picture. Try to say the Spanish phrase aloud before you check.'
+  );
+
+  document.getElementById('practiceTitle').textContent=t('4 · PRACTICA','4 · PRACTISE');
+  document.getElementById('practiceIntro').textContent=t(
+    'Elige una respuesta. Si fallas, mira el pequeño recordatorio y vuelve a intentarlo.',
+    'Choose an answer. If you make a mistake, read the short reminder and try to remember why.'
+  );
+
+  document.getElementById('aiTitle').textContent=t(
+    '5 · PRACTICA CON TU PROFESOR DE IA',
+    '5 · PRACTISE WITH YOUR AI TEACHER'
+  );
+  document.getElementById('aiIntro').textContent=t(
+    'Este texto le dice a tu profesor de IA exactamente qué hemos practicado esta semana.',
+    'This text tells your AI teacher exactly what we have practised this week.'
+  );
+  document.getElementById('aiStep1').innerHTML='<b>'+t('Pulsa COPIAR TEXTO DE PRÁCTICA.','Tap COPY PRACTICE TEXT.')+'</b>';
+  document.getElementById('aiStep2').textContent=t('Abre tu profesor de IA.','Open your AI teacher.');
+  document.getElementById('aiStep3').textContent=t('Pega el texto y empieza a hablar.','Paste the text and start talking.');
+  document.getElementById('copyPromptBtn').textContent=t('📋 COPIAR TEXTO DE PRÁCTICA','📋 COPY PRACTICE TEXT');
+  document.getElementById('showPromptLabel').textContent=t('Ver el texto que se copiará','See the text that will be copied');
+
+  document.getElementById('feedbackTitle').textContent=t('6 · AYÚDANOS A MEJORAR','6 · HELP US IMPROVE');
+  document.getElementById('feedbackIntro').textContent=t(
+    'Dinos cómo te ha resultado esta lección. No hay respuestas correctas o incorrectas.',
+    'Tell us how this lesson felt. There are no right or wrong answers.'
+  );
+  document.getElementById('fbYes').textContent=t('👍 Me ha ayudado','👍 This helped me');
+  document.getElementById('fbMore').textContent=t('🤔 Necesito más ejemplos','🤔 I need more examples');
+  document.getElementById('fbConfused').textContent=t('❓ Sigo sin entenderlo','❓ I still do not understand');
+  document.getElementById('freeLabel').textContent=t(
+    'Opcional: cuéntanos qué te ha costado o qué cambiarías.',
+    'Optional: tell us what was difficult or what you would change.'
+  );
+  document.getElementById('feedback').placeholder=t(
+    'Por ejemplo: lo entiendo cuando lo leo, pero luego no me acuerdo al hablar…',
+    'For example: I understand it when I read it, but I forget it when I speak…'
+  );
+  document.getElementById('saveFeedbackBtn').textContent=t('GUARDAR COMENTARIO','SAVE COMMENT');
+  document.getElementById('creatorToolsLabel').textContent=t('Herramientas para quien crea la lección','Tools for the lesson creator');
+  document.getElementById('copyReportBtn').textContent=t('Copiar informe de práctica','Copy practice report');
+  document.getElementById('exportReportBtn').textContent=t('Exportar informe de práctica','Export practice report');
+
+  renderFlashcards();
+  renderWhy();
+  renderLookSay();
+  renderQuiz();
+  renderPrompt();
 }
-function answer(id,ch){
- const D=C.directions[direction],q=D.quiz.find(x=>x.id===id),ok=ch===q.answer;answers[id]=ch;
- document.getElementById('r-'+id).textContent=ok?t('✓ Correcto','✓ Correct'):t('✗ Correcta: ','✗ Correct: ')+q.options[q.answer];
- const s=S(),a=s.attempts||{};a[direction]=a[direction]||{};const z=a[direction][id]||{tries:0,wrong:0,skill:q.skill};z.tries++;if(!ok)z.wrong++;a[direction][id]=z;P({attempts:a});renderScore();renderPrompt();
+
+function renderFlashcards(){
+  document.getElementById('flashcards').innerHTML=D().items.map((x,i)=>`
+    <div class="flashcard" id="flash-${i}" onclick="flipCard(${i},event)" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(${i},event)}"
+         aria-label="${esc(t('Tarjeta de aprendizaje','Learning card'))}">
+      <div class="flash-inner">
+        <div class="flash-face flash-front">
+          <div class="weather-icon">${x.icon}</div>
+          <div class="flash-main">${esc(x.target)}</div>
+          <button class="audio-btn" onclick="event.stopPropagation();speak(${JSON.stringify(x.target)},${JSON.stringify(D().learning_language)},'audio-${i}')">🔊 ${t('ESCUCHAR','LISTEN')}</button>
+          <div id="audio-${i}" class="audio-status"></div>
+          <div class="flash-hint">${t('Toca la tarjeta para ver el significado','Tap the card to see the meaning')}</div>
+        </div>
+        <div class="flash-face flash-back">
+          <div class="weather-icon">${x.icon}</div>
+          <div class="flash-main">${esc(x.source)}</div>
+          <div class="flash-hint">${t('Toca otra vez para volver','Tap again to go back')}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
-function renderScore(){const q=C.directions[direction].quiz,done=Object.keys(answers).length,ok=q.filter(x=>answers[x.id]===x.answer).length;document.getElementById('score').innerHTML=done?`<b>${ok}/${done}</b> · ${t('No es una nota: buscamos qué repetir.','Not a grade: we are finding what to repeat.')}`:''}
-function weakSkills(){const a=(S().attempts||{})[direction]||{};return [...new Set(Object.values(a).filter(x=>x.wrong>0).map(x=>x.skill))]}
+function flipCard(i,event){
+  if(event && event.target.closest('.audio-btn')) return;
+  document.getElementById('flash-'+i).classList.toggle('flipped');
+}
+
+function renderWhy(){
+  const enEs = direction==='en_es';
+  document.getElementById('whyText').innerHTML=enEs
+    ? `<p><b>English often uses “It’s…” for weather.</b></p>
+       <p>Spanish does not use one single pattern. Instead, choose the Spanish family.</p>
+       <p><b>Do not translate “it is”. Choose the pattern.</b></p>`
+    : `<p><b>En español usamos varias formas para hablar del tiempo.</b></p>
+       <p>En inglés, muchas de esas ideas usan un patrón muy sencillo: <b>It’s + adjective</b>.</p>
+       <p><b>No traduzcas «hace» palabra por palabra. Aprende el patrón inglés.</b></p>`;
+
+  const fg=document.getElementById('familyGrid');
+  fg.innerHTML=enEs ? `
+    <div class="family"><strong>HACE</strong>sol · calor · frío · viento</div>
+    <div class="family"><strong>ESTÁ</strong>nublado</div>
+    <div class="family"><strong>HAY</strong>tormenta</div>
+    <div class="family"><strong>ACTION</strong>llueve · nieva</div>
+  ` : `
+    <div class="family"><strong>IT'S</strong>sunny · hot · cold · windy</div>
+    <div class="family"><strong>IT'S</strong>cloudy · stormy</div>
+    <div class="family"><strong>ACTION</strong>It's raining.</div>
+    <div class="family"><strong>ACTION</strong>It's snowing.</div>
+  `;
+
+  const det=document.getElementById('wordFamilyDetails');
+  if(D().word_family){
+    det.classList.remove('hidden');
+    document.getElementById('wordFamilySummary').textContent=t('Más explicación','More explanation: lluvia / llover / lloviendo');
+    document.getElementById('wordFamily').textContent=D().word_family;
+  }else{
+    det.classList.add('hidden');
+  }
+}
+
+function renderLookSay(){
+  document.getElementById('sayCards').innerHTML=D().items.map((x,i)=>`
+    <div class="say-card">
+      <div class="weather-icon">${x.icon}</div>
+      <div class="small muted">${t('Dilo en voz alta primero.','Say it aloud first.')}</div>
+      <button class="btn big" style="margin-top:12px" onclick="revealSay(${i})">${t('MOSTRAR RESPUESTA','SHOW ANSWER')}</button>
+      <div id="say-${i}" class="reveal hidden">${esc(x.target)}
+        <div><button class="audio-btn" onclick="speak(${JSON.stringify(x.target)},${JSON.stringify(D().learning_language)},'say-audio-${i}')">🔊 ${t('ESCUCHAR','LISTEN')}</button></div>
+        <div id="say-audio-${i}" class="audio-status"></div>
+      </div>
+    </div>
+  `).join('');
+}
+function revealSay(i){ document.getElementById('say-'+i).classList.toggle('hidden'); }
+
+function explanationFor(q){
+  if(direction==='en_es'){
+    if(q.id==='q1') return 'Sunny weather uses the HACE family: hace sol.';
+    if(q.id==='q2') return '“Nublado” belongs to the ESTÁ pattern: está nublado.';
+    if(q.id==='q3') return 'Wind uses the HACE family: hace viento.';
+    if(q.id==='q4') return '“Lluvia” is a noun. For the action, use llover → está lloviendo.';
+  }else{
+    if(q.id==='q1') return 'En inglés usamos “It’s + adjective”: It’s sunny.';
+    if(q.id==='q2') return 'En inglés usamos “It’s + adjective”: It’s windy.';
+    if(q.id==='q3') return '“Cloudy” es un adjetivo: It’s cloudy.';
+    if(q.id==='q4') return 'Para una acción que ocurre ahora: rain → raining → It’s raining.';
+  }
+  return t('Recuerda el patrón de esta lección.','Remember the pattern from this lesson.');
+}
+
+function renderQuiz(){
+  document.getElementById('quiz').innerHTML=D().quiz.map((q,qi)=>`
+    <div class="quizq" id="quiz-${q.id}">
+      <div class="quiz-prompt">${qi+1}. ${esc(q.prompt)}</div>
+      <div class="opts">
+        ${q.options.map((o,oi)=>`<button id="opt-${q.id}-${oi}" class="btn opt" onclick="answer('${q.id}',${oi})">${esc(o)}</button>`).join('')}
+      </div>
+      <div id="res-${q.id}"></div>
+    </div>
+  `).join('');
+  renderScore();
+}
+
+function answer(id,choice){
+  const q=D().quiz.find(x=>x.id===id);
+  answers[id]=choice;
+  const ok=choice===q.answer;
+
+  q.options.forEach((_,i)=>{
+    const b=document.getElementById(`opt-${id}-${i}`);
+    b.classList.remove('correct-choice','wrong-choice');
+  });
+  document.getElementById(`opt-${id}-${q.answer}`).classList.add('correct-choice');
+  if(!ok) document.getElementById(`opt-${id}-${choice}`).classList.add('wrong-choice');
+
+  const r=document.getElementById('res-'+id);
+  r.className='feedback-box '+(ok?'good':'bad');
+  r.innerHTML= ok
+    ? `<b>✅ ${t('¡Correcto!','Correct!')}</b><br>${esc(explanationFor(q))}`
+    : `<b>❌ ${t('Casi.','Not quite.')}</b><br>
+       ${t('La respuesta correcta es: ','The correct answer is: ')}<b>${esc(q.options[q.answer])}</b><br>
+       <span>${esc(explanationFor(q))}</span>`;
+
+  const s=S(),a=s.attempts||{};
+  a[direction]=a[direction]||{};
+  const z=a[direction][id]||{tries:0,wrong:0,skill:q.skill};
+  z.tries++;
+  if(!ok) z.wrong++;
+  a[direction][id]=z;
+  P({attempts:a});
+
+  renderScore();
+  renderPrompt();
+}
+
+function renderScore(){
+  if(!C||!direction)return;
+  const q=D().quiz;
+  const done=Object.keys(answers).length;
+  const ok=q.filter(x=>answers[x.id]===x.answer).length;
+  document.getElementById('score').innerHTML=done
+    ? `${ok}/${done}<div class="small muted">${t('No es una nota. Nos ayuda a saber qué conviene repetir.','This is not a grade. It helps us know what to practise again.')}</div>`
+    : '';
+}
+
+function weakSkills(){
+  const a=(S().attempts||{})[direction]||{};
+  return [...new Set(Object.values(a).filter(x=>x.wrong>0).map(x=>x.skill))];
+}
+
 function buildPrompt(){
- const D=C.directions[direction];let x=[...D.ai_rules];
- const w=weakSkills();
- if(w.length)x.push('',direction==='en_es'?'I had difficulty with: '+w.join(', ')+'. Please reinforce these areas.':'He tenido dificultad con: '+w.join(', ')+'. Refuérzalo durante la conversación.');
- return x.join('\n');
+  let lines=[...D().ai_rules];
+  const w=weakSkills();
+  if(w.length){
+    lines.push('');
+    if(direction==='en_es'){
+      lines.push('I had difficulty with these areas during the website practice:');
+      w.forEach(x=>lines.push('• '+({
+        hace_vs_esta:'HACE versus ESTÁ in weather expressions',
+        lluvia_llover:'lluvia / llover / lloviendo'
+      }[x]||x)));
+      lines.push('Please give me extra chances to practise these points.');
+    }else{
+      lines.push('Durante la práctica de la web he tenido dificultad con estas áreas:');
+      w.forEach(x=>lines.push('• '+({
+        weather_pattern:'usar “It’s + adjective” en el tiempo',
+        rain_action:'rain / raining'
+      }[x]||x)));
+      lines.push('Dame oportunidades extra para practicar estos puntos.');
+    }
+  }
+  return lines.join('\n');
 }
-function renderPrompt(){document.getElementById('prompt').textContent=buildPrompt()}
-async function copyPrompt(){await navigator.clipboard.writeText(buildPrompt());document.getElementById('copyStatus').textContent=t('Prompt copiado.','Prompt copied.')}
-function rate(v){const s=S(),f=s.feedback||{};f[direction]=f[direction]||{};f[direction].rating=v;P({feedback:f});document.getElementById('fbStatus').textContent=t('Guardado en este navegador.','Saved on this browser.')}
-function saveFeedback(){const s=S(),f=s.feedback||{};f[direction]=f[direction]||{};f[direction].freeText=document.getElementById('feedback').value.trim();P({feedback:f});document.getElementById('fbStatus').textContent=t('Guardado en este navegador.','Saved on this browser.')}
-function report(){const s=S();return{report_type:'language_mirror_practice',course_id:C.course_id,version:C.version,direction,generated_at:new Date().toISOString(),attempts:(s.attempts||{})[direction]||{},feedback:(s.feedback||{})[direction]||{},detected_focus:weakSkills()}}
-async function copyReport(){await navigator.clipboard.writeText(JSON.stringify(report(),null,2));document.getElementById('fbStatus').textContent=t('Informe copiado.','Report copied.')}
-function exportReport(){const b=new Blob([JSON.stringify(report(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='language-mirror-report-'+direction+'.json';a.click();URL.revokeObjectURL(a.href)}
-function speak(text,lang){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang==='es'?'es-ES':'en-GB';u.rate=.82;speechSynthesis.speak(u)}
-</script></main></body></html>
+
+function renderPrompt(){ document.getElementById('prompt').textContent=buildPrompt(); }
+
+async function copyPrompt(){
+  try{
+    await navigator.clipboard.writeText(buildPrompt());
+    document.getElementById('copyStatus').className='copy-success';
+    document.getElementById('copyStatus').innerHTML='✅ '+t(
+      'Copiado. Ahora abre tu profesor de IA, pega el texto y empieza a hablar.',
+      'Copied. Now open your AI teacher, paste the text and start talking.'
+    );
+  }catch(e){
+    document.getElementById('copyStatus').className='feedback-box bad';
+    document.getElementById('copyStatus').textContent=t(
+      'No se pudo copiar automáticamente. Abre “Ver el texto” y cópialo manualmente.',
+      'It could not be copied automatically. Open “See the text” and copy it manually.'
+    );
+  }
+}
+
+function rate(v){
+  const s=S(),f=s.feedback||{};
+  f[direction]=f[direction]||{};
+  f[direction].rating=v;
+  P({feedback:f});
+  document.getElementById('fbStatus').textContent=t('Guardado en este navegador.','Saved on this browser.');
+}
+
+function saveFeedback(){
+  const s=S(),f=s.feedback||{};
+  f[direction]=f[direction]||{};
+  f[direction].freeText=document.getElementById('feedback').value.trim();
+  P({feedback:f});
+  document.getElementById('fbStatus').textContent=t('Comentario guardado en este navegador.','Comment saved on this browser.');
+}
+
+function report(){
+  const s=S();
+  return{
+    report_type:'language_mirror_practice',
+    course_id:C.course_id,
+    version:C.version,
+    direction,
+    generated_at:new Date().toISOString(),
+    attempts:(s.attempts||{})[direction]||{},
+    feedback:(s.feedback||{})[direction]||{},
+    detected_focus:weakSkills()
+  };
+}
+
+async function copyReport(){
+  try{
+    await navigator.clipboard.writeText(JSON.stringify(report(),null,2));
+    document.getElementById('fbStatus').textContent=t('Informe copiado.','Practice report copied.');
+  }catch(e){
+    document.getElementById('fbStatus').textContent=t('No se pudo copiar el informe.','The report could not be copied.');
+  }
+}
+
+function exportReport(){
+  const b=new Blob([JSON.stringify(report(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download='language-mirror-report-'+direction+'.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function speak(text,lang,statusId){
+  const status=statusId?document.getElementById(statusId):null;
+
+  if(!('speechSynthesis' in window)){
+    if(status) status.textContent=t('Este navegador no permite audio.','This browser does not support audio.');
+    return;
+  }
+
+  try{
+    speechSynthesis.cancel();
+    speechSynthesis.resume();
+
+    const u=new SpeechSynthesisUtterance(text);
+    const locale=lang==='es'?'es-ES':'en-GB';
+    u.lang=locale;
+    u.rate=.78;
+    u.pitch=1;
+    u.volume=1;
+
+    const preferred=voices.find(v=>v.lang && v.lang.toLowerCase()===locale.toLowerCase())
+      || voices.find(v=>v.lang && v.lang.toLowerCase().startsWith(lang==='es'?'es':'en'));
+
+    if(preferred) u.voice=preferred;
+
+    u.onstart=()=>{if(status) status.textContent=t('🔊 Reproduciendo…','🔊 Playing…')};
+    u.onend=()=>{if(status) status.textContent=''};
+    u.onerror=()=>{if(status) status.textContent=t('No se pudo reproducir. Prueba otra vez.','Could not play. Please try again.')};
+
+    setTimeout(()=>speechSynthesis.speak(u),80);
+  }catch(e){
+    if(status) status.textContent=t('No se pudo reproducir. Prueba otra vez.','Could not play. Please try again.');
+  }
+}
+</script>
+</body>
+</html>
