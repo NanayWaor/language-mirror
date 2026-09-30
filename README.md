@@ -1,25 +1,31 @@
-# Language Mirror · Prototype 001
+# Language Mirror · Prototype 002
 
-## Publicarlo hoy
-1. Crea un repositorio nuevo en GitHub.
-2. Sube `index.html` y `course.json` a la raíz.
-3. Settings → Pages → Deploy from branch → rama principal → `/ (root)`.
-4. Abre la URL de GitHub Pages.
+Mobile-first iteration of Weather / El tiempo.
 
-## Qué prueba este MVP
-- Dos modos espejo: español→inglés e inglés→español.
-- WHY contrastivo.
-- Trampas de transferencia del idioma nativo.
-- Mini-quiz.
-- El prompt de IA incorpora automáticamente los tipos de error detectados.
-- Pronunciación mediante la voz del navegador.
-- Feedback y comentario libre.
-- Informe copiable/exportable.
+## Upload to GitHub Pages
+Replace:
+- `index.html`
+- `course.json`
 
-## Privacidad
-No usa Dropbox ni backend.
-El progreso y el feedback se guardan solo en `localStorage` del navegador.
-`course.json` contiene únicamente el contenido de la lección.
+And add the complete:
+- `audio/` folder
 
-## Próxima iteración
-Si funciona, el siguiente paso puede ser sincronizar feedback/progreso de forma remota o mantenerlo local según lo que realmente necesitéis.
+Keep the same repository and GitHub Pages URL.
+
+## Main changes
+- Mobile-first layout with much larger text and buttons.
+- Real audio files instead of browser speech synthesis.
+- Learn cards reveal meaning without 3D flipping.
+- More visual WHY section.
+- Useful everyday phrases.
+- Look & Say active-recall activity.
+- Quiz feedback with green/red + short WHY reminder.
+- Per-item personal notes stored in localStorage.
+- Optional reviewed memory tricks.
+- Clear AI-teacher instructions.
+- Feedback and report export remain local.
+
+## Important
+The included MP3s are synthetic placeholder voices generated locally for functional testing.
+They are intentionally packaged as actual audio files so playback is more reliable than browser speech synthesis.
+They can later be replaced with higher-quality recordings without changing the web structure.

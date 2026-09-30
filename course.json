@@ -1,192 +1,148 @@
 {
-  "course_id": "mirror-weather-001",
-  "version": 1,
+  "course_id": "mirror-weather-002",
+  "version": 2,
   "updated": "2026-09-30",
   "title": {
     "es": "El tiempo",
     "en": "Weather"
   },
   "directions": {
-    "es_en": {
-      "ui_language": "es",
-      "learning_language": "en",
-      "label": "Hablo español · aprendo inglés",
-      "intro": "Practica lo trabajado hoy. No traduzcas palabra por palabra: busca el patrón inglés.",
-      "items": [
-        {
-          "icon": "☀️",
-          "target": "It's sunny.",
-          "source": "Hace sol."
-        },
-        {
-          "icon": "🔥",
-          "target": "It's hot.",
-          "source": "Hace calor."
-        },
-        {
-          "icon": "🥶",
-          "target": "It's cold.",
-          "source": "Hace frío."
-        },
-        {
-          "icon": "💨",
-          "target": "It's windy.",
-          "source": "Hace viento."
-        },
-        {
-          "icon": "☁️",
-          "target": "It's cloudy.",
-          "source": "Está nublado."
-        },
-        {
-          "icon": "⛈️",
-          "target": "It's stormy.",
-          "source": "Hay tormenta."
-        },
-        {
-          "icon": "🌧️",
-          "target": "It's raining.",
-          "source": "Llueve / Está lloviendo."
-        },
-        {
-          "icon": "❄️",
-          "target": "It's snowing.",
-          "source": "Nieva / Está nevando."
-        }
-      ],
-      "why": "En español usamos varias construcciones para el tiempo. En inglés, muchas se expresan con el patrón “It is + adjective”. No traduzcas «hace»: aprende la frase completa.",
-      "traps": [
-        {
-          "wrong": "It makes sun.",
-          "right": "It's sunny.",
-          "note": "No traduzcas «hace» literalmente."
-        },
-        {
-          "wrong": "It is rain.",
-          "right": "It's raining.",
-          "note": "Para la acción que ocurre ahora, usa raining."
-        }
-      ],
-      "quiz": [
-        {
-          "id": "q1",
-          "prompt": "☀️ Hace sol.",
-          "options": [
-            "It's sunny.",
-            "It's sun.",
-            "It makes sunny."
-          ],
-          "answer": 0,
-          "skill": "weather_pattern"
-        },
-        {
-          "id": "q2",
-          "prompt": "💨 Hace viento.",
-          "options": [
-            "It's wind.",
-            "It's windy.",
-            "There is windly."
-          ],
-          "answer": 1,
-          "skill": "weather_pattern"
-        },
-        {
-          "id": "q3",
-          "prompt": "☁️ Está nublado.",
-          "options": [
-            "It's cloudy.",
-            "It has clouds.",
-            "It's cloud."
-          ],
-          "answer": 0,
-          "skill": "weather_pattern"
-        },
-        {
-          "id": "q4",
-          "prompt": "🌧️ Está lloviendo.",
-          "options": [
-            "It's rain.",
-            "It's raining.",
-            "There is raining."
-          ],
-          "answer": 1,
-          "skill": "rain_action"
-        }
-      ],
-      "ai_rules": [
-        "You are my English conversation practice partner.",
-        "I am a Spanish-speaking learner practising everyday English.",
-        "Practise ONLY this week's topic: weather.",
-        "Ask one short question at a time and wait for my answer.",
-        "Use mainly: It's sunny, hot, cold, windy, cloudy, stormy, raining and snowing.",
-        "If I make a mistake, correct only that sentence, explain briefly in Spanish, ask me to repeat the corrected English, then continue.",
-        "Do not introduce lots of new vocabulary. Keep the conversation natural and adult."
-      ]
-    },
     "en_es": {
       "ui_language": "en",
       "learning_language": "es",
       "label": "I speak English · I'm learning Spanish",
-      "intro": "Practise exactly what we worked on today. Don't translate “it is” first: choose the Spanish weather pattern.",
-      "items": [
+      "intro": "This week: everyday weather. Learn a few useful patterns, then say them aloud without looking.",
+      "core": [
         {
+          "id": "sunny",
           "icon": "☀️",
           "target": "Hace sol.",
-          "source": "It's sunny."
+          "source": "It's sunny.",
+          "audio": "audio/es_hace_sol.mp3"
         },
         {
+          "id": "hot",
           "icon": "🔥",
           "target": "Hace calor.",
-          "source": "It's hot."
+          "source": "It's hot.",
+          "audio": "audio/es_hace_calor.mp3"
         },
         {
+          "id": "cold",
           "icon": "🥶",
           "target": "Hace frío.",
-          "source": "It's cold."
+          "source": "It's cold.",
+          "audio": "audio/es_hace_frio.mp3"
         },
         {
+          "id": "windy",
           "icon": "💨",
           "target": "Hace viento.",
-          "source": "It's windy."
+          "source": "It's windy.",
+          "audio": "audio/es_hace_viento.mp3"
         },
         {
+          "id": "cloudy",
           "icon": "☁️",
           "target": "Está nublado.",
-          "source": "It's cloudy."
+          "source": "It's cloudy.",
+          "audio": "audio/es_esta_nublado.mp3"
         },
         {
+          "id": "storm",
           "icon": "⛈️",
           "target": "Hay tormenta.",
-          "source": "It's stormy / There's a storm."
+          "source": "There's a storm.",
+          "audio": "audio/es_hay_tormenta.mp3"
         },
         {
+          "id": "raining",
           "icon": "🌧️",
-          "target": "Llueve. / Está lloviendo.",
-          "source": "It's raining."
+          "target": "Está lloviendo.",
+          "source": "It's raining.",
+          "audio": "audio/es_esta_lloviendo.mp3"
         },
         {
+          "id": "snowing",
           "icon": "❄️",
-          "target": "Nieva. / Está nevando.",
-          "source": "It's snowing."
+          "target": "Está nevando.",
+          "source": "It's snowing.",
+          "audio": "audio/es_esta_nevando.mp3"
         }
       ],
-      "why": "English can use “it is” for many weather expressions. Spanish does not use one single pattern. Learn small families: HACE (sol, calor, frío, viento), ESTÁ (nublado), HAY (tormenta), ACTION (llueve, nieva).",
-      "word_family": "lluvia = rain (noun) · llover = to rain (verb) · lloviendo = raining. Do not transform LLUVIA into LLOVIENDO letter by letter: learn lluvia and llover as related family words; then llover → lloviendo is the verb change.",
-      "traps": [
+      "why": {
+        "headline": "Don't translate “it is”. Choose the Spanish weather pattern.",
+        "intro": "English can use “it is” again and again. Spanish spreads weather across a few small families.",
+        "families": [
+          {
+            "icon": "☀️🔥🥶💨",
+            "name": "HACE",
+            "examples": "sol · calor · frío · viento"
+          },
+          {
+            "icon": "☁️",
+            "name": "ESTÁ",
+            "examples": "nublado"
+          },
+          {
+            "icon": "⛈️",
+            "name": "HAY",
+            "examples": "tormenta"
+          },
+          {
+            "icon": "🌧️❄️",
+            "name": "ACTION",
+            "examples": "llueve · nieva · está lloviendo · está nevando"
+          }
+        ],
+        "remember": "First ask yourself: which Spanish family does this weather idea belong to?",
+        "more_title": "Why lluvia, llover and lloviendo are different",
+        "more": "Lluvia is a noun: rain. Llover is the verb: to rain. Lloviendo is the verb form used in está lloviendo: it is raining. Do not try to turn LLUVIA into LLOVIENDO letter by letter."
+      },
+      "phrases": [
         {
-          "wrong": "Está sol.",
-          "right": "Hace sol.",
-          "note": "English «it is» pushes you towards «está»."
+          "id": "what_weather",
+          "icon": "💬",
+          "target": "¿Qué tiempo hace hoy?",
+          "source": "What's the weather like today?",
+          "audio": "audio/es_que_tiempo_hace_hoy.mp3"
         },
         {
-          "wrong": "Hace nublado.",
-          "right": "Está nublado.",
-          "note": "Cloudy belongs to the ESTÁ pattern here."
+          "id": "cloudy_hot",
+          "icon": "☁️🔥",
+          "target": "Está nublado, pero hace calor.",
+          "source": "It's cloudy, but it's hot.",
+          "audio": "audio/es_nublado_pero_calor.mp3"
         },
         {
-          "wrong": "Está viento.",
-          "right": "Hace viento.",
-          "note": "Wind belongs to the HACE pattern in everyday Spanish."
+          "id": "very_windy",
+          "icon": "💨",
+          "target": "Hoy hace mucho viento.",
+          "source": "It's very windy today.",
+          "audio": "audio/es_hoy_mucho_viento.mp3"
+        },
+        {
+          "id": "rain_now",
+          "icon": "🌧️",
+          "target": "Ahora está lloviendo.",
+          "source": "It's raining now.",
+          "audio": "audio/es_ahora_lloviendo.mp3"
+        },
+        {
+          "id": "rainbow",
+          "icon": "🌈",
+          "target": "Hay un arcoíris.",
+          "source": "There's a rainbow.",
+          "audio": "audio/es_hay_un_arcoiris.mp3",
+          "memory": "Memory trick: imagine an ARCO (bow) + the IRIS of an eye → arcoíris."
+        },
+        {
+          "id": "thundering",
+          "icon": "🌩️",
+          "target": "Está tronando.",
+          "source": "It's thundering.",
+          "audio": "audio/es_esta_tronando.mp3",
+          "memory": "Your own memory trick from today: hear “Nando” inside tro-NANDO. It is only a memory cue, not the origin of the word."
         }
       ],
       "quiz": [
@@ -199,6 +155,7 @@
             "Hay sol."
           ],
           "answer": 1,
+          "why": "Sunny weather belongs to the HACE family: hace sol.",
           "skill": "hace_vs_esta"
         },
         {
@@ -210,6 +167,7 @@
             "Hay nublado."
           ],
           "answer": 1,
+          "why": "Nublado uses ESTÁ here: está nublado.",
           "skill": "hace_vs_esta"
         },
         {
@@ -221,6 +179,7 @@
             "Es viento."
           ],
           "answer": 0,
+          "why": "Wind belongs to the HACE family: hace viento.",
           "skill": "hace_vs_esta"
         },
         {
@@ -232,19 +191,239 @@
             "Está lloviendo."
           ],
           "answer": 2,
+          "why": "Lluvia is the noun. For the action happening now, use está lloviendo.",
           "skill": "lluvia_llover"
+        },
+        {
+          "id": "q5",
+          "prompt": "☁️🔥 It's cloudy, but it's hot.",
+          "options": [
+            "Está nublado, pero hace calor.",
+            "Hace nublado, pero está calor.",
+            "Hay nublado y calor."
+          ],
+          "answer": 0,
+          "why": "One sentence can use two families: ESTÁ nublado + HACE calor.",
+          "skill": "combine_patterns"
         }
       ],
       "ai_rules": [
         "You are my Spanish conversation practice partner.",
-        "I am an older native English speaker and a beginner learning everyday Spanish as spoken in Spain.",
-        "Practise ONLY this week's topic: weather.",
+        "I am an older native English speaker living in Barcelona. I understand more Spanish than I can comfortably speak.",
+        "Practise everyday Spanish as spoken in Spain.",
+        "For this session, focus mainly on this week's topic: weather and simple small talk.",
         "Ask one very short question at a time and wait for my answer.",
-        "Use mainly: hace sol, hace calor, hace frío, hace viento, está nublado, hay tormenta, llueve, nieva, está lloviendo and está nevando.",
-        "Deliberately give me chances to practise HACE versus ESTÁ.",
-        "I may incorrectly say «está sol», «hace nublado» or «está viento». Correct only that sentence.",
-        "If I make a mistake, explain briefly in English, ask me to repeat the corrected Spanish, then continue.",
-        "Speak slowly. Do not introduce lots of new vocabulary. Keep the conversation natural and adult."
+        "Give me chances to use: hace sol, hace calor, hace frío, hace viento, está nublado, hay tormenta, está lloviendo, está nevando.",
+        "Also practise useful phrases such as: ¿Qué tiempo hace hoy? and Está nublado, pero hace calor.",
+        "I may translate English too literally and say things such as está sol or hace nublado. If I do, correct only that sentence.",
+        "Explain corrections briefly in English, ask me to repeat the corrected Spanish, then continue.",
+        "Speak slowly and keep sentences short.",
+        "Do not introduce lots of new vocabulary unless I ask.",
+        "Keep the conversation natural and suitable for an independent retired adult talking about everyday life."
+      ]
+    },
+    "es_en": {
+      "ui_language": "es",
+      "learning_language": "en",
+      "label": "Hablo español · aprendo inglés",
+      "intro": "Esta semana: hablar del tiempo de forma cotidiana. Aprende el patrón inglés y luego intenta producirlo sin mirar.",
+      "core": [
+        {
+          "id": "sunny",
+          "icon": "☀️",
+          "target": "It's sunny.",
+          "source": "Hace sol.",
+          "audio": "audio/en_its_sunny.mp3"
+        },
+        {
+          "id": "hot",
+          "icon": "🔥",
+          "target": "It's hot.",
+          "source": "Hace calor.",
+          "audio": "audio/en_its_hot.mp3"
+        },
+        {
+          "id": "cold",
+          "icon": "🥶",
+          "target": "It's cold.",
+          "source": "Hace frío.",
+          "audio": "audio/en_its_cold.mp3"
+        },
+        {
+          "id": "windy",
+          "icon": "💨",
+          "target": "It's windy.",
+          "source": "Hace viento.",
+          "audio": "audio/en_its_windy.mp3"
+        },
+        {
+          "id": "cloudy",
+          "icon": "☁️",
+          "target": "It's cloudy.",
+          "source": "Está nublado.",
+          "audio": "audio/en_its_cloudy.mp3"
+        },
+        {
+          "id": "stormy",
+          "icon": "⛈️",
+          "target": "There's a storm.",
+          "source": "Hay tormenta.",
+          "audio": "audio/en_theres_a_storm.mp3"
+        },
+        {
+          "id": "raining",
+          "icon": "🌧️",
+          "target": "It's raining.",
+          "source": "Está lloviendo.",
+          "audio": "audio/en_its_raining.mp3"
+        },
+        {
+          "id": "snowing",
+          "icon": "❄️",
+          "target": "It's snowing.",
+          "source": "Está nevando.",
+          "audio": "audio/en_its_snowing.mp3"
+        }
+      ],
+      "why": {
+        "headline": "No traduzcas «hace». Aprende el patrón inglés.",
+        "intro": "En español cambiamos entre hace, está, hay o un verbo. En inglés, muchas ideas del tiempo se simplifican en patrones muy repetibles.",
+        "families": [
+          {
+            "icon": "☀️🔥🥶💨☁️",
+            "name": "IT'S + ADJECTIVE",
+            "examples": "sunny · hot · cold · windy · cloudy"
+          },
+          {
+            "icon": "🌧️❄️",
+            "name": "IT'S + -ING",
+            "examples": "raining · snowing"
+          },
+          {
+            "icon": "⛈️",
+            "name": "THERE'S",
+            "examples": "There's a storm."
+          }
+        ],
+        "remember": "No busques una traducción para «hace». Piensa en la situación completa y recupera el patrón inglés.",
+        "more_title": "Rain y raining",
+        "more": "Rain puede ser nombre o verbo. Cuando quieres decir «está lloviendo», la forma cotidiana es It's raining."
+      },
+      "phrases": [
+        {
+          "id": "what_weather",
+          "icon": "💬",
+          "target": "What's the weather like today?",
+          "source": "¿Qué tiempo hace hoy?",
+          "audio": "audio/en_whats_the_weather_like_today.mp3"
+        },
+        {
+          "id": "cloudy_hot",
+          "icon": "☁️🔥",
+          "target": "It's cloudy, but it's hot.",
+          "source": "Está nublado, pero hace calor.",
+          "audio": "audio/en_cloudy_but_hot.mp3"
+        },
+        {
+          "id": "very_windy",
+          "icon": "💨",
+          "target": "It's very windy today.",
+          "source": "Hoy hace mucho viento.",
+          "audio": "audio/en_very_windy_today.mp3"
+        },
+        {
+          "id": "rain_now",
+          "icon": "🌧️",
+          "target": "It's raining now.",
+          "source": "Ahora está lloviendo.",
+          "audio": "audio/en_its_raining_now.mp3"
+        },
+        {
+          "id": "rainbow",
+          "icon": "🌈",
+          "target": "There's a rainbow.",
+          "source": "Hay un arcoíris.",
+          "audio": "audio/en_theres_a_rainbow.mp3"
+        },
+        {
+          "id": "thundering",
+          "icon": "🌩️",
+          "target": "It's thundering.",
+          "source": "Está tronando.",
+          "audio": "audio/en_its_thundering.mp3"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "prompt": "☀️ Hace sol.",
+          "options": [
+            "It's sunny.",
+            "It's sun.",
+            "It makes sunny."
+          ],
+          "answer": 0,
+          "why": "En inglés aquí usamos It’s + adjective: It’s sunny.",
+          "skill": "weather_pattern"
+        },
+        {
+          "id": "q2",
+          "prompt": "💨 Hace viento.",
+          "options": [
+            "It's wind.",
+            "It's windy.",
+            "There is windly."
+          ],
+          "answer": 1,
+          "why": "Wind es el nombre; windy es el adjetivo: It’s windy.",
+          "skill": "weather_pattern"
+        },
+        {
+          "id": "q3",
+          "prompt": "☁️ Está nublado.",
+          "options": [
+            "It's cloudy.",
+            "It has clouds.",
+            "It's cloud."
+          ],
+          "answer": 0,
+          "why": "Cloudy es el adjetivo que necesitas después de It’s.",
+          "skill": "weather_pattern"
+        },
+        {
+          "id": "q4",
+          "prompt": "🌧️ Está lloviendo.",
+          "options": [
+            "It's rain.",
+            "It's raining.",
+            "There is raining."
+          ],
+          "answer": 1,
+          "why": "Para la acción que ocurre ahora usamos It’s raining.",
+          "skill": "rain_action"
+        },
+        {
+          "id": "q5",
+          "prompt": "☁️🔥 Está nublado, pero hace calor.",
+          "options": [
+            "It's cloudy, but it's hot.",
+            "It's cloud but it makes hot.",
+            "There is cloudy and heat."
+          ],
+          "answer": 0,
+          "why": "El inglés reutiliza It’s en las dos ideas: It’s cloudy, but it’s hot.",
+          "skill": "combine_patterns"
+        }
+      ],
+      "ai_rules": [
+        "You are my English conversation practice partner.",
+        "I am a native Spanish speaker practising everyday English.",
+        "For this session, focus mainly on weather and simple small talk.",
+        "Ask one short question at a time and wait for my answer.",
+        "Use mainly: It's sunny, hot, cold, windy, cloudy, raining, snowing; There's a storm.",
+        "Give me chances to say full useful phrases, not isolated words.",
+        "If I translate Spanish too literally, correct only that sentence, explain briefly in Spanish, ask me to repeat the corrected English, then continue.",
+        "Keep the conversation natural and adult. Do not introduce lots of new vocabulary unless I ask."
       ]
     }
   }
