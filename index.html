@@ -2,405 +2,310 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f4f1e8">
-<title>Language Mirror · Weather</title>
+<title>Language Mirror</title>
 <style>
-:root{
-  --bg:#f4f1e8;--card:#fffdf8;--text:#1d211f;--muted:#606761;--line:#d5d2c8;
-  --accent:#286957;--accent2:#e5f2ed;--why:#edf3ff;--whyline:#9bb0d5;
-  --good:#e4f5e9;--goodline:#4f9464;--bad:#fff0ed;--badline:#bf6555;
-  --memory:#fff7da;--memoryline:#d7b85b;--shadow:0 3px 14px rgba(0,0,0,.07);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:24px;line-height:1.5}
-button,textarea{font:inherit}
-main{max-width:760px;margin:0 auto;padding:20px 14px 90px}
-h1{font-size:clamp(42px,10vw,64px);line-height:1.04;margin:4px 0 10px}
-h2{font-size:clamp(31px,7vw,42px);line-height:1.14;margin:0 0 12px}
-h3{font-size:clamp(26px,6vw,32px);line-height:1.2;margin:0 0 8px}
-p{margin:8px 0 14px}
-.small{font-size:19px}.muted{color:var(--muted)}
-.eyebrow{font-size:18px;font-weight:900;letter-spacing:.05em;color:var(--muted)}
-.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px;margin:16px 0;box-shadow:var(--shadow);overflow-wrap:anywhere}
-.section{margin:34px 0}.section-help{font-size:21px;color:var(--muted);margin:-2px 0 16px}
-.tabs{display:grid;gap:10px}
-.btn{display:block;width:100%;min-height:66px;border:2px solid var(--line);border-radius:16px;background:var(--card);color:var(--text);padding:14px 16px;font-weight:850;cursor:pointer;touch-action:manipulation;white-space:normal;overflow-wrap:anywhere}
-.btn:focus-visible{outline:4px solid rgba(40,105,87,.25);outline-offset:2px}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn.active{border-color:var(--accent);outline:5px solid var(--accent2)}
-.btn.good{background:var(--good);border-color:var(--goodline)}
-.btn.bad{background:var(--bad);border-color:var(--badline)}
-.hidden{display:none!important}
-
-/* Learn cards */
-.learn-list{display:grid;gap:14px}
-.learn-card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow);overflow:hidden}
-.learn-top{display:grid;grid-template-columns:86px minmax(0,1fr);gap:14px;align-items:center}
-.icon{font-size:64px;line-height:1;text-align:center}
-.target{font-size:clamp(30px,8vw,42px);font-weight:950;line-height:1.15;overflow-wrap:anywhere}
-.answer{margin-top:14px;padding:15px;border-radius:16px;background:var(--accent2);font-size:25px;font-weight:800}
-.audio{margin-top:13px;background:var(--accent);color:#fff;border:0;border-radius:15px;min-height:62px;padding:12px 18px;font-weight:900;cursor:pointer}
-.audio-status{font-size:18px;color:var(--muted);min-height:24px;margin-top:5px}
-
-/* memory + notes */
-.memory{margin-top:14px;background:var(--memory);border:2px solid var(--memoryline);border-radius:16px;padding:14px;font-size:20px}
-.note-block{margin-top:14px}
-.note-label{display:block;font-weight:900;margin-bottom:7px}
-textarea{width:100%;min-height:110px;border:2px solid var(--line);border-radius:15px;background:white;color:var(--text);padding:13px;font-size:21px;resize:vertical}
-.saved{font-size:18px;color:var(--accent);font-weight:800;margin-top:6px;min-height:24px}
-
-/* WHY */
-.why{background:var(--why);border-color:var(--whyline)}
-.big-why{font-size:27px;font-weight:950;line-height:1.3}
-.families{display:grid;gap:10px;margin:16px 0}
-.family{background:rgba(255,255,255,.8);border:2px solid rgba(86,110,157,.22);border-radius:16px;padding:14px}
-.family-name{font-size:29px;font-weight:950}
-.family-icon{font-size:32px;margin-right:7px}
-.remember{border-left:7px solid var(--accent);padding:12px 14px;background:white;border-radius:0 14px 14px 0;font-weight:850}
-
-/* phrases */
-.phrase-list{display:grid;gap:12px}
-.phrase-card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px}
-.phrase-target{font-size:29px;font-weight:950;line-height:1.2}
-.phrase-source{font-size:20px;color:var(--muted);margin-top:5px}
-
-/* say */
-.say-card{text-align:center}
-.say-icon{font-size:88px;line-height:1}
-.reveal{margin-top:12px;background:var(--accent2);border-radius:16px;padding:15px;font-size:30px;font-weight:950}
-
-/* quiz */
-.quizq{padding:20px 0;border-top:2px solid var(--line)}
-.quizq:first-child{border-top:0;padding-top:0}
-.quizprompt{font-size:28px;font-weight:950;margin-bottom:11px}
-.options{display:grid;gap:9px}
-.result{margin-top:12px;padding:15px;border-radius:16px;font-size:21px}
-.result.good{background:var(--good);border:2px solid var(--goodline)}
-.result.bad{background:var(--bad);border:2px solid var(--badline)}
-.result strong{font-size:25px}
-
-/* AI */
-.steps{display:grid;gap:10px;margin:16px 0}
-.step{display:grid;grid-template-columns:50px minmax(0,1fr);gap:12px;align-items:center;background:var(--accent2);padding:14px;border-radius:16px}
-.num{width:50px;height:50px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:950}
-.copy-ok{margin-top:10px;padding:14px;background:var(--good);border:2px solid var(--goodline);border-radius:14px;font-weight:850}
-.prompt{font-size:16px;white-space:pre-wrap;background:#efeee8;border:2px solid var(--line);border-radius:14px;padding:12px;max-height:320px;overflow:auto}
-summary{cursor:pointer;font-weight:900;font-size:21px}
-
-/* feedback */
-.feedback-grid{display:grid;gap:9px}
-
-@media(min-width:800px){
-  main{max-width:900px}
-  .tabs{grid-template-columns:1fr 1fr}
-  .families{grid-template-columns:1fr 1fr}
-  .phrase-list{grid-template-columns:1fr 1fr}
-  body{font-size:25px}
-}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+:root{--bg:#f4f1e8;--card:#fffdf8;--text:#222521;--muted:#687069;--line:#d8d3c6;--accent:#356b5a;--soft:#e9f1ed;--blue:#edf3fb;--good:#e7f4e9;--goodline:#5f9469;--bad:#fbebe8;--badline:#bd6b5b;--note:#fff7dc;--shadow:0 3px 14px rgba(0,0,0,.06)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:20px;line-height:1.45}
+button,textarea{font:inherit}main{max-width:720px;margin:auto;padding:18px 14px 80px}h1{font-size:38px;line-height:1.05;margin:5px 0}h2{font-size:29px;line-height:1.15;margin:0 0 12px}h3{font-size:23px;margin:0 0 8px}.small{font-size:17px}.muted{color:var(--muted)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}.eyebrow{font-size:16px;font-weight:900;color:var(--muted);letter-spacing:.04em}
+.btn{width:100%;min-height:58px;border:2px solid var(--line);border-radius:15px;background:var(--card);color:var(--text);padding:12px 14px;font-weight:800;text-align:left;cursor:pointer;white-space:normal}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.soft{background:var(--soft);border-color:#bdd3ca}.btn.good{background:var(--good);border-color:var(--goodline)}.btn.bad{background:var(--bad);border-color:var(--badline)}.btn.center{text-align:center}.hidden{display:none!important}
+.home-grid{display:grid;gap:11px}.home-btn{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center}.home-icon{font-size:34px;text-align:center}.arrow{font-size:27px;color:var(--muted)}.section-label{font-size:16px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin:27px 4px 8px}
+.pill{display:inline-block;border-radius:999px;padding:5px 9px;background:var(--soft);font-size:15px;font-weight:800}.topbar{display:flex;gap:8px;align-items:center;margin-bottom:15px}.back{width:auto;min-height:46px;padding:8px 12px}.spacer{flex:1}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}.progress{height:8px;border-radius:8px;background:#ddd8cc;overflow:hidden;margin:8px 0 18px}.progress>div{height:100%;background:var(--accent);width:0}
+.activity{text-align:center}.activity-icon{font-size:70px;line-height:1;margin:16px 0}.activity-prompt{font-size:26px;font-weight:900;line-height:1.25;margin:12px 0 18px}.options{display:grid;gap:9px}.feedback{margin-top:13px;border-radius:15px;padding:13px;text-align:left}.feedback.good{background:var(--good);border:2px solid var(--goodline)}.feedback.bad{background:var(--bad);border:2px solid var(--badline)}
+.reveal{background:var(--soft);border-radius:15px;padding:14px;margin-top:12px;font-size:26px;font-weight:900}.audio{width:auto;min-height:48px;margin-top:10px;border:0;border-radius:13px;background:var(--accent);color:white;padding:9px 14px;font-weight:850;cursor:pointer}
+.topic-grid{display:grid;gap:11px}.topic-card{background:var(--card);border:2px solid var(--line);border-radius:17px;padding:15px}.topic-title{font-size:22px;font-weight:900}.topic-icon{font-size:38px}.learn-item{border-top:2px solid var(--line);padding:14px 0}.learn-item:first-child{border-top:0}.bigphrase{font-size:27px;font-weight:900;overflow-wrap:anywhere}.translation{font-size:18px;color:var(--muted);margin-top:3px}.why{background:var(--blue)}.family{background:white;border-radius:13px;padding:10px;margin:7px 0}.note{background:var(--note);border-radius:13px;padding:10px;margin-top:8px;font-size:18px}
+textarea{width:100%;min-height:110px;border:2px solid var(--line);border-radius:14px;padding:12px;background:white;color:var(--text);resize:vertical}
+.class-step{min-height:420px;display:flex;flex-direction:column;justify-content:center}.class-instruction{font-size:18px;color:var(--muted);margin-bottom:10px}.class-main{font-size:28px;font-weight:900;line-height:1.25;margin:12px 0}.class-actions{display:grid;gap:8px;margin-top:17px}
+@media(min-width:760px){body{font-size:21px}main{max-width:820px}.topic-grid{grid-template-columns:1fr 1fr}.home-grid.two{grid-template-columns:1fr 1fr}}
 </style>
 </head>
-<body>
-<main>
-<header>
-  <div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE 002</div>
-  <h1>Weather / El tiempo</h1>
-  <div id="updated" class="small muted"></div>
-</header>
-
-<section class="card">
-  <h2>Choose your side / Elige tu lado</h2>
-  <div class="tabs">
-    <button id="tab-en_es" class="btn" onclick="setDirection('en_es')">🇬🇧 I speak English<br><span class="small">I'm learning Spanish</span></button>
-    <button id="tab-es_en" class="btn" onclick="setDirection('es_en')">🇪🇸 Hablo español<br><span class="small">aprendo inglés</span></button>
-  </div>
-</section>
-
-<div id="app" class="hidden">
-
-<section class="section">
-  <h2 id="learnTitle"></h2>
-  <div id="learnHelp" class="section-help"></div>
-  <div id="learnList" class="learn-list"></div>
-</section>
-
-<section class="card why">
-  <h2>2 · WHY?</h2>
-  <div id="whyHeadline" class="big-why"></div>
-  <p id="whyIntro"></p>
-  <div id="families" class="families"></div>
-  <div id="whyRemember" class="remember"></div>
-  <details style="margin-top:15px">
-    <summary id="moreTitle"></summary>
-    <p id="moreWhy"></p>
-  </details>
-</section>
-
-<section class="section">
-  <h2 id="phrasesTitle"></h2>
-  <div id="phrasesHelp" class="section-help"></div>
-  <div id="phraseList" class="phrase-list"></div>
-</section>
-
-<section class="section">
-  <h2 id="sayTitle"></h2>
-  <div id="sayHelp" class="section-help"></div>
-  <div id="sayList" class="learn-list"></div>
-</section>
-
-<section class="card">
-  <h2 id="practiceTitle"></h2>
-  <div id="practiceHelp" class="section-help"></div>
-  <div id="quiz"></div>
-  <div id="score" style="font-size:29px;font-weight:950"></div>
-</section>
-
-<section class="card">
-  <h2 id="aiTitle"></h2>
-  <p id="aiHelp"></p>
-  <div class="steps">
-    <div class="step"><div class="num">1</div><div id="step1"></div></div>
-    <div class="step"><div class="num">2</div><div id="step2"></div></div>
-    <div class="step"><div class="num">3</div><div id="step3"></div></div>
-  </div>
-  <button id="copyPrompt" class="btn primary" onclick="copyAIPrompt()"></button>
-  <div id="copyStatus"></div>
-  <details style="margin-top:15px">
-    <summary id="seePrompt"></summary>
-    <div id="prompt" class="prompt"></div>
-  </details>
-</section>
-
-<section class="card">
-  <h2 id="feedbackTitle"></h2>
-  <p id="feedbackHelp"></p>
-  <div class="feedback-grid">
-    <button id="fb1" class="btn" onclick="rate('helped')"></button>
-    <button id="fb2" class="btn" onclick="rate('more_examples')"></button>
-    <button id="fb3" class="btn" onclick="rate('confused')"></button>
-  </div>
-  <p id="freeHelp" style="margin-top:18px"></p>
-  <textarea id="generalFeedback"></textarea>
-  <button id="saveFeedback" class="btn primary" style="margin-top:9px" onclick="saveGeneralFeedback()"></button>
-  <div id="feedbackStatus" class="saved"></div>
-
-  <details style="margin-top:22px">
-    <summary id="creatorLabel"></summary>
-    <div style="display:grid;gap:9px;margin-top:10px">
-      <button id="copyReport" class="btn" onclick="copyReportData()"></button>
-      <button id="exportReport" class="btn" onclick="exportReportData()"></button>
-    </div>
-  </details>
-</section>
-
-</div>
-</main>
-
+<body><main>
+<div id="root"></div>
 <script>
-let C=null,direction=localStorage.getItem('lm_direction_v2')||'',answers={};
-const KEY='language_mirror_v2_state';
+let C=null;
+const KEY='language_mirror_v3';
+let route='home', direction=localStorage.getItem('lm_v3_direction')||'en_es';
+let session=null, sessionMode='today', classIndex=0, classDirection='en_es';
 
-function state(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
-function patch(x){localStorage.setItem(KEY,JSON.stringify(Object.assign(state(),x,{updatedAt:new Date().toISOString()})))}
-function D(){return C.directions[direction]}
-function tr(es,en){return D().ui_language==='es'?es:en}
+function S(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+function save(x){localStorage.setItem(KEY,JSON.stringify(Object.assign(S(),x,{updatedAt:new Date().toISOString()})))}
+function t(es,en){return direction==='es_en'?es:en}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
-fetch('course.json?ts='+Date.now())
-.then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
-.then(x=>{C=x;document.getElementById('updated').textContent='Updated / Actualizado: '+C.updated;if(direction)setDirection(direction)})
-.catch(e=>{document.body.insertAdjacentHTML('beforeend','<p style="padding:20px">Could not load course.json.</p>')});
-
-function setDirection(d){
- direction=d;localStorage.setItem('lm_direction_v2',d);answers={};
- document.getElementById('app').classList.remove('hidden');
- document.querySelectorAll('[id^=tab-]').forEach(x=>x.classList.remove('active'));
- document.getElementById('tab-'+d).classList.add('active');
- render();
+function currentTopic(){return C.topics[C.current_topic]}
+function dirData(topicId=C.current_topic,dir=direction){return C.topics[topicId].directions[dir]}
+function go(r){route=r;window.scrollTo(0,0);render()}
+function top(title){
+ return `<div class="topbar"><button class="btn back" onclick="go('home')">←</button><div><b>${esc(title)}</b></div><div class="spacer"></div></div>`;
 }
+
+fetch('course.json?ts='+Date.now()).then(r=>r.json()).then(x=>{C=x;render()}).catch(e=>{
+ document.getElementById('root').innerHTML='<div class="card">Could not load course.json.</div>';
+});
+
 function render(){
- document.documentElement.lang=D().ui_language;
- document.getElementById('learnTitle').textContent=tr('1 · APRENDE','1 · LEARN');
- document.getElementById('learnHelp').textContent=tr(
-   'Mira y escucha la expresión. Intenta entenderla antes de mostrar el significado.',
-   'Look and listen. Try to remember what the Spanish means before you reveal the English.'
- );
- document.getElementById('phrasesTitle').textContent=tr('3 · FRASES ÚTILES','3 · USEFUL PHRASES');
- document.getElementById('phrasesHelp').textContent=tr(
-   'No aprendas solo palabras: practica frases que realmente podrías decir.',
-   'Practise things you could really say in everyday conversation.'
- );
- document.getElementById('sayTitle').textContent=tr('4 · MIRA Y DI','4 · LOOK & SAY');
- document.getElementById('sayHelp').textContent=tr(
-   'Mira la imagen. Di la frase en voz alta antes de comprobar la respuesta.',
-   'Look at the picture. Say the Spanish aloud before you reveal the answer.'
- );
- document.getElementById('practiceTitle').textContent=tr('5 · PRACTICA','5 · PRACTISE');
- document.getElementById('practiceHelp').textContent=tr(
-   'Si fallas, no pasa nada: lee el recordatorio del porqué y vuelve a recuperar el patrón.',
-   'If you make a mistake, read the short WHY reminder. The aim is to remember the pattern, not get a score.'
- );
- document.getElementById('aiTitle').textContent=tr('6 · HABLA CON TU PROFESOR DE IA','6 · TALK WITH YOUR AI TEACHER');
- document.getElementById('aiHelp').textContent=tr(
-   'Este texto le dice a tu IA exactamente qué practicar contigo.',
-   'This text tells your AI teacher exactly what to practise with you.'
- );
- document.getElementById('step1').innerHTML='<b>'+tr('Pulsa COPIAR TEXTO.','Tap COPY PRACTICE TEXT.')+'</b>';
- document.getElementById('step2').textContent=tr('Abre tu profesor de IA en el móvil o en el ordenador.','Open your AI teacher on your phone or computer.');
- document.getElementById('step3').textContent=tr('Pega el texto y empieza a hablar.','Paste the text and start talking.');
- document.getElementById('copyPrompt').textContent=tr('📋 COPIAR TEXTO DE PRÁCTICA','📋 COPY PRACTICE TEXT');
- document.getElementById('seePrompt').textContent=tr('Ver el texto que se copiará','See the text that will be copied');
- document.getElementById('feedbackTitle').textContent=tr('7 · CUÉNTANOS','7 · TELL US');
- document.getElementById('feedbackHelp').textContent=tr(
-   'Esto nos ayuda a mejorar la siguiente lección. No hay respuestas correctas.',
-   'This helps us improve the next lesson. There are no right or wrong answers.'
- );
- document.getElementById('fb1').textContent=tr('👍 Me ha ayudado','👍 This helped me');
- document.getElementById('fb2').textContent=tr('🤔 Necesito más ejemplos','🤔 I need more examples');
- document.getElementById('fb3').textContent=tr('❓ Sigo sin entender algo','❓ I still do not understand something');
- document.getElementById('freeHelp').textContent=tr('Opcional: escribe cualquier comentario.','Optional: tell us anything else.');
- document.getElementById('generalFeedback').placeholder=tr('Ej.: me acuerdo mejor con imágenes...','Example: I remember better when I can see an image...');
- document.getElementById('saveFeedback').textContent=tr('GUARDAR COMENTARIO','SAVE COMMENT');
- document.getElementById('creatorLabel').textContent=tr('Herramientas para quien prepara la lección','Tools for the lesson creator');
- document.getElementById('copyReport').textContent=tr('Copiar informe','Copy report');
- document.getElementById('exportReport').textContent=tr('Exportar informe','Export report');
- renderLearn();renderWhy();renderPhrases();renderSay();renderQuiz();renderPrompt();
+ if(!C)return;
+ const map={home:renderHome,today:renderToday,week:renderWeek,tricky:renderTricky,review:renderReview,explore:renderExplore,plants:()=>renderTopic('plants'),ai:renderAI,notes:renderNotes,together:renderTogether};
+ (map[route]||renderHome)();
 }
-function renderLearn(){
- const notes=(state().notes||{})[direction]||{};
- document.getElementById('learnList').innerHTML=D().core.map(x=>`
- <article class="learn-card">
-  <div class="learn-top">
-   <div class="icon">${x.icon}</div>
-   <div class="target">${esc(x.target)}</div>
-  </div>
-  <button class="audio" onclick="playAudio('${esc(x.audio)}','a-${x.id}')">🔊 ${tr('ESCUCHAR','LISTEN')}</button>
-  <div id="a-${x.id}" class="audio-status"></div>
-  <button class="btn" onclick="toggle('meaning-${x.id}')" style="margin-top:8px">${tr('MOSTRAR SIGNIFICADO','SHOW MEANING')}</button>
-  <div id="meaning-${x.id}" class="answer hidden">${esc(x.source)}</div>
-  ${noteBlock('core_'+x.id, notes['core_'+x.id]||'')}
- </article>`).join('');
-}
-function renderWhy(){
- const w=D().why;
- document.getElementById('whyHeadline').textContent=w.headline;
- document.getElementById('whyIntro').textContent=w.intro;
- document.getElementById('families').innerHTML=w.families.map(f=>`
- <div class="family"><div><span class="family-icon">${f.icon}</span><span class="family-name">${esc(f.name)}</span></div><div>${esc(f.examples)}</div></div>`).join('');
- document.getElementById('whyRemember').textContent=w.remember;
- document.getElementById('moreTitle').textContent=w.more_title;
- document.getElementById('moreWhy').textContent=w.more;
-}
-function renderPhrases(){
- const notes=(state().notes||{})[direction]||{};
- document.getElementById('phraseList').innerHTML=D().phrases.map(x=>`
- <article class="phrase-card">
-  <div style="font-size:42px">${x.icon}</div>
-  <div class="phrase-target">${esc(x.target)}</div>
-  <div class="phrase-source">${esc(x.source)}</div>
-  <button class="audio" onclick="playAudio('${esc(x.audio)}','pa-${x.id}')">🔊 ${tr('ESCUCHAR','LISTEN')}</button>
-  <div id="pa-${x.id}" class="audio-status"></div>
-  ${x.memory?`<div class="memory">🧠 <b>${tr('Truco para recordar:','Memory trick:')}</b><br>${esc(x.memory.replace(/^Memory trick:\s*/,'').replace(/^Your own memory trick from today:\s*/,''))}</div>`:''}
-  ${noteBlock('phrase_'+x.id, notes['phrase_'+x.id]||'')}
- </article>`).join('');
-}
-function noteBlock(id,value){
- return `<div class="note-block">
-   <label class="note-label" for="note-${id}">✏️ ${tr('Mi nota / mi asociación','My note / my memory link')}</label>
-   <textarea id="note-${id}" placeholder="${esc(tr('Ej.: esto me recuerda a… / hoy lo usamos cuando…','Example: this reminds me of… / we used this today when…'))}">${esc(value)}</textarea>
-   <button class="btn" style="margin-top:7px" onclick="saveNote('${id}')">${tr('GUARDAR MI NOTA','SAVE MY NOTE')}</button>
-   <div id="saved-${id}" class="saved"></div>
+function renderHome(){
+ const cur=currentTopic();
+ document.getElementById('root').innerHTML=`
+ <div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE 003</div>
+ <h1>Language Mirror</h1>
+ <div class="choice card">
+  <button class="btn ${direction==='en_es'?'soft':''}" onclick="setDir('en_es')">🇬🇧 English → Spanish</button>
+  <button class="btn ${direction==='es_en'?'soft':''}" onclick="setDir('es_en')">🇪🇸 Español → English</button>
+ </div>
+
+ <div class="section-label">${t('HOY','TODAY')}</div>
+ <div class="home-grid">
+  ${homeButton('▶️',t('Práctica de hoy','Today’s practice'),t('Unos 7 minutos · puedes repetir después','About 7 minutes · repeat whenever you want'),'today',true)}
+ </div>
+
+ <div class="section-label">${t('ESTA SEMANA','THIS WEEK')}</div>
+ <div class="home-grid">
+  ${homeButton(cur.icon,cur.title[direction==='en_es'?'en':'es'],t('Aprende · WHY · frases útiles','Learn · WHY · useful phrases'),'week')}
+ </div>
+
+ <div class="section-label">${t('REPASAR','REVIEW')}</div>
+ <div class="home-grid two">
+  ${homeButton('🧠',t('Mis difíciles','My tricky ones'),t('Lo que más te ha costado','What has been difficult'),'tricky')}
+  ${homeButton('🔁',t('Lecciones anteriores','Previous lessons'),t('Vuelve a temas ya trabajados','Return to earlier topics'),'review')}
+ </div>
+
+ <div class="section-label">${t('EXPLORAR','EXPLORE')}</div>
+ <div class="home-grid">
+  ${homeButton('🌱',t('Plantas y jardín','Plants & garden'),t('Disponible para explorar libremente','Available to explore freely'),'plants')}
+  ${homeButton('🗂️',t('Ver todos los temas','See all topics'),t('Elige qué te interesa aprender','Choose what interests you'),'explore')}
+ </div>
+
+ <div class="section-label">${t('JUNTAS','TOGETHER')}</div>
+ <div class="home-grid">
+  ${homeButton('👥',t('Modo clase','Class mode'),t('Para vuestra sesión presencial','For your face-to-face session'),'together')}
+ </div>
+
+ <div class="section-label">${t('MÁS PRÁCTICA','MORE PRACTICE')}</div>
+ <div class="home-grid two">
+  ${homeButton('🗣️',t('Hablar con IA','Talk with AI'),t('Practica la conversación','Conversation practice'),'ai')}
+  ${homeButton('📝',t('Mis notas','My notes'),t('Tus asociaciones y recuerdos','Your memory links'),'notes')}
  </div>`;
 }
-function saveNote(id){
- const s=state(),n=s.notes||{};n[direction]=n[direction]||{};
- n[direction][id]=document.getElementById('note-'+id).value.trim();
- patch({notes:n});document.getElementById('saved-'+id).textContent=tr('✓ Guardada en este navegador','✓ Saved on this browser');
+function homeButton(icon,title,sub,route,primary=false){
+ return `<button class="btn home-btn ${primary?'primary':''}" onclick="go('${route}')"><span class="home-icon">${icon}</span><span><b>${esc(title)}</b><br><span class="small">${esc(sub)}</span></span><span class="arrow">›</span></button>`;
 }
-function renderSay(){
- document.getElementById('sayList').innerHTML=D().core.map((x,i)=>`
- <article class="learn-card say-card">
-   <div class="say-icon">${x.icon}</div>
-   <div class="section-help">${tr('Dilo en voz alta primero.','Say it aloud first.')}</div>
-   <button class="btn primary" onclick="toggle('say-${i}')">${tr('MOSTRAR RESPUESTA','SHOW ANSWER')}</button>
-   <div id="say-${i}" class="reveal hidden">${esc(x.target)}
-     <button class="audio" onclick="playAudio('${esc(x.audio)}','sa-${i}')">🔊 ${tr('ESCUCHAR','LISTEN')}</button>
-     <div id="sa-${i}" class="audio-status"></div>
-   </div>
- </article>`).join('');
+function setDir(d){direction=d;localStorage.setItem('lm_v3_direction',d);render()}
+
+function stats(){const s=S();return s.stats||{}}
+function record(item,ok){
+ const s=S(),all=s.stats||{},k=direction+'|'+item.skill;
+ const z=all[k]||{correct:0,wrong:0,lastWrong:0}; if(ok)z.correct++;else{z.wrong++;z.lastWrong=Date.now()} all[k]=z;save({stats:all});
 }
-function renderQuiz(){
- document.getElementById('quiz').innerHTML=D().quiz.map((q,qi)=>`
- <div class="quizq">
-  <div class="quizprompt">${qi+1}. ${esc(q.prompt)}</div>
-  <div class="options">${q.options.map((o,oi)=>`<button id="op-${q.id}-${oi}" class="btn" onclick="answer('${q.id}',${oi})">${esc(o)}</button>`).join('')}</div>
-  <div id="res-${q.id}"></div>
- </div>`).join('');
- renderScore();
+function weightedPool(topicId=C.current_topic, onlyTricky=false){
+ const pool=dirData(topicId).practice_pool||[],st=stats();
+ let arr=[];
+ pool.forEach(item=>{
+  const z=st[direction+'|'+item.skill]||{correct:0,wrong:0};
+  let w=1 + Math.min(3,z.wrong*1.5);
+  if(z.correct>=3 && z.wrong===0)w=.5;
+  if(onlyTricky && z.wrong===0)return;
+  const copies=Math.max(1,Math.round(w*2));for(let i=0;i<copies;i++)arr.push(item);
+ });
+ // Shuffle, remove immediate duplicate IDs
+ arr.sort(()=>Math.random()-.5);
+ const uniq=[];for(const x of arr){if(!uniq.length||uniq[uniq.length-1].id!==x.id)uniq.push(x)}
+ return uniq.length?uniq:pool.slice();
 }
-function answer(id,choice){
- const q=D().quiz.find(x=>x.id===id),ok=choice===q.answer;answers[id]=choice;
- q.options.forEach((_,i)=>document.getElementById(`op-${id}-${i}`).classList.remove('good','bad'));
- document.getElementById(`op-${id}-${q.answer}`).classList.add('good');
- if(!ok)document.getElementById(`op-${id}-${choice}`).classList.add('bad');
- const r=document.getElementById('res-'+id);r.className='result '+(ok?'good':'bad');
- r.innerHTML=ok?`<strong>✅ ${tr('¡Correcto!','Correct!')}</strong><br>${esc(q.why)}`:
- `<strong>❌ ${tr('Casi.','Not quite.')}</strong><br>${tr('Correcta: ','Correct answer: ')}<b>${esc(q.options[q.answer])}</b><br>${esc(q.why)}`;
- const s=state(),a=s.attempts||{};a[direction]=a[direction]||{};
- const z=a[direction][id]||{tries:0,wrong:0,skill:q.skill};z.tries++;if(!ok)z.wrong++;
- a[direction][id]=z;patch({attempts:a});renderScore();renderPrompt();
+function startSession(mode='today',topicId=C.current_topic){
+ sessionMode=mode;
+ let pool=weightedPool(topicId,mode==='tricky');
+ const len=mode==='today'?8:Math.min(8,Math.max(4,pool.length));
+ const items=[];
+ while(items.length<len && pool.length){items.push(pool.shift())}
+ while(items.length<len){const p=dirData(topicId).practice_pool;items.push(p[Math.floor(Math.random()*p.length)])}
+ session={topicId,items,index:0,answered:false,wrongQueue:[],results:[]};
+ route='today';renderToday();
 }
-function renderScore(){
- const q=D().quiz,done=Object.keys(answers).length,ok=q.filter(x=>answers[x.id]===x.answer).length;
- document.getElementById('score').innerHTML=done?`${ok}/${done}<div class="small muted">${tr('No es una nota: buscamos qué conviene repetir.','This is not a grade: we are finding what needs more practice.')}</div>`:'';
+function renderToday(){
+ if(!session){startSession('today');return}
+ const item=session.items[session.index], pct=Math.round((session.index/session.items.length)*100);
+ document.getElementById('root').innerHTML=`
+ ${top(sessionMode==='tricky'?t('Mis difíciles','My tricky ones'):t('Práctica','Practice'))}
+ <div class="progress"><div style="width:${pct}%"></div></div>
+ <div class="card activity">
+  <div class="small muted">${session.index+1} / ${session.items.length}</div>
+  <div class="activity-icon">${item.icon||'💬'}</div>
+  ${activityHtml(item)}
+ </div>`;
 }
-function weakSkills(){
- const a=(state().attempts||{})[direction]||{};
- return [...new Set(Object.values(a).filter(x=>x.wrong>0).map(x=>x.skill))];
-}
-function buildPrompt(){
- const lines=[...D().ai_rules],w=weakSkills();
- if(w.length){
-  lines.push('',direction==='en_es'?'The website noticed that I need more practice with:':'La web ha detectado que necesito reforzar:');
-  w.forEach(x=>lines.push('• '+x));
-  lines.push(direction==='en_es'?'Please create extra opportunities to practise these points naturally.':'Crea oportunidades extra para practicar esos puntos de forma natural.');
+function activityHtml(item){
+ if(item.type==='mc'){
+  return `<div class="activity-prompt">${esc(item.prompt)}</div><div class="options">${item.options.map((o,i)=>`<button class="btn center" id="op${i}" onclick="answerMC(${i})">${esc(o)}</button>`).join('')}</div><div id="fb"></div>`;
  }
- return lines.join('\n');
-}
-function renderPrompt(){document.getElementById('prompt').textContent=buildPrompt()}
-async function copyAIPrompt(){
- try{
-  await navigator.clipboard.writeText(buildPrompt());
-  const el=document.getElementById('copyStatus');el.className='copy-ok';
-  el.textContent='✅ '+tr('Copiado. Ahora abre tu profesor de IA, pega el texto y empieza a hablar.','Copied. Now open your AI teacher, paste the text and start talking.');
- }catch(e){
-  const el=document.getElementById('copyStatus');el.className='result bad';
-  el.textContent=tr('No se pudo copiar automáticamente. Abre “Ver el texto” y cópialo manualmente.','Automatic copy did not work. Open “See the text” and copy it manually.');
+ if(item.type==='recall'||item.type==='fix'){
+  return `<div class="activity-prompt">${esc(item.prompt)}</div>
+  <button class="btn primary center" onclick="revealRecall()">${t('MOSTRAR RESPUESTA','SHOW ANSWER')}</button>
+  <div id="fb"></div>`;
  }
+ if(item.type==='real'){
+  return `<div class="activity-prompt">${esc(item.prompt)}</div>
+  <button class="btn primary center" onclick="revealReal()">${t('VER EJEMPLOS','SEE EXAMPLES')}</button>
+  <div id="fb"></div>`;
+ }
+ return '';
 }
-function rate(v){
- const s=state(),f=s.feedback||{};f[direction]=f[direction]||{};f[direction].rating=v;patch({feedback:f});
- document.getElementById('feedbackStatus').textContent=tr('✓ Guardado','✓ Saved');
+function answerMC(i){
+ if(session.answered)return;session.answered=true;const item=session.items[session.index],ok=i===item.answer;
+ document.getElementById('op'+item.answer).classList.add('good');if(!ok)document.getElementById('op'+i).classList.add('bad');
+ record(item,ok);session.results.push({id:item.id,ok});
+ if(!ok){
+  // repeat a different activity with same skill 2–3 steps later if available
+  const alt=dirData(session.topicId).practice_pool.find(x=>x.skill===item.skill&&x.id!==item.id);
+  if(alt){const pos=Math.min(session.items.length,session.index+3);session.items.splice(pos,0,alt)}
+ }
+ document.getElementById('fb').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><b>${ok?'✓ '+t('Correcto','Correct'):'✗ '+t('Casi','Not quite')}</b><br>${esc(item.why||'')}</div>${nextButton()}`;
 }
-function saveGeneralFeedback(){
- const s=state(),f=s.feedback||{};f[direction]=f[direction]||{};f[direction].freeText=document.getElementById('generalFeedback').value.trim();patch({feedback:f});
- document.getElementById('feedbackStatus').textContent=tr('✓ Comentario guardado','✓ Comment saved');
+function revealRecall(){
+ if(session.answered)return;session.answered=true;const item=session.items[session.index];
+ document.getElementById('fb').innerHTML=`<div class="reveal">${esc(item.answer_text)}</div>
+ ${item.audio?`<button class="audio" onclick="play('${esc(item.audio)}')">🔊 ${t('Escuchar','Listen')}</button>`:''}
+ <div class="choice" style="margin-top:12px"><button class="btn good center" onclick="selfRate(true)">${t('Lo dije','I said it')}</button><button class="btn bad center" onclick="selfRate(false)">${t('No me salió','I couldn’t say it')}</button></div>`;
 }
-function report(){
- const s=state();return{report_type:'language_mirror_practice',course_id:C.course_id,version:C.version,direction,
- generated_at:new Date().toISOString(),attempts:(s.attempts||{})[direction]||{},notes:(s.notes||{})[direction]||{},
- feedback:(s.feedback||{})[direction]||{},detected_focus:weakSkills()};
+function selfRate(ok){
+ const item=session.items[session.index];record(item,ok);session.results.push({id:item.id,ok});
+ if(!ok){const alt=dirData(session.topicId).practice_pool.find(x=>x.skill===item.skill&&x.id!==item.id);if(alt)session.items.splice(Math.min(session.items.length,session.index+3),0,alt)}
+ document.getElementById('fb').insertAdjacentHTML('beforeend',nextButton());document.querySelectorAll('#fb .choice').forEach(x=>x.remove());
 }
-async function copyReportData(){await navigator.clipboard.writeText(JSON.stringify(report(),null,2));document.getElementById('feedbackStatus').textContent=tr('✓ Informe copiado','✓ Report copied')}
-function exportReportData(){const b=new Blob([JSON.stringify(report(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='language-mirror-report-'+direction+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function toggle(id){document.getElementById(id).classList.toggle('hidden')}
-function playAudio(src,statusId){
- const s=document.getElementById(statusId),a=new Audio(src);s.textContent=tr('🔊 Reproduciendo…','🔊 Playing…');
- a.play().then(()=>{}).catch(()=>s.textContent=tr('No se pudo reproducir el audio.','The audio could not play.'));
- a.onended=()=>s.textContent='';
+function revealReal(){
+ if(session.answered)return;session.answered=true;const item=session.items[session.index];
+ document.getElementById('fb').innerHTML=`<div class="feedback good"><b>${t('Ejemplos posibles','Possible examples')}</b><br>${item.examples.map(esc).join('<br>')}</div>${nextButton()}`;
+ record(item,true);session.results.push({id:item.id,ok:true});
 }
-</script>
-</body>
-</html>
+function nextButton(){return `<button class="btn primary center" style="margin-top:12px" onclick="nextActivity()">${t('SIGUIENTE','NEXT')} →</button>`}
+function nextActivity(){
+ session.index++;
+ if(session.index>=session.items.length){renderSessionEnd();return}
+ session.answered=false;renderToday();
+}
+function renderSessionEnd(){
+ const wrong=session.results.filter(x=>!x.ok).length;
+ document.getElementById('root').innerHTML=`
+ ${top(t('Práctica terminada','Practice complete'))}
+ <div class="card">
+  <h2>${t('Práctica terminada','Practice complete')}</h2>
+  <p>${wrong?t('Has encontrado algunas cosas que conviene repetir. Ya las hemos guardado en «Mis difíciles».','You found a few things worth repeating. They are now in “My tricky ones”.'):t('Buen repaso. Volverán a aparecer más adelante para comprobar que siguen disponibles.','Good review. These ideas will return later so you can retrieve them again.')}</p>
+  <button class="btn primary center" onclick="session=null;startSession('today','${session.topicId}')">${t('PRACTICAR OTRA VEZ','PRACTISE AGAIN')}</button>
+  <button class="btn center" style="margin-top:9px" onclick="session=null;startSession('tricky','${session.topicId}')">${t('REPASAR MIS DIFÍCILES','REVIEW MY TRICKY ONES')}</button>
+  <button class="btn center" style="margin-top:9px" onclick="session=null;go('home')">${t('VOLVER AL INICIO','BACK HOME')}</button>
+ </div>`;
+}
+
+function renderWeek(){renderTopic(C.current_topic,true)}
+function renderTopic(topicId,isCurrent=false){
+ const topic=C.topics[topicId],d=dirData(topicId);
+ document.getElementById('root').innerHTML=`
+ ${top(topic.title[direction==='en_es'?'en':'es'])}
+ <div class="card"><span class="pill">${isCurrent?t('ESTA SEMANA','THIS WEEK'):t('EXPLORAR','EXPLORE')}</span><h2 style="margin-top:8px">${topic.icon} ${esc(topic.title[direction==='en_es'?'en':'es'])}</h2>
+ ${!isCurrent?`<button class="btn soft center" onclick="markInterest('${topicId}')">${t('ME GUSTARÍA APRENDER ESTO PRONTO','I WANT TO LEARN THIS SOON')}</button>`:''}
+ </div>
+ <div class="card"><h2>1 · ${t('APRENDE','LEARN')}</h2>${d.learn.map(x=>learnItem(topicId,x)).join('')}</div>
+ <div class="card why"><h2>2 · WHY?</h2><div class="activity-prompt" style="text-align:left">${esc(d.why.headline)}</div><p>${esc(d.why.intro)}</p>${(d.why.families||[]).map(f=>`<div class="family"><b>${f[0]} ${esc(f[1])}</b><br>${esc(f[2])}</div>`).join('')}<div class="note"><b>${t('Recuerda','Remember')}:</b> ${esc(d.why.remember)}</div><details style="margin-top:10px"><summary>${t('Más explicación','More explanation')}</summary><p>${esc(d.why.more)}</p></details></div>
+ ${d.phrases&&d.phrases.length?`<div class="card"><h2>3 · ${t('FRASES ÚTILES','USEFUL PHRASES')}</h2>${d.phrases.map(x=>phraseItem(topicId,x)).join('')}</div>`:''}
+ <div class="card"><button class="btn primary center" onclick="session=null;startSession('free','${topicId}')">${t('PRACTICAR ESTE TEMA','PRACTISE THIS TOPIC')}</button></div>`;
+}
+function learnItem(topicId,x){
+ const key=direction+'|'+topicId+'|'+x.id, n=((S().notes||{})[key]||'');
+ return `<div class="learn-item"><div style="font-size:37px">${x.icon}</div><div class="bigphrase">${esc(x.target)}</div><div class="translation">${esc(x.source)}</div>
+ ${x.audio?`<button class="audio" onclick="play('${esc(x.audio)}')">🔊 ${t('Escuchar','Listen')}</button>`:''}
+ <button class="btn" style="margin-top:8px" onclick="toggleNote('${esc(key)}')">✏️ ${t('Mi nota','My note')}</button>
+ <div id="note-${safe(key)}" class="${n?'':'hidden'}" style="margin-top:8px"><textarea id="ta-${safe(key)}" placeholder="${t('Esto me recuerda a…','This reminds me of…')}">${esc(n)}</textarea><button class="btn soft center" onclick="saveNote('${esc(key)}')">${t('GUARDAR','SAVE')}</button></div></div>`;
+}
+function phraseItem(topicId,x){
+ const key=direction+'|'+topicId+'|phrase_'+x.id,n=((S().notes||{})[key]||'');
+ return `<div class="learn-item"><div style="font-size:34px">${x.icon}</div><div class="bigphrase">${esc(x.target)}</div><div class="translation">${esc(x.source)}</div>
+ ${x.memory?`<div class="note">🧠 ${esc(x.memory)}</div>`:''}
+ ${x.audio?`<button class="audio" onclick="play('${esc(x.audio)}')">🔊 ${t('Escuchar','Listen')}</button>`:''}
+ <button class="btn" style="margin-top:8px" onclick="toggleNote('${esc(key)}')">✏️ ${t('Mi nota','My note')}</button>
+ <div id="note-${safe(key)}" class="${n?'':'hidden'}" style="margin-top:8px"><textarea id="ta-${safe(key)}">${esc(n)}</textarea><button class="btn soft center" onclick="saveNote('${esc(key)}')">${t('GUARDAR','SAVE')}</button></div></div>`;
+}
+function safe(s){return s.replace(/[^a-zA-Z0-9]/g,'_')}
+function toggleNote(k){document.getElementById('note-'+safe(k)).classList.toggle('hidden')}
+function saveNote(k){const s=S(),n=s.notes||{};n[k]=document.getElementById('ta-'+safe(k)).value.trim();save({notes:n});}
+function markInterest(topicId){const s=S(),i=s.interests||{};i[topicId]=(i[topicId]||0)+1;save({interests:i});alert(t('Guardado. Lo tendremos en cuenta para próximas semanas.','Saved. We can take this into account for future weeks.'))}
+
+function renderTricky(){session=null;startSession('tricky',C.current_topic)}
+function renderReview(){
+ document.getElementById('root').innerHTML=`${top(t('Lecciones anteriores','Previous lessons'))}<div class="card"><h2>${t('Todavía no hay una lección anterior','No previous lesson yet')}</h2><p>${t('Cuando paséis a la siguiente semana, Weather quedará aquí para seguir repasándolo cuando quieras.','When you move to the next weekly topic, Weather will stay here so you can review it whenever you want.')}</p></div>`;
+}
+function renderExplore(){
+ const topics=Object.entries(C.topics);
+ document.getElementById('root').innerHTML=`${top(t('Explorar','Explore'))}<div class="topic-grid">${topics.map(([id,x])=>`
+ <div class="topic-card"><div class="topic-icon">${x.icon}</div><div class="topic-title">${esc(x.title[direction==='en_es'?'en':'es'])}</div><div class="small muted">${x.status==='current'?t('Tema de esta semana','This week'):x.status==='explore'?t('Disponible para explorar','Available to explore'):t('Tema futuro','Future topic')}</div>
+ ${x.directions?`<button class="btn soft center" style="margin-top:8px" onclick="${id===C.current_topic?"go('week')":id==="plants"?"go('plants')":""}">${t('ABRIR','OPEN')}</button>`:`<button class="btn center" style="margin-top:8px" onclick="markInterest('${id}')">${t('ME INTERESA','I’M INTERESTED')}</button>`}
+ </div>`).join('')}</div>`;
+}
+function renderAI(){
+ const p=dirData().ai_prompt.join('\n');
+ document.getElementById('root').innerHTML=`${top(t('Hablar con IA','Talk with AI'))}<div class="card"><h2>🗣️ ${t('Práctica de conversación','Conversation practice')}</h2><p>${t('Copia este texto, abre tu profesor de IA en el móvil o el ordenador y pégalo.','Copy this text, open your AI teacher on your phone or computer, and paste it.')}</p><button class="btn primary center" onclick="copyText(${JSON.stringify(p)})">📋 ${t('COPIAR TEXTO','COPY PRACTICE TEXT')}</button><details style="margin-top:12px"><summary>${t('Ver texto','See text')}</summary><pre style="white-space:pre-wrap;font-size:15px">${esc(p)}</pre></details></div>`;
+}
+function renderNotes(){
+ const notes=S().notes||{},rows=Object.entries(notes).filter(([k,v])=>v);
+ document.getElementById('root').innerHTML=`${top(t('Mis notas','My notes'))}<div class="card"><h2>📝 ${t('Mis asociaciones','My memory links')}</h2>${rows.length?rows.map(([k,v])=>`<div class="learn-item"><div class="small muted">${esc(k.split('|').slice(1).join(' · '))}</div>${esc(v)}</div>`).join(''):`<p>${t('Todavía no has guardado ninguna nota.','You have not saved any notes yet.')}</p>`}</div>`;
+}
+
+const classSteps={
+ en_es:[
+  {kind:'intro',title:'Recall',instruction:'She learns Spanish',main:'☀️  ☁️  💨',sub:'Without looking at the lesson, ask her to say one Spanish weather phrase for each picture.'},
+  {kind:'task',title:'Real-life task',instruction:'Use the real world',main:'Look out of the window together.',sub:'Ask: “¿Qué tiempo hace?” Let her answer in Spanish. React naturally and ask one follow-up.'},
+  {kind:'fix',title:'FIX MY SPANISH',instruction:'You deliberately make the mistake',main:'❌ Está sol.',sub:'Ask her to correct you and explain the correct phrase if she can.'},
+  {kind:'mirror',title:'MIRROR',instruction:'Quick exchange',main:'You say: “It’s cloudy.”',sub:'She says the Spanish. Then swap: she says a Spanish weather phrase and you give the English.'},
+  {kind:'explain',title:'Need an explanation?',instruction:'If one of you cannot explain the WHY clearly',main:'Use the explanation helper.',sub:'Choose a difficulty below and copy a ready prompt into ChatGPT.'},
+  {kind:'retry',title:'Try again',instruction:'Repeat the real-life task',main:'Look outside again.',sub:'Ask the same question. The goal is to use the corrected phrase naturally, not to remember the correction.'}
+ ],
+ es_en:[
+  {kind:'intro',title:'Recall',instruction:'You learn English',main:'☀️  ☁️  💨',sub:'Without looking at the lesson, say one English weather phrase for each picture.'},
+  {kind:'task',title:'Real-life task',instruction:'Use the real world',main:'Look out of the window together.',sub:'She asks you about the weather. Answer naturally in English and let her ask one follow-up.'},
+  {kind:'fix',title:'FIX MY ENGLISH',instruction:'She deliberately makes the mistake',main:'❌ It makes sun.',sub:'Correct it: “It’s sunny.” Explain the pattern if you can.'},
+  {kind:'mirror',title:'MIRROR',instruction:'Quick exchange',main:'She says: “Hace viento.”',sub:'You say the English. Then swap directions.'},
+  {kind:'explain',title:'Need an explanation?',instruction:'If one of you cannot explain the WHY clearly',main:'Use the explanation helper.',sub:'Choose a difficulty below and copy a ready prompt into ChatGPT.'},
+  {kind:'retry',title:'Try again',instruction:'Repeat the real-life task',main:'Look outside again.',sub:'Use the corrected English naturally in a new sentence.'}
+ ]};
+function renderTogether(){
+ const steps=classSteps[classDirection],s=steps[classIndex];
+ let helper='';
+ if(s.kind==='explain'){
+  helper=`<div class="class-actions">
+   <button class="btn" onclick="copyExplain('hace')">Why “hace sol”, not “está sol”?</button>
+   <button class="btn" onclick="copyExplain('nublado')">Why “está nublado”, not “hace nublado”?</button>
+   <button class="btn" onclick="copyExplain('english')">Why “It’s sunny”, not “it makes sun”?</button>
+  </div>`;
+ }
+ document.getElementById('root').innerHTML=`${top(t('Modo clase','Class mode'))}
+ <div class="choice card"><button class="btn ${classDirection==='en_es'?'soft':''}" onclick="classDirection='en_es';classIndex=0;renderTogether()">🇬🇧 → 🇪🇸 ${t('Ella aprende español','She learns Spanish')}</button><button class="btn ${classDirection==='es_en'?'soft':''}" onclick="classDirection='es_en';classIndex=0;renderTogether()">🇪🇸 → 🇬🇧 ${t('Yo aprendo inglés','I learn English')}</button></div>
+ <div class="progress"><div style="width:${Math.round(((classIndex+1)/steps.length)*100)}%"></div></div>
+ <div class="card class-step">
+  <div class="class-instruction">${esc(s.instruction)}</div><h2>${esc(s.title)}</h2><div class="class-main">${esc(s.main)}</div><p>${esc(s.sub)}</p>${helper}
+  <div class="class-actions">
+   ${classIndex>0?`<button class="btn center" onclick="classIndex--;renderTogether()">← ${t('ANTERIOR','BACK')}</button>`:''}
+   ${classIndex<steps.length-1?`<button class="btn primary center" onclick="classIndex++;renderTogether()">${t('SIGUIENTE','NEXT')} →</button>`:`<button class="btn primary center" onclick="saveClassNote()">${t('TERMINAR Y TOMAR NOTA','FINISH & ADD NOTE')}</button>`}
+  </div>
+ </div>`;
+}
+function copyExplain(type){
+ const prompts={
+  hace:'Explain to a native English-speaking adult beginner why Spanish says “hace sol” instead of “está sol”. Use simple English, compare it with “it’s sunny”, avoid unnecessary grammar terminology, and give two everyday examples.',
+  nublado:'Explain to a native English-speaking adult beginner why Spanish says “está nublado” instead of “hace nublado”. Use simple English, contrast it with “hace sol”, and avoid unnecessary grammar terminology.',
+  english:'Explica a una persona hispanohablante adulta por qué en inglés se dice “It’s sunny” y no “It makes sun”. Usa español sencillo, compara el patrón con “hace sol” y da dos ejemplos cotidianos.'
+ };
+ copyText(prompts[type]);
+}
+function saveClassNote(){
+ const note=prompt(t('¿Qué ocurrió en clase? Escribe una nota breve si quieres.','What happened in class? Add a short note if you want.'));
+ if(note){const s=S(),n=s.classNotes||[];n.push({date:new Date().toISOString(),direction:classDirection,note});save({classNotes:n})}
+ go('home');
+}
+function play(src){new Audio(src).play().catch(()=>alert(t('No se pudo reproducir el audio.','The audio could not play.')))}
+function copyText(x){navigator.clipboard.writeText(x).then(()=>alert(t('Copiado.','Copied.'))).catch(()=>prompt(t('Copia este texto:','Copy this text:'),x))}
+</script></body></html>
