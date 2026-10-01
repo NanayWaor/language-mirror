@@ -1,5 +1,5 @@
 {
-  "app_version": 5,
+  "app_version": 6,
   "updated": "2026-10-01",
   "current_topic": "weather",
   "topics": {
@@ -390,6 +390,14 @@
             "VIENTO",
             "NUBE",
             "LLUVIA"
+          ],
+          "puzzle_phrases": [
+            "HACE SOL",
+            "HACE CALOR",
+            "HACE FRÍO",
+            "HACE VIENTO",
+            "ESTÁ NUBLADO",
+            "ESTÁ LLOVIENDO"
           ]
         },
         "es_en": {
@@ -697,9 +705,49 @@
             "WINDY",
             "CLOUDY",
             "RAIN"
+          ],
+          "puzzle_phrases": [
+            "IT'S SUNNY",
+            "IT'S HOT",
+            "IT'S COLD",
+            "IT'S WINDY",
+            "IT'S CLOUDY",
+            "IT'S RAINING"
           ]
         }
-      }
+      },
+      "game_scenes": [
+        {
+          "icon": "☀️",
+          "en_es": "Hace sol.",
+          "es_en": "It's sunny."
+        },
+        {
+          "icon": "☁️",
+          "en_es": "Está nublado.",
+          "es_en": "It's cloudy."
+        },
+        {
+          "icon": "💨",
+          "en_es": "Hace viento.",
+          "es_en": "It's windy."
+        },
+        {
+          "icon": "🌧️",
+          "en_es": "Está lloviendo.",
+          "es_en": "It's raining."
+        },
+        {
+          "icon": "🔥",
+          "en_es": "Hace calor.",
+          "es_en": "It's hot."
+        },
+        {
+          "icon": "🥶",
+          "en_es": "Hace frío.",
+          "es_en": "It's cold."
+        }
+      ]
     },
     "plants": {
       "status": "explore",
