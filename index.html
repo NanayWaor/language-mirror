@@ -6,306 +6,471 @@
 <meta name="theme-color" content="#f4f1e8">
 <title>Language Mirror</title>
 <style>
-:root{--bg:#f4f1e8;--card:#fffdf8;--text:#222521;--muted:#687069;--line:#d8d3c6;--accent:#356b5a;--soft:#e9f1ed;--blue:#edf3fb;--good:#e7f4e9;--goodline:#5f9469;--bad:#fbebe8;--badline:#bd6b5b;--note:#fff7dc;--shadow:0 3px 14px rgba(0,0,0,.06)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:20px;line-height:1.45}
-button,textarea{font:inherit}main{max-width:720px;margin:auto;padding:18px 14px 80px}h1{font-size:38px;line-height:1.05;margin:5px 0}h2{font-size:29px;line-height:1.15;margin:0 0 12px}h3{font-size:23px;margin:0 0 8px}.small{font-size:17px}.muted{color:var(--muted)}
-.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}.eyebrow{font-size:16px;font-weight:900;color:var(--muted);letter-spacing:.04em}
-.btn{width:100%;min-height:58px;border:2px solid var(--line);border-radius:15px;background:var(--card);color:var(--text);padding:12px 14px;font-weight:800;text-align:left;cursor:pointer;white-space:normal}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.soft{background:var(--soft);border-color:#bdd3ca}.btn.good{background:var(--good);border-color:var(--goodline)}.btn.bad{background:var(--bad);border-color:var(--badline)}.btn.center{text-align:center}.hidden{display:none!important}
-.home-grid{display:grid;gap:11px}.home-btn{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center}.home-icon{font-size:34px;text-align:center}.arrow{font-size:27px;color:var(--muted)}.section-label{font-size:16px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin:27px 4px 8px}
-.pill{display:inline-block;border-radius:999px;padding:5px 9px;background:var(--soft);font-size:15px;font-weight:800}.topbar{display:flex;gap:8px;align-items:center;margin-bottom:15px}.back{width:auto;min-height:46px;padding:8px 12px}.spacer{flex:1}
-.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}.progress{height:8px;border-radius:8px;background:#ddd8cc;overflow:hidden;margin:8px 0 18px}.progress>div{height:100%;background:var(--accent);width:0}
-.activity{text-align:center}.activity-icon{font-size:70px;line-height:1;margin:16px 0}.activity-prompt{font-size:26px;font-weight:900;line-height:1.25;margin:12px 0 18px}.options{display:grid;gap:9px}.feedback{margin-top:13px;border-radius:15px;padding:13px;text-align:left}.feedback.good{background:var(--good);border:2px solid var(--goodline)}.feedback.bad{background:var(--bad);border:2px solid var(--badline)}
-.reveal{background:var(--soft);border-radius:15px;padding:14px;margin-top:12px;font-size:26px;font-weight:900}.audio{width:auto;min-height:48px;margin-top:10px;border:0;border-radius:13px;background:var(--accent);color:white;padding:9px 14px;font-weight:850;cursor:pointer}
-.topic-grid{display:grid;gap:11px}.topic-card{background:var(--card);border:2px solid var(--line);border-radius:17px;padding:15px}.topic-title{font-size:22px;font-weight:900}.topic-icon{font-size:38px}.learn-item{border-top:2px solid var(--line);padding:14px 0}.learn-item:first-child{border-top:0}.bigphrase{font-size:27px;font-weight:900;overflow-wrap:anywhere}.translation{font-size:18px;color:var(--muted);margin-top:3px}.why{background:var(--blue)}.family{background:white;border-radius:13px;padding:10px;margin:7px 0}.note{background:var(--note);border-radius:13px;padding:10px;margin-top:8px;font-size:18px}
-textarea{width:100%;min-height:110px;border:2px solid var(--line);border-radius:14px;padding:12px;background:white;color:var(--text);resize:vertical}
-.class-step{min-height:420px;display:flex;flex-direction:column;justify-content:center}.class-instruction{font-size:18px;color:var(--muted);margin-bottom:10px}.class-main{font-size:28px;font-weight:900;line-height:1.25;margin:12px 0}.class-actions{display:grid;gap:8px;margin-top:17px}
-@media(min-width:760px){body{font-size:21px}main{max-width:820px}.topic-grid{grid-template-columns:1fr 1fr}.home-grid.two{grid-template-columns:1fr 1fr}}
+:root{
+ --bg:#f4f1e8;--card:#fffdf8;--text:#252823;--muted:#6b716c;--line:#d8d3c6;
+ --accent:#3b6b5d;--soft:#e9f1ed;--blue:#edf3fb;--blue2:#d7e3f4;
+ --good:#e8f3e8;--goodline:#71957a;--bad:#faece9;--badline:#bd7668;
+ --note:#fff7dc;--shadow:0 3px 13px rgba(0,0,0,.055)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:19px;line-height:1.45}
+button,textarea,select{font:inherit}
+main{max-width:680px;margin:auto;padding:17px 13px 76px}
+h1{font-size:34px;line-height:1.05;margin:5px 0 4px}
+h2{font-size:27px;line-height:1.15;margin:0 0 11px}
+h3{font-size:22px;line-height:1.2;margin:0 0 8px}
+.small{font-size:16px}.muted{color:var(--muted)}
+.eyebrow{font-size:14px;font-weight:850;letter-spacing:.06em;color:var(--muted)}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:19px;padding:17px;margin:13px 0;box-shadow:var(--shadow)}
+.btn{width:100%;min-height:56px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);padding:12px 14px;font-weight:780;text-align:left;cursor:pointer;white-space:normal}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.soft{background:var(--soft);border-color:#bfd3cb}
+.btn.good{background:var(--good);border-color:var(--goodline)}
+.btn.bad{background:var(--bad);border-color:var(--badline)}
+.btn.center{text-align:center}
+.btn.compact{width:auto;min-height:42px;padding:8px 11px}
+.hidden{display:none!important}
+.header{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.header-title{flex:1;user-select:none;-webkit-user-select:none}
+.direction{width:auto;min-height:42px;padding:8px 10px;font-size:14px}
+.section-label{font-size:14px;font-weight:900;color:var(--muted);letter-spacing:.07em;margin:25px 4px 7px}
+.home-grid{display:grid;gap:9px}
+.home-btn{display:grid;grid-template-columns:42px minmax(0,1fr) 22px;gap:10px;align-items:center}
+.home-icon{font-size:30px;text-align:center}.arrow{font-size:24px;color:var(--muted)}
+.info-card{background:transparent;border:1.5px dashed var(--line);border-radius:16px;padding:13px 15px;color:var(--muted)}
+details summary{cursor:pointer;font-weight:780}
+.topbar{display:flex;gap:8px;align-items:center;margin-bottom:13px}.back{width:auto;min-height:42px;padding:7px 11px}.spacer{flex:1}
+.progress-wrap{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:7px 0 14px}
+.progress{height:7px;border-radius:999px;background:#dcd7cb;overflow:hidden}.progress>div{height:100%;background:var(--accent)}
+.counter{font-size:15px;color:var(--muted);font-weight:800}
+.flash{min-height:420px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.help-btn{position:absolute;top:13px;right:13px;width:44px;height:44px;min-height:44px;border-radius:50%;padding:0;text-align:center;font-size:21px;background:var(--blue);border-color:var(--blue2)}
+.flash-icon{font-size:70px;line-height:1;text-align:center;margin:8px 0 14px}
+.flash-prompt{font-size:25px;line-height:1.26;font-weight:870;text-align:center;margin:7px 0 16px;overflow-wrap:anywhere}
+.flash-sub{font-size:17px;color:var(--muted);text-align:center;margin:-5px 0 14px}
+.answer{margin-top:12px;background:var(--soft);border-radius:15px;padding:14px;text-align:center;font-size:25px;font-weight:880;overflow-wrap:anywhere}
+.options{display:grid;gap:8px}
+.feedback{margin-top:12px;border-radius:14px;padding:13px;text-align:left;font-size:18px}
+.feedback.good{background:var(--good);border:1.5px solid var(--goodline)}
+.feedback.bad{background:var(--bad);border:1.5px solid var(--badline)}
+.audio{width:auto;min-height:45px;border:0;border-radius:12px;background:var(--accent);color:#fff;padding:8px 13px;font-weight:800;cursor:pointer;margin-top:10px}
+.modal-bg{position:fixed;inset:0;background:rgba(31,34,31,.42);display:flex;align-items:flex-end;justify-content:center;padding:12px;z-index:20}
+.modal{width:min(650px,100%);max-height:82vh;overflow:auto;background:var(--card);border-radius:22px;padding:20px;box-shadow:0 12px 50px rgba(0,0,0,.22)}
+.modal h2{padding-right:45px}.modal-close{float:right;width:44px;min-height:44px;text-align:center;padding:0}
+.family{background:white;border:1.5px solid var(--blue2);border-radius:13px;padding:10px;margin:7px 0}
+.note{background:var(--note);border-radius:13px;padding:11px;margin:9px 0;font-size:17px}
+.menu-list{display:grid;gap:9px}
+.topic-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center}
+.topic-icon{font-size:32px;text-align:center}
+.topic-title{font-weight:850}
+.ref-item{border-top:1.5px solid var(--line);padding:13px 0}.ref-item:first-child{border-top:0}
+.ref-target{font-size:23px;font-weight:850}.ref-source{font-size:16px;color:var(--muted)}
+textarea{width:100%;min-height:100px;border:1.5px solid var(--line);border-radius:13px;padding:11px;background:white;color:var(--text);resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{width:auto;min-height:42px;padding:8px 11px}
+.scoreline{font-size:16px;color:var(--muted);margin-top:8px}
+.class-card{min-height:430px;display:flex;flex-direction:column;justify-content:center}
+.class-main{font-size:27px;font-weight:880;line-height:1.24;margin:10px 0}.class-instruction{font-size:16px;color:var(--muted)}
+@media(min-width:760px){main{max-width:780px}.home-grid.two{grid-template-columns:1fr 1fr}.flash{min-height:450px}}
 </style>
 </head>
-<body><main>
-<div id="root"></div>
+<body>
+<main><div id="root"></div></main>
+<div id="modalRoot"></div>
 <script>
 let C=null;
-const KEY='language_mirror_v3';
-let route='home', direction=localStorage.getItem('lm_v3_direction')||'en_es';
-let session=null, sessionMode='today', classIndex=0, classDirection='en_es';
+const KEY='language_mirror_v4';
+let direction=localStorage.getItem('lm_v4_direction')||'en_es';
+let route='home';
+let activity=null;
+let titleTaps=[];
 
 function S(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
-function save(x){localStorage.setItem(KEY,JSON.stringify(Object.assign(S(),x,{updatedAt:new Date().toISOString()})))}
-function t(es,en){return direction==='es_en'?es:en}
+function save(p){localStorage.setItem(KEY,JSON.stringify(Object.assign(S(),p,{updatedAt:new Date().toISOString()})))}
+function tr(es,en){return direction==='es_en'?es:en}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function currentTopic(){return C.topics[C.current_topic]}
-function dirData(topicId=C.current_topic,dir=direction){return C.topics[topicId].directions[dir]}
-function go(r){route=r;window.scrollTo(0,0);render()}
-function renderTopBar(title){
- return `<div class="topbar"><button class="btn back" onclick="go('home')">←</button><div><b>${esc(title)}</b></div><div class="spacer"></div></div>`;
+function safe(s){return String(s).replace(/[^a-zA-Z0-9]/g,'_')}
+function tTitle(id){const x=C.topics[id].title;return x[direction==='en_es'?'en':'es']}
+function D(topic='weather'){return C.topics[topic].directions[direction]}
+function go(r){route=r;activity=null;closeModal();scrollTo(0,0);render()}
+function header(){
+ return `<div class="header">
+   <div class="header-title" onclick="secretTap()"><div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE 004</div><h1>Language Mirror</h1></div>
+   <button class="btn direction" onclick="switchDirection()">${direction==='en_es'?'EN → ES':'ES → EN'}</button>
+ </div>`;
+}
+function topbar(title){
+ return `<div class="topbar"><button class="btn back" onclick="go('home')">←</button><b>${esc(title)}</b><span class="spacer"></span></div>`;
+}
+function secretTap(){
+ const now=Date.now();titleTaps=titleTaps.filter(x=>now-x<1400);titleTaps.push(now);
+ if(titleTaps.length>=3){titleTaps=[];route='class';render();}
+}
+function switchDirection(){
+ direction=direction==='en_es'?'es_en':'en_es';localStorage.setItem('lm_v4_direction',direction);activity=null;render();
 }
 
-fetch('course.json?ts='+Date.now()).then(r=>r.json()).then(x=>{C=x;render()}).catch(e=>{
- document.getElementById('root').innerHTML='<div class="card">Could not load course.json.</div>';
-});
+fetch('course.json?ts='+Date.now()).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(x=>{
+ C=x;
+ const q=new URLSearchParams(location.search);if(q.get('class')==='1')route='class';
+ render();
+}).catch(e=>document.getElementById('root').innerHTML='<div class="card">Could not load course.json.</div>');
 
 function render(){
  if(!C)return;
- const map={home:renderHome,today:renderToday,week:renderWeek,tricky:renderTricky,review:renderReview,explore:renderExplore,plants:()=>renderTopic('plants'),ai:renderAI,notes:renderNotes,together:renderTogether};
- (map[route]||renderHome)();
+ document.documentElement.lang=direction==='en_es'?'en':'es';
+ const routes={home:renderHome,today:()=>openPractice('recommended'),week:renderWeek,tricky:renderTricky,games:renderGames,explore:renderExplore,notes:renderNotes,ai:renderAI,class:renderClass,reference:renderReference};
+ (routes[route]||renderHome)();
+}
+function homeButton(icon,title,sub,onclick,primary=false){
+ return `<button class="btn home-btn ${primary?'primary':''}" onclick="${onclick}"><span class="home-icon">${icon}</span><span><b>${esc(title)}</b><br><span class="small">${esc(sub)}</span></span><span class="arrow">›</span></button>`;
 }
 function renderHome(){
- const cur=currentTopic();
+ const next=C.next_week?.label?.[direction==='en_es'?'en':'es'];
  document.getElementById('root').innerHTML=`
- <div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE 003</div>
- <h1>Language Mirror</h1>
- <div class="choice card">
-  <button class="btn ${direction==='en_es'?'soft':''}" onclick="setDir('en_es')">🇬🇧 English → Spanish</button>
-  <button class="btn ${direction==='es_en'?'soft':''}" onclick="setDir('es_en')">🇪🇸 Español → English</button>
- </div>
+ ${header()}
+ <div class="section-label">${tr('HOY','TODAY')}</div>
+ <div class="home-grid">${homeButton('▶',tr('Práctica de hoy','Today’s practice'),tr('Unos 7 minutos · puedes repetir cuando quieras','About 7 minutes · repeat whenever you want'),"openPractice('recommended')",true)}</div>
 
- <div class="section-label">${t('HOY','TODAY')}</div>
- <div class="home-grid">
-  ${homeButton('▶️',t('Práctica de hoy','Today’s practice'),t('Unos 7 minutos · puedes repetir después','About 7 minutes · repeat whenever you want'),'today',true)}
- </div>
+ <div class="section-label">${tr('ESTA SEMANA','THIS WEEK')}</div>
+ <div class="home-grid">${homeButton('🌦️',tTitle('weather'),tr('Aprende · frases · practica · conversación real','Learn · phrases · practice · real-life conversation'),"go('week')")}</div>
 
- <div class="section-label">${t('ESTA SEMANA','THIS WEEK')}</div>
- <div class="home-grid">
-  ${homeButton(cur.icon,cur.title[direction==='en_es'?'en':'es'],t('Aprende · WHY · frases útiles','Learn · WHY · useful phrases'),'week')}
- </div>
+ ${next?`<div class="section-label">${tr('PRÓXIMA SEMANA','NEXT WEEK')}</div><div class="info-card">${esc(next)}</div>`:''}
 
- <div class="section-label">${t('REPASAR','REVIEW')}</div>
+ <div class="section-label">${tr('MÁS PRÁCTICA','MORE PRACTICE')}</div>
  <div class="home-grid two">
-  ${homeButton('🧠',t('Mis difíciles','My tricky ones'),t('Lo que más te ha costado','What has been difficult'),'tricky')}
-  ${homeButton('🔁',t('Lecciones anteriores','Previous lessons'),t('Vuelve a temas ya trabajados','Return to earlier topics'),'review')}
+  ${homeButton('🧠',tr('Mis difíciles','My tricky ones'),tr('Repaso según tus errores y tiempo','Review based on errors and time'),"go('tricky')")}
+  ${homeButton('🎲',tr('Jugar y repasar','Play & review'),tr('Actividades tranquilas con lo ya aprendido','Calm activities using what you know'),"go('games')")}
+  ${homeButton('🗣️',tr('Hablar con IA','Talk with AI'),tr('Conversación guiada','Guided conversation'),"go('ai')")}
+  ${homeButton('📝',tr('Mis notas','My notes'),tr('Tus asociaciones y recuerdos','Your memory links'),"go('notes')")}
  </div>
 
- <div class="section-label">${t('EXPLORAR','EXPLORE')}</div>
- <div class="home-grid">
-  ${homeButton('🌱',t('Plantas y jardín','Plants & garden'),t('Disponible para explorar libremente','Available to explore freely'),'plants')}
-  ${homeButton('🗂️',t('Ver todos los temas','See all topics'),t('Elige qué te interesa aprender','Choose what interests you'),'explore')}
- </div>
+ <div class="section-label">${tr('EXPLORAR','EXPLORE')}</div>
+ <div class="home-grid">${homeButton('🗂️',tr('Explorar temas','Explore topics'),tr('Practica libremente otros temas disponibles','Freely practise other available topics'),"go('explore')")}</div>
 
- <div class="section-label">${t('JUNTAS','TOGETHER')}</div>
- <div class="home-grid">
-  ${homeButton('👥',t('Modo clase','Class mode'),t('Para vuestra sesión presencial','For your face-to-face session'),'together')}
- </div>
+ <details class="card" style="margin-top:28px">
+  <summary>${tr('Ayudar a mejorar Language Mirror (opcional)','Help improve Language Mirror (optional)')}</summary>
+  <p class="small muted">${tr('Solo si te apetece. Puedes ignorar completamente esta parte.','Only if you feel like it. You can completely ignore this.')}</p>
+  <div class="chips">
+   <button class="btn chip" onclick="feedbackTag('clear')">👍 ${tr('Claro','Clear')}</button>
+   <button class="btn chip" onclick="feedbackTag('examples')">🤔 ${tr('Más ejemplos','More examples')}</button>
+   <button class="btn chip" onclick="feedbackTag('confusing')">❓ ${tr('Algo confunde','Something is confusing')}</button>
+  </div>
+  <textarea id="improveText" placeholder="${esc(tr('Algo que cambiarías, quitarías o añadirías…','Anything you would change, remove or add…'))}"></textarea>
+  <button class="btn soft center" onclick="saveImprovement()">${tr('GUARDAR COMENTARIO','SAVE COMMENT')}</button>
+  <div id="improveStatus" class="small muted"></div>
+ </details>`;
+}
+function feedbackTag(tag){const s=S(),f=s.improvement||{};f.tag=tag;save({improvement:f});document.getElementById('improveStatus').textContent=tr('Guardado.','Saved.')}
+function saveImprovement(){const s=S(),f=s.improvement||{};f.text=document.getElementById('improveText').value.trim();save({improvement:f});document.getElementById('improveStatus').textContent=tr('Comentario guardado.','Comment saved.')}
 
- <div class="section-label">${t('MÁS PRÁCTICA','MORE PRACTICE')}</div>
- <div class="home-grid two">
-  ${homeButton('🗣️',t('Hablar con IA','Talk with AI'),t('Practica la conversación','Conversation practice'),'ai')}
-  ${homeButton('📝',t('Mis notas','My notes'),t('Tus asociaciones y recuerdos','Your memory links'),'notes')}
- </div>`;
-}
-function homeButton(icon,title,sub,route,primary=false){
- return `<button class="btn home-btn ${primary?'primary':''}" onclick="go('${route}')"><span class="home-icon">${icon}</span><span><b>${esc(title)}</b><br><span class="small">${esc(sub)}</span></span><span class="arrow">›</span></button>`;
-}
-function setDir(d){direction=d;localStorage.setItem('lm_v3_direction',d);render()}
-
-function stats(){const s=S();return s.stats||{}}
-function record(item,ok){
- const s=S(),all=s.stats||{},k=direction+'|'+item.skill;
- const z=all[k]||{correct:0,wrong:0,lastWrong:0}; if(ok)z.correct++;else{z.wrong++;z.lastWrong=Date.now()} all[k]=z;save({stats:all});
-}
-function weightedPool(topicId=C.current_topic, onlyTricky=false){
- const pool=dirData(topicId).practice_pool||[],st=stats();
- let arr=[];
- pool.forEach(item=>{
-  const z=st[direction+'|'+item.skill]||{correct:0,wrong:0};
-  let w=1 + Math.min(3,z.wrong*1.5);
-  if(z.correct>=3 && z.wrong===0)w=.5;
-  if(onlyTricky && z.wrong===0)return;
-  const copies=Math.max(1,Math.round(w*2));for(let i=0;i<copies;i++)arr.push(item);
- });
- // Shuffle, remove immediate duplicate IDs
- arr.sort(()=>Math.random()-.5);
- const uniq=[];for(const x of arr){if(!uniq.length||uniq[uniq.length-1].id!==x.id)uniq.push(x)}
- return uniq.length?uniq:pool.slice();
-}
-function startSession(mode='today',topicId=C.current_topic){
- sessionMode=mode;
- let pool=weightedPool(topicId,mode==='tricky');
- const len=mode==='today'?8:Math.min(8,Math.max(4,pool.length));
- const items=[];
- while(items.length<len && pool.length){items.push(pool.shift())}
- while(items.length<len){const p=dirData(topicId).practice_pool;items.push(p[Math.floor(Math.random()*p.length)])}
- session={topicId,items,index:0,answered:false,wrongQueue:[],results:[]};
- route='today';renderToday();
-}
-function renderToday(){
- if(!session){startSession('today');return}
- const item=session.items[session.index], pct=Math.round((session.index/session.items.length)*100);
+function renderWeek(){
  document.getElementById('root').innerHTML=`
- ${renderTopBar(sessionMode==='tricky'?t('Mis difíciles','My tricky ones'):t('Práctica','Practice'))}
- <div class="progress"><div style="width:${pct}%"></div></div>
- <div class="card activity">
-  <div class="small muted">${session.index+1} / ${session.items.length}</div>
-  <div class="activity-icon">${item.icon||'💬'}</div>
-  ${activityHtml(item)}
- </div>`;
+ ${header()}${topbar(tTitle('weather'))}
+ <div class="card"><span class="small muted">${tr('ESTA SEMANA','THIS WEEK')}</span><h2>🌦️ ${esc(tTitle('weather'))}</h2>
+ <div class="menu-list">
+  ${homeButton('▶',tr('Empezar / continuar','Start / continue'),tr('Retoma la última tarjeta de este bloque','Resume from your last card in this block'),"startLearning('learn','weather')",true)}
+  ${homeButton('🪞',tr('Aprender','Learn'),tr('Tarjetas una a una · audio · ayuda ?','One card at a time · audio · ? help'),"startLearning('learn','weather')")}
+  ${homeButton('💬',tr('Frases útiles','Useful phrases'),tr('Frases reales de conversación','Real conversation phrases'),"startLearning('phrases','weather')")}
+  ${homeButton('🧠',tr('Practicar','Practice'),tr('El sistema mezcla y repite según fallos','Mixed practice that adapts to mistakes'),"openPractice('topic','weather')")}
+  ${homeButton('🪟',tr('Conversación real','Real-life conversation'),tr('Una situación paso a paso','One situation, step by step'),"startLearning('conversation','weather')")}
+  ${homeButton('📖',tr('Ver todo','View everything'),tr('Consulta rápida de la lección','Quick reference for the whole lesson'),"go('reference')")}
+ </div></div>`;
 }
-function activityHtml(item){
+
+function getSchedule(){
+ const s=S();return s.schedule||{};
+}
+function schedKey(topic,item){return direction+'|'+topic+'|'+item.id}
+function gradeItem(topic,item,ok){
+ const s=S(),all=s.schedule||{},k=schedKey(topic,item),z=all[k]||{seen:0,correct:0,wrong:0,streak:0,interval:0,due:0};
+ z.seen++;z.last=Date.now();
+ if(ok){
+  z.correct++;z.streak++;
+  const seq=[1,3,7,14,30,60];z.interval=seq[Math.min(z.streak-1,seq.length-1)];
+  z.due=Date.now()+z.interval*86400000;
+ }else{
+  z.wrong++;z.streak=0;z.interval=0;z.due=Date.now()+10*60*1000;
+ }
+ all[k]=z;save({schedule:all});
+}
+function allPracticeTopics(){
+ return Object.entries(C.topics).filter(([id,x])=>x.directions && (x.status==='current'||x.status==='review')).map(([id])=>id);
+}
+function candidates(topicIds=allPracticeTopics()){
+ const schedule=getSchedule(),out=[];
+ topicIds.forEach(topic=>{(D(topic).practice_pool||[]).forEach(item=>{
+  const z=schedule[schedKey(topic,item)]||{seen:0,wrong:0,correct:0,due:0,streak:0};
+  let priority=0;
+  if(!z.seen)priority+=5;
+  if(z.due && z.due<=Date.now())priority+=7;
+  priority+=Math.min(8,z.wrong*2);
+  priority-=Math.min(3,z.streak);
+  out.push({topic,item,z,priority});
+ })});
+ return out;
+}
+function buildSession(mode,topic=null,filter=null){
+ let cands=candidates(topic?[topic]:allPracticeTopics());
+ if(mode==='tricky')cands=cands.filter(x=>x.z.wrong>0||x.z.due<=Date.now());
+ if(filter?.skill)cands=cands.filter(x=>x.item.skill===filter.skill);
+ if(mode==='random')cands.sort(()=>Math.random()-.5);
+ else cands.sort((a,b)=>b.priority-a.priority||Math.random()-.5);
+ if(!cands.length)cands=candidates(topic?[topic]:allPracticeTopics()).sort(()=>Math.random()-.5);
+ return cands.slice(0,8).map(x=>({topic:x.topic,item:x.item}));
+}
+function openPractice(mode='recommended',topic=null,filter=null){
+ activity={kind:'practice',mode,topic,items:buildSession(mode,topic,filter),index:0,answered:false,results:[],extra:[]};
+ route='activity';renderActivity();
+}
+function startLearning(kind,topic){
+ let items=[];
+ const d=D(topic);
+ if(kind==='learn')items=(d.learn||[]).map(x=>({type:'learn',topic,data:x}));
+ if(kind==='phrases')items=(d.phrases||[]).map(x=>({type:'phrase',topic,data:x}));
+ if(kind==='conversation')items=conversationCards(topic);
+ const k=direction+'|'+topic+'|'+kind, saved=((S().sectionProgress||{})[k]||0);
+ activity={kind,topic,items,index:Math.min(saved,Math.max(0,items.length-1)),answered:false,results:[]};route='activity';renderActivity();
+}
+function conversationCards(topic){
+ const es=direction==='en_es';
+ if(topic==='weather'){
+  return es?[
+   {type:'conversation',topic,icon:'👋',prompt:'You meet your neighbour outside. Start naturally.',answer:'Hola, ¿qué tal?'},
+   {type:'conversation',topic,icon:'🪟',prompt:'Look outside. She asks: “¿Qué tiempo hace?” Answer with one true sentence.',answer:'Example: Está nublado, pero hace calor.'},
+   {type:'conversation',topic,icon:'💬',prompt:'Keep it going. Ask her one weather question.',answer:'¿Qué tiempo hace hoy?'},
+   {type:'conversation',topic,icon:'🌦️',prompt:'Now combine two ideas in one sentence.',answer:'Example: Está nublado, pero hace calor.'}
+  ]:[
+   {type:'conversation',topic,icon:'👋',prompt:'Te encuentras con tu vecina fuera. Empieza de forma natural.',answer:'Hi, how are you?'},
+   {type:'conversation',topic,icon:'🪟',prompt:'Mira fuera. Te pregunta por el tiempo. Responde con una frase verdadera.',answer:'Example: It’s cloudy, but it’s hot.'},
+   {type:'conversation',topic,icon:'💬',prompt:'Mantén la conversación. Haz una pregunta sobre el tiempo.',answer:'What’s the weather like today?'},
+   {type:'conversation',topic,icon:'🌦️',prompt:'Ahora combina dos ideas en una frase.',answer:'Example: It’s cloudy, but it’s hot.'}
+  ];
+ }
+ return [];
+}
+function renderActivity(){
+ const total=activity.items.length;
+ if(activity.index>=total){renderActivityEnd();return}
+ const entry=activity.items[activity.index];
+ const pct=(activity.index/total)*100;
+ document.getElementById('root').innerHTML=`
+ ${header()}${topbar(activityTitle())}
+ <div class="progress-wrap"><div class="progress"><div style="width:${pct}%"></div></div><div class="counter">${activity.index+1} / ${total}</div></div>
+ <div class="card flash" id="flashCard">${renderFlash(entry)}</div>`;
+}
+function activityTitle(){
+ const map={
+  practice:tr('Práctica','Practice'),
+  learn:tr('Aprender','Learn'),
+  phrases:tr('Frases útiles','Useful phrases'),
+  conversation:tr('Conversación real','Real-life conversation')
+ };
+ return map[activity.kind]||tr('Actividad','Activity');
+}
+function renderFlash(entry){
+ if(activity.kind==='practice')return renderPracticeCard(entry);
+ const x=entry.data||entry;
+ const help=helpForEntry(entry);
+ if(entry.type==='learn'||entry.type==='phrase'){
+  return `<button class="btn help-btn" onclick='showHelp(${JSON.stringify(help)})'>?</button>
+   <div class="flash-icon">${x.icon||'💬'}</div>
+   <div class="flash-prompt">${esc(x.target)}</div>
+   <div class="flash-sub">${tr('Intenta recordar qué significa antes de mostrarlo.','Try to remember what it means before revealing it.')}</div>
+   ${x.audio?`<button class="audio" onclick="play('${esc(x.audio)}')">🔊 ${tr('Escuchar','Listen')}</button>`:''}
+   <button class="btn primary center" style="margin-top:12px" onclick="revealLearning()">${tr('MOSTRAR SIGNIFICADO','SHOW MEANING')}</button>
+   <div id="learnReveal"></div>`;
+ }
+ if(entry.type==='conversation'){
+  return `<button class="btn help-btn" onclick='showHelp(${JSON.stringify(help)})'>?</button>
+   <div class="flash-icon">${entry.icon||'💬'}</div>
+   <div class="flash-prompt">${esc(entry.prompt)}</div>
+   <div class="flash-sub">${tr('Dilo en voz alta antes de comprobar.','Say it aloud before checking.')}</div>
+   <button class="btn primary center" onclick="revealConversation()">${tr('VER UN EJEMPLO','SEE AN EXAMPLE')}</button>
+   <div id="learnReveal"></div>`;
+ }
+}
+function revealLearning(){
+ const entry=activity.items[activity.index],x=entry.data;
+ document.getElementById('learnReveal').innerHTML=`<div class="answer">${esc(x.source)}</div>${x.memory?`<div class="note">🧠 ${esc(x.memory)}</div>`:''}${noteUI(entry.topic,(entry.type==='phrase'?'phrase_':'')+x.id)}${nextBtn()}`;
+}
+function revealConversation(){
+ const entry=activity.items[activity.index];
+ document.getElementById('learnReveal').innerHTML=`<div class="answer">${esc(entry.answer)}</div>${nextBtn()}`;
+}
+function nextBtn(){return `<button class="btn primary center" style="margin-top:12px" onclick="nextCard()">${tr('SIGUIENTE','NEXT')} →</button>`}
+function nextCard(){
+ activity.index++;
+ if(activity.kind!=='practice'){
+  const st=S(),pr=st.sectionProgress||{},k=direction+'|'+activity.topic+'|'+activity.kind;
+  pr[k]=activity.index>=activity.items.length?0:activity.index;save({sectionProgress:pr});
+ }
+ activity.answered=false;renderActivity();
+}
+function helpForEntry(entry){
+ const topic=entry.topic||activity.topic||'weather';
+ const d=D(topic),x=entry.data||entry;
+ if(topic==='weather'){
+  if(direction==='en_es'){
+   const fam=x.family?`This expression belongs to the ${x.family} weather pattern.`:'The key idea is to choose the Spanish weather pattern instead of translating “it is” word by word.';
+   return {title:'WHY?',body:fam+' '+d.why.remember,more:d.why.more};
+  } else {
+   return {title:'¿POR QUÉ?',body:'No traduzcas «hace» palabra por palabra. '+d.why.remember,more:d.why.more};
+  }
+ }
+ return {title:tr('AYUDA','HELP'),body:d.why?.remember||'',more:d.why?.more||''};
+}
+function showHelp(obj){
+ document.getElementById('modalRoot').innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><button class="btn modal-close" onclick="closeModal()">×</button><h2>${esc(obj.title)}</h2><p>${esc(obj.body)}</p>${obj.more?`<details><summary>${tr('Más explicación','More explanation')}</summary><p>${esc(obj.more)}</p></details>`:''}</div></div>`;
+}
+function closeModal(){document.getElementById('modalRoot').innerHTML=''}
+
+function renderPracticeCard(entry){
+ const item=entry.item,help={title:tr('AYUDA','HELP'),body:item.why||tr('Piensa en el patrón que has aprendido.','Think about the pattern you have learned.'),more:''};
  if(item.type==='mc'){
-  return `<div class="activity-prompt">${esc(item.prompt)}</div><div class="options">${item.options.map((o,i)=>`<button class="btn center" id="op${i}" onclick="answerMC(${i})">${esc(o)}</button>`).join('')}</div><div id="fb"></div>`;
+  return `<button class="btn help-btn" onclick='showHelp(${JSON.stringify(help)})'>?</button><div class="flash-icon">${item.icon||'💬'}</div><div class="flash-prompt">${esc(item.prompt)}</div><div class="options">${item.options.map((o,i)=>`<button class="btn center" id="opt${i}" onclick="answerMC(${i})">${esc(o)}</button>`).join('')}</div><div id="practiceFeedback"></div>`;
  }
  if(item.type==='recall'||item.type==='fix'){
-  return `<div class="activity-prompt">${esc(item.prompt)}</div>
-  <button class="btn primary center" onclick="revealRecall()">${t('MOSTRAR RESPUESTA','SHOW ANSWER')}</button>
-  <div id="fb"></div>`;
+  return `<button class="btn help-btn" onclick='showHelp(${JSON.stringify(help)})'>?</button><div class="flash-icon">${item.icon||'💬'}</div><div class="flash-prompt">${esc(item.prompt)}</div><button class="btn primary center" onclick="revealRecall()">${tr('MOSTRAR RESPUESTA','SHOW ANSWER')}</button><div id="practiceFeedback"></div>`;
  }
  if(item.type==='real'){
-  return `<div class="activity-prompt">${esc(item.prompt)}</div>
-  <button class="btn primary center" onclick="revealReal()">${t('VER EJEMPLOS','SEE EXAMPLES')}</button>
-  <div id="fb"></div>`;
+  return `<button class="btn help-btn" onclick='showHelp(${JSON.stringify(help)})'>?</button><div class="flash-icon">${item.icon||'💬'}</div><div class="flash-prompt">${esc(item.prompt)}</div><button class="btn primary center" onclick="revealReal()">${tr('VER EJEMPLOS','SEE EXAMPLES')}</button><div id="practiceFeedback"></div>`;
  }
- return '';
 }
-function answerMC(i){
- if(session.answered)return;session.answered=true;const item=session.items[session.index],ok=i===item.answer;
- document.getElementById('op'+item.answer).classList.add('good');if(!ok)document.getElementById('op'+i).classList.add('bad');
- record(item,ok);session.results.push({id:item.id,ok});
- if(!ok){
-  // repeat a different activity with same skill 2–3 steps later if available
-  const alt=dirData(session.topicId).practice_pool.find(x=>x.skill===item.skill&&x.id!==item.id);
-  if(alt){const pos=Math.min(session.items.length,session.index+3);session.items.splice(pos,0,alt)}
- }
- document.getElementById('fb').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><b>${ok?'✓ '+t('Correcto','Correct'):'✗ '+t('Casi','Not quite')}</b><br>${esc(item.why||'')}</div>${nextButton()}`;
+function answerMC(choice){
+ if(activity.answered)return;activity.answered=true;
+ const entry=activity.items[activity.index],item=entry.item,ok=choice===item.answer;
+ document.getElementById('opt'+item.answer).classList.add('good');if(!ok)document.getElementById('opt'+choice).classList.add('bad');
+ gradeItem(entry.topic,item,ok);activity.results.push(ok);
+ if(!ok)insertRelatedLater(entry);
+ document.getElementById('practiceFeedback').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><b>${ok?'✓ '+tr('Correcto','Correct'):'✗ '+tr('Casi','Not quite')}</b><br>${esc(item.why||'')}</div>${nextBtn()}`;
 }
 function revealRecall(){
- if(session.answered)return;session.answered=true;const item=session.items[session.index];
- document.getElementById('fb').innerHTML=`<div class="reveal">${esc(item.answer_text)}</div>
- ${item.audio?`<button class="audio" onclick="play('${esc(item.audio)}')">🔊 ${t('Escuchar','Listen')}</button>`:''}
- <div class="choice" style="margin-top:12px"><button class="btn good center" onclick="selfRate(true)">${t('Lo dije','I said it')}</button><button class="btn bad center" onclick="selfRate(false)">${t('No me salió','I couldn’t say it')}</button></div>`;
+ if(activity.answered)return;activity.answered=true;
+ const entry=activity.items[activity.index],item=entry.item;
+ document.getElementById('practiceFeedback').innerHTML=`<div class="answer">${esc(item.answer_text)}</div>${item.audio?`<button class="audio" onclick="play('${esc(item.audio)}')">🔊 ${tr('Escuchar','Listen')}</button>`:''}<div class="chips" style="margin-top:12px"><button class="btn chip good" onclick="selfGrade(true)">${tr('Me salió','I could say it')}</button><button class="btn chip bad" onclick="selfGrade(false)">${tr('No me salió','I couldn’t say it')}</button></div>`;
 }
-function selfRate(ok){
- const item=session.items[session.index];record(item,ok);session.results.push({id:item.id,ok});
- if(!ok){const alt=dirData(session.topicId).practice_pool.find(x=>x.skill===item.skill&&x.id!==item.id);if(alt)session.items.splice(Math.min(session.items.length,session.index+3),0,alt)}
- document.getElementById('fb').insertAdjacentHTML('beforeend',nextButton());document.querySelectorAll('#fb .choice').forEach(x=>x.remove());
+function selfGrade(ok){
+ const entry=activity.items[activity.index],item=entry.item;gradeItem(entry.topic,item,ok);activity.results.push(ok);if(!ok)insertRelatedLater(entry);
+ document.querySelectorAll('#practiceFeedback .chips').forEach(x=>x.remove());document.getElementById('practiceFeedback').insertAdjacentHTML('beforeend',nextBtn());
 }
 function revealReal(){
- if(session.answered)return;session.answered=true;const item=session.items[session.index];
- document.getElementById('fb').innerHTML=`<div class="feedback good"><b>${t('Ejemplos posibles','Possible examples')}</b><br>${item.examples.map(esc).join('<br>')}</div>${nextButton()}`;
- record(item,true);session.results.push({id:item.id,ok:true});
+ if(activity.answered)return;activity.answered=true;
+ const entry=activity.items[activity.index],item=entry.item;gradeItem(entry.topic,item,true);activity.results.push(true);
+ document.getElementById('practiceFeedback').innerHTML=`<div class="feedback good"><b>${tr('Ejemplos posibles','Possible examples')}</b><br>${(item.examples||[]).map(esc).join('<br>')}</div>${nextBtn()}`;
 }
-function nextButton(){return `<button class="btn primary center" style="margin-top:12px" onclick="nextActivity()">${t('SIGUIENTE','NEXT')} →</button>`}
-function nextActivity(){
- session.index++;
- if(session.index>=session.items.length){renderSessionEnd();return}
- session.answered=false;renderToday();
+function insertRelatedLater(entry){
+ const pool=D(entry.topic).practice_pool||[];
+ const alt=pool.find(x=>x.skill===entry.item.skill&&x.id!==entry.item.id);
+ if(alt){
+  const pos=Math.min(activity.items.length,activity.index+3);
+  if(!activity.items.slice(activity.index+1).some(x=>x.item?.id===alt.id))activity.items.splice(pos,0,{topic:entry.topic,item:alt});
+ }
 }
-function renderSessionEnd(){
- const wrong=session.results.filter(x=>!x.ok).length;
- document.getElementById('root').innerHTML=`
- ${renderTopBar(t('Práctica terminada','Practice complete'))}
- <div class="card">
-  <h2>${t('Práctica terminada','Practice complete')}</h2>
-  <p>${wrong?t('Has encontrado algunas cosas que conviene repetir. Ya las hemos guardado en «Mis difíciles».','You found a few things worth repeating. They are now in “My tricky ones”.'):t('Buen repaso. Volverán a aparecer más adelante para comprobar que siguen disponibles.','Good review. These ideas will return later so you can retrieve them again.')}</p>
-  <button class="btn primary center" onclick="session=null;startSession('today','${session.topicId}')">${t('PRACTICAR OTRA VEZ','PRACTISE AGAIN')}</button>
-  <button class="btn center" style="margin-top:9px" onclick="session=null;startSession('tricky','${session.topicId}')">${t('REPASAR MIS DIFÍCILES','REVIEW MY TRICKY ONES')}</button>
-  <button class="btn center" style="margin-top:9px" onclick="session=null;go('home')">${t('VOLVER AL INICIO','BACK HOME')}</button>
- </div>`;
+function renderActivityEnd(){
+ const wrong=(activity.results||[]).filter(x=>!x).length;
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Terminado','Finished'))}<div class="card"><h2>${tr('Sesión terminada','Practice complete')}</h2><p>${wrong?tr('Lo que ha costado queda programado para volver a aparecer.','Anything that was difficult is scheduled to return.') : tr('Buen repaso. Estas ideas volverán más adelante para comprobar que siguen disponibles.','Good review. These ideas will return later so you can retrieve them again.')}</p><button class="btn primary center" onclick="openPractice('recommended')">${tr('PRACTICAR OTRA VEZ','PRACTISE AGAIN')}</button><button class="btn center" style="margin-top:8px" onclick="go('home')">${tr('VOLVER AL INICIO','BACK HOME')}</button></div>`;
 }
 
-function renderWeek(){renderTopic(C.current_topic,true)}
-function renderTopic(topicId,isCurrent=false){
- const topic=C.topics[topicId],d=dirData(topicId);
- document.getElementById('root').innerHTML=`
- ${renderTopBar(topic.title[direction==='en_es'?'en':'es'])}
- <div class="card"><span class="pill">${isCurrent?t('ESTA SEMANA','THIS WEEK'):t('EXPLORAR','EXPLORE')}</span><h2 style="margin-top:8px">${topic.icon} ${esc(topic.title[direction==='en_es'?'en':'es'])}</h2>
- ${!isCurrent?`<button class="btn soft center" onclick="markInterest('${topicId}')">${t('ME GUSTARÍA APRENDER ESTO PRONTO','I WANT TO LEARN THIS SOON')}</button>`:''}
- </div>
- <div class="card"><h2>1 · ${t('APRENDE','LEARN')}</h2>${d.learn.map(x=>learnItem(topicId,x)).join('')}</div>
- <div class="card why"><h2>2 · WHY?</h2><div class="activity-prompt" style="text-align:left">${esc(d.why.headline)}</div><p>${esc(d.why.intro)}</p>${(d.why.families||[]).map(f=>`<div class="family"><b>${f[0]} ${esc(f[1])}</b><br>${esc(f[2])}</div>`).join('')}<div class="note"><b>${t('Recuerda','Remember')}:</b> ${esc(d.why.remember)}</div><details style="margin-top:10px"><summary>${t('Más explicación','More explanation')}</summary><p>${esc(d.why.more)}</p></details></div>
- ${d.phrases&&d.phrases.length?`<div class="card"><h2>3 · ${t('FRASES ÚTILES','USEFUL PHRASES')}</h2>${d.phrases.map(x=>phraseItem(topicId,x)).join('')}</div>`:''}
- <div class="card"><button class="btn primary center" onclick="session=null;startSession('free','${topicId}')">${t('PRACTICAR ESTE TEMA','PRACTISE THIS TOPIC')}</button></div>`;
+function renderTricky(){
+ const skills=[...new Set(candidates().filter(x=>x.z.wrong>0).map(x=>x.item.skill))];
+ const topics=[...new Set(candidates().filter(x=>x.z.wrong>0).map(x=>x.topic))];
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Mis difíciles','My tricky ones'))}<div class="card"><h2>🧠 ${tr('Mis difíciles','My tricky ones')}</h2><p>${tr('Language Mirror decide qué conviene recuperar antes según tus fallos y el tiempo desde la última práctica.','Language Mirror prioritises what is worth retrieving based on mistakes and time since the last review.')}</p><div class="menu-list">
+ ${homeButton('▶',tr('Recomendado','Recommended'),tr('Lo que más conviene repasar ahora','What is most useful to review now'),"openPractice('tricky')",true)}
+ ${homeButton('🔀',tr('Mezcla aleatoria','Random mix'),tr('Repaso libre de tus dificultades','Free mixed review of difficult items'),"openPractice('random')")}
+ ${homeButton('🗂️',tr('Por tema','By topic'),tr('Elige una temática ya trabajada','Choose a topic you have already studied'),"showTrickyTopics()")}
+ ${homeButton('🧩',tr('Por patrón','By pattern'),tr('Ej.: HACE / ESTÁ o patrones del inglés','E.g. HACE / ESTÁ or English patterns'),"showPatterns()")}
+ </div></div>`;
 }
-function learnItem(topicId,x){
- const key=direction+'|'+topicId+'|'+x.id, n=((S().notes||{})[key]||'');
- return `<div class="learn-item"><div style="font-size:37px">${x.icon}</div><div class="bigphrase">${esc(x.target)}</div><div class="translation">${esc(x.source)}</div>
- ${x.audio?`<button class="audio" onclick="play('${esc(x.audio)}')">🔊 ${t('Escuchar','Listen')}</button>`:''}
- <button class="btn" style="margin-top:8px" onclick="toggleNote('${esc(key)}')">✏️ ${t('Mi nota','My note')}</button>
- <div id="note-${safe(key)}" class="${n?'':'hidden'}" style="margin-top:8px"><textarea id="ta-${safe(key)}" placeholder="${t('Esto me recuerda a…','This reminds me of…')}">${esc(n)}</textarea><button class="btn soft center" onclick="saveNote('${esc(key)}')">${t('GUARDAR','SAVE')}</button></div></div>`;
+function showTrickyTopics(){
+ const ids=allPracticeTopics();
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Por tema','By topic'))}<div class="card"><div class="menu-list">${ids.map(id=>homeButton(C.topics[id].icon,tTitle(id),tr('Practicar dificultades de este tema','Practise difficulties from this topic'),`openPractice('tricky','${id}')`)).join('')}</div></div>`;
 }
-function phraseItem(topicId,x){
- const key=direction+'|'+topicId+'|phrase_'+x.id,n=((S().notes||{})[key]||'');
- return `<div class="learn-item"><div style="font-size:34px">${x.icon}</div><div class="bigphrase">${esc(x.target)}</div><div class="translation">${esc(x.source)}</div>
- ${x.memory?`<div class="note">🧠 ${esc(x.memory)}</div>`:''}
- ${x.audio?`<button class="audio" onclick="play('${esc(x.audio)}')">🔊 ${t('Escuchar','Listen')}</button>`:''}
- <button class="btn" style="margin-top:8px" onclick="toggleNote('${esc(key)}')">✏️ ${t('Mi nota','My note')}</button>
- <div id="note-${safe(key)}" class="${n?'':'hidden'}" style="margin-top:8px"><textarea id="ta-${safe(key)}">${esc(n)}</textarea><button class="btn soft center" onclick="saveNote('${esc(key)}')">${t('GUARDAR','SAVE')}</button></div></div>`;
+function showPatterns(){
+ const data=candidates().filter(x=>x.z.wrong>0),skills=[...new Set(data.map(x=>x.item.skill))];
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Por patrón','By pattern'))}<div class="card"><div class="menu-list">${skills.length?skills.map(s=>`<button class="btn" onclick="openPractice('tricky',null,{skill:'${s}'})">${esc(patternLabel(s))}</button>`).join(''):`<p>${tr('Todavía no hay suficientes dificultades registradas.','There are not enough recorded difficulties yet.')}</p>`}</div></div>`;
 }
-function safe(s){return s.replace(/[^a-zA-Z0-9]/g,'_')}
-function toggleNote(k){document.getElementById('note-'+safe(k)).classList.toggle('hidden')}
-function saveNote(k){const s=S(),n=s.notes||{};n[k]=document.getElementById('ta-'+safe(k)).value.trim();save({notes:n});}
-function markInterest(topicId){const s=S(),i=s.interests||{};i[topicId]=(i[topicId]||0)+1;save({interests:i});alert(t('Guardado. Lo tendremos en cuenta para próximas semanas.','Saved. We can take this into account for future weeks.'))}
+function patternLabel(s){
+ const labels={hace_vs_esta:'HACE / ESTÁ',lluvia_llover:'lluvia / llover / lloviendo',combine_patterns:tr('Combinar patrones','Combining patterns'),weather_pattern:"It's + adjective",rain_action:'rain / raining',real_life:tr('Conversación real','Real-life conversation')};
+ return labels[s]||s.replaceAll('_',' ');
+}
 
-function renderTricky(){session=null;startSession('tricky',C.current_topic)}
-function renderReview(){
- document.getElementById('root').innerHTML=`${renderTopBar(t('Lecciones anteriores','Previous lessons'))}<div class="card"><h2>${t('Todavía no hay una lección anterior','No previous lesson yet')}</h2><p>${t('Cuando paséis a la siguiente semana, Weather quedará aquí para seguir repasándolo cuando quieras.','When you move to the next weekly topic, Weather will stay here so you can review it whenever you want.')}</p></div>`;
+function renderGames(){
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Jugar y repasar','Play & review'))}<div class="card"><h2>🎲 ${tr('Jugar y repasar','Play & review')}</h2><p>${tr('Juegos tranquilos con contenido que ya has visto. No añaden un temario nuevo.','Calm activities using language you have already seen. They do not add a second curriculum.')}</p><div class="menu-list">
+ ${homeButton('🔧',tr('Corrige el error','Fix it'),tr('Detecta y corrige frases','Spot and correct sentences'),"startGame('fix')")}
+ ${homeButton('🖼️',tr('Reto de imagen','Picture challenge'),tr('Mira · dilo · comprueba','Look · say it · check'),"startGame('picture')")}
+ ${homeButton('🔀',tr('Mezcla libre','Random mix'),tr('Una mezcla tranquila de lo aprendido','A calm mix of what you have learned'),"openPractice('random')")}
+ </div></div>`;
 }
+function startGame(kind){
+ let pool=candidates().map(x=>({topic:x.topic,item:x.item}));
+ if(kind==='fix')pool=pool.filter(x=>x.item.type==='fix');
+ if(kind==='picture')pool=pool.filter(x=>x.item.type==='recall');
+ if(!pool.length)pool=candidates().map(x=>({topic:x.topic,item:x.item}));
+ pool.sort(()=>Math.random()-.5);activity={kind:'practice',mode:'game',items:pool.slice(0,8),index:0,answered:false,results:[]};route='activity';renderActivity();
+}
+
 function renderExplore(){
- const topics=Object.entries(C.topics);
- document.getElementById('root').innerHTML=`${renderTopBar(t('Explorar','Explore'))}<div class="topic-grid">${topics.map(([id,x])=>`
- <div class="topic-card"><div class="topic-icon">${x.icon}</div><div class="topic-title">${esc(x.title[direction==='en_es'?'en':'es'])}</div><div class="small muted">${x.status==='current'?t('Tema de esta semana','This week'):x.status==='explore'?t('Disponible para explorar','Available to explore'):t('Tema futuro','Future topic')}</div>
- ${x.directions?`<button class="btn soft center" style="margin-top:8px" onclick="${id===C.current_topic?"go('week')":id==="plants"?"go('plants')":""}">${t('ABRIR','OPEN')}</button>`:`<button class="btn center" style="margin-top:8px" onclick="markInterest('${id}')">${t('ME INTERESA','I’M INTERESTED')}</button>`}
- </div>`).join('')}</div>`;
+ const available=Object.entries(C.topics).filter(([id,x])=>x.directions);
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Explorar temas','Explore topics'))}<div class="card"><h2>🗂️ ${tr('Explorar','Explore')}</h2><p>${tr('Puedes abrir cualquier tema disponible y practicarlo por curiosidad. Eso no cambia automáticamente la lección semanal.','You can open any available topic and practise it out of curiosity. This does not automatically change the weekly lesson.')}</p><div class="menu-list">${available.map(([id,x])=>homeButton(x.icon,tTitle(id),x.status==='current'?tr('Tema de esta semana','This week'):tr('Disponible para explorar','Available to explore'),`openExploreTopic('${id}')`)).join('')}</div></div>`;
+}
+function openExploreTopic(id){
+ document.getElementById('root').innerHTML=`${header()}${topbar(tTitle(id))}<div class="card"><h2>${C.topics[id].icon} ${esc(tTitle(id))}</h2><div class="menu-list">
+ ${homeButton('🪞',tr('Aprender','Learn'),tr('Tarjetas una a una','One card at a time'),`startLearning('learn','${id}')`,true)}
+ ${(D(id).phrases||[]).length?homeButton('💬',tr('Frases útiles','Useful phrases'),tr('Frases reales de este tema','Real phrases from this topic'),`startLearning('phrases','${id}')`):''}
+ ${homeButton('🧠',tr('Practicar','Practice'),tr('Practicar este tema libremente','Freely practise this topic'),`openPractice('random','${id}')`)}
+ </div></div>`;
+}
+
+function renderReference(){
+ const d=D('weather');
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Ver todo','View everything'))}<div class="card"><h2>${tr('Resumen de la semana','Weekly reference')}</h2>${d.learn.map(x=>`<div class="ref-item"><div class="ref-target">${x.icon} ${esc(x.target)}</div><div class="ref-source">${esc(x.source)}</div>${x.audio?`<button class="audio" onclick="play('${esc(x.audio)}')">🔊 ${tr('Escuchar','Listen')}</button>`:''}</div>`).join('')}</div><div class="card"><h2>${tr('Frases útiles','Useful phrases')}</h2>${(d.phrases||[]).map(x=>`<div class="ref-item"><div class="ref-target">${x.icon} ${esc(x.target)}</div><div class="ref-source">${esc(x.source)}</div></div>`).join('')}</div>`;
+}
+function noteUI(topic,id){
+ const k=direction+'|'+topic+'|'+id,n=(S().notes||{})[k]||'';
+ return `<details style="margin-top:12px"><summary>✏️ ${tr('Mi nota','My note')}</summary><textarea id="note_${safe(k)}" placeholder="${esc(tr('Esto me recuerda a…','This reminds me of…'))}">${esc(n)}</textarea><button class="btn soft center" onclick="saveNote('${esc(k)}')">${tr('GUARDAR','SAVE')}</button></details>`;
+}
+function saveNote(k){const s=S(),n=s.notes||{};n[k]=document.getElementById('note_'+safe(k)).value.trim();save({notes:n});}
+function renderNotes(){
+ const rows=Object.entries(S().notes||{}).filter(([,v])=>v);
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Mis notas','My notes'))}<div class="card"><h2>📝 ${tr('Mis notas y asociaciones','My notes & memory links')}</h2>${rows.length?rows.map(([k,v])=>`<div class="ref-item"><div class="small muted">${esc(k.split('|').slice(1).join(' · '))}</div>${esc(v)}</div>`).join(''):`<p>${tr('Todavía no has guardado notas.','You have not saved any notes yet.')}</p>`}</div>`;
 }
 function renderAI(){
- const p=dirData().ai_prompt.join('\n');
- document.getElementById('root').innerHTML=`${renderTopBar(t('Hablar con IA','Talk with AI'))}<div class="card"><h2>🗣️ ${t('Práctica de conversación','Conversation practice')}</h2><p>${t('Copia este texto, abre tu profesor de IA en el móvil o el ordenador y pégalo.','Copy this text, open your AI teacher on your phone or computer, and paste it.')}</p><button class="btn primary center" onclick="copyText(${JSON.stringify(p)})">📋 ${t('COPIAR TEXTO','COPY PRACTICE TEXT')}</button><details style="margin-top:12px"><summary>${t('Ver texto','See text')}</summary><pre style="white-space:pre-wrap;font-size:15px">${esc(p)}</pre></details></div>`;
-}
-function renderNotes(){
- const notes=S().notes||{},rows=Object.entries(notes).filter(([k,v])=>v);
- document.getElementById('root').innerHTML=`${renderTopBar(t('Mis notas','My notes'))}<div class="card"><h2>📝 ${t('Mis asociaciones','My memory links')}</h2>${rows.length?rows.map(([k,v])=>`<div class="learn-item"><div class="small muted">${esc(k.split('|').slice(1).join(' · '))}</div>${esc(v)}</div>`).join(''):`<p>${t('Todavía no has guardado ninguna nota.','You have not saved any notes yet.')}</p>`}</div>`;
+ const p=D('weather').ai_prompt.join('\n');
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Hablar con IA','Talk with AI'))}<div class="card"><h2>🗣️ ${tr('Conversación guiada','Guided conversation')}</h2><p>${tr('Copia este texto, abre tu profesor de IA y pégalo.','Copy this text, open your AI teacher and paste it.')}</p><button class="btn primary center" onclick='copyText(${JSON.stringify(p)})'>📋 ${tr('COPIAR TEXTO','COPY PRACTICE TEXT')}</button><details style="margin-top:12px"><summary>${tr('Ver texto','See text')}</summary><pre style="white-space:pre-wrap;font-size:14px">${esc(p)}</pre></details></div>`;
 }
 
-const classSteps={
- en_es:[
-  {kind:'intro',title:'Recall',instruction:'She learns Spanish',main:'☀️  ☁️  💨',sub:'Without looking at the lesson, ask her to say one Spanish weather phrase for each picture.'},
-  {kind:'task',title:'Real-life task',instruction:'Use the real world',main:'Look out of the window together.',sub:'Ask: “¿Qué tiempo hace?” Let her answer in Spanish. React naturally and ask one follow-up.'},
-  {kind:'fix',title:'FIX MY SPANISH',instruction:'You deliberately make the mistake',main:'❌ Está sol.',sub:'Ask her to correct you and explain the correct phrase if she can.'},
-  {kind:'mirror',title:'MIRROR',instruction:'Quick exchange',main:'You say: “It’s cloudy.”',sub:'She says the Spanish. Then swap: she says a Spanish weather phrase and you give the English.'},
-  {kind:'explain',title:'Need an explanation?',instruction:'If one of you cannot explain the WHY clearly',main:'Use the explanation helper.',sub:'Choose a difficulty below and copy a ready prompt into ChatGPT.'},
-  {kind:'retry',title:'Try again',instruction:'Repeat the real-life task',main:'Look outside again.',sub:'Ask the same question. The goal is to use the corrected phrase naturally, not to remember the correction.'}
- ],
- es_en:[
-  {kind:'intro',title:'Recall',instruction:'You learn English',main:'☀️  ☁️  💨',sub:'Without looking at the lesson, say one English weather phrase for each picture.'},
-  {kind:'task',title:'Real-life task',instruction:'Use the real world',main:'Look out of the window together.',sub:'She asks you about the weather. Answer naturally in English and let her ask one follow-up.'},
-  {kind:'fix',title:'FIX MY ENGLISH',instruction:'She deliberately makes the mistake',main:'❌ It makes sun.',sub:'Correct it: “It’s sunny.” Explain the pattern if you can.'},
-  {kind:'mirror',title:'MIRROR',instruction:'Quick exchange',main:'She says: “Hace viento.”',sub:'You say the English. Then swap directions.'},
-  {kind:'explain',title:'Need an explanation?',instruction:'If one of you cannot explain the WHY clearly',main:'Use the explanation helper.',sub:'Choose a difficulty below and copy a ready prompt into ChatGPT.'},
-  {kind:'retry',title:'Try again',instruction:'Repeat the real-life task',main:'Look outside again.',sub:'Use the corrected English naturally in a new sentence.'}
- ]};
-function renderTogether(){
- const steps=classSteps[classDirection],s=steps[classIndex];
- let helper='';
- if(s.kind==='explain'){
-  helper=`<div class="class-actions">
-   <button class="btn" onclick="copyExplain('hace')">Why “hace sol”, not “está sol”?</button>
-   <button class="btn" onclick="copyExplain('nublado')">Why “está nublado”, not “hace nublado”?</button>
-   <button class="btn" onclick="copyExplain('english')">Why “It’s sunny”, not “it makes sun”?</button>
-  </div>`;
- }
- document.getElementById('root').innerHTML=`${renderTopBar(t('Modo clase','Class mode'))}
- <div class="choice card"><button class="btn ${classDirection==='en_es'?'soft':''}" onclick="classDirection='en_es';classIndex=0;renderTogether()">🇬🇧 → 🇪🇸 ${t('Ella aprende español','She learns Spanish')}</button><button class="btn ${classDirection==='es_en'?'soft':''}" onclick="classDirection='es_en';classIndex=0;renderTogether()">🇪🇸 → 🇬🇧 ${t('Yo aprendo inglés','I learn English')}</button></div>
- <div class="progress"><div style="width:${Math.round(((classIndex+1)/steps.length)*100)}%"></div></div>
- <div class="card class-step">
-  <div class="class-instruction">${esc(s.instruction)}</div><h2>${esc(s.title)}</h2><div class="class-main">${esc(s.main)}</div><p>${esc(s.sub)}</p>${helper}
-  <div class="class-actions">
-   ${classIndex>0?`<button class="btn center" onclick="classIndex--;renderTogether()">← ${t('ANTERIOR','BACK')}</button>`:''}
-   ${classIndex<steps.length-1?`<button class="btn primary center" onclick="classIndex++;renderTogether()">${t('SIGUIENTE','NEXT')} →</button>`:`<button class="btn primary center" onclick="saveClassNote()">${t('TERMINAR Y TOMAR NOTA','FINISH & ADD NOTE')}</button>`}
-  </div>
- </div>`;
+/* Hidden face-to-face mode */
+let classSide='en_es',classIndex=0;
+function classCards(){
+ const she=[
+  {icon:'👋',title:'Warm-up',main:'Talk normally for one minute.',sub:'Use Spanish as much as possible. If communication breaks, use English briefly and return to Spanish.'},
+  {icon:'🪟',title:'Real life',main:'Look outside together.',sub:'Ask: “¿Qué tiempo hace?” Let the answer grow into a real neighbour conversation.'},
+  {icon:'🔧',title:'Fix my Spanish',main:'Say deliberately: “Está sol.”',sub:'Can she correct you? Ask her to repeat the correct sentence naturally.'},
+  {icon:'🪞',title:'Mirror',main:'You say: “It’s windy.”',sub:'She says the Spanish. Then she gives you a Spanish phrase and you give the English.'},
+  {icon:'❓',title:'Explain if needed',main:'If either of you knows something is right but cannot explain why, use the explanation helper.',sub:'The explanation should be in the learner’s strong language.'},
+  {icon:'🔁',title:'Try again',main:'Return to the window conversation.',sub:'Use the corrected language in a fresh sentence. End with one note about what appeared naturally.'}
+ ];
+ const me=[
+  {icon:'👋',title:'Calentamiento',main:'Hablad con normalidad durante un minuto.',sub:'Usa inglés todo lo posible. Utiliza español brevemente solo cuando una aclaración realmente ayude.'},
+  {icon:'🪟',title:'Vida real',main:'Mirad por la ventana juntas.',sub:'Ella te pregunta por el tiempo. Responde de forma natural en inglés y deja que la conversación continúe.'},
+  {icon:'🔧',title:'Fix my English',main:'Ella dice deliberadamente: “It makes sun.”',sub:'Corrígelo: “It’s sunny.” Después usa tú mismo el patrón correcto.'},
+  {icon:'🪞',title:'Mirror',main:'Ella dice: “Hace viento.”',sub:'Tú dices la frase en inglés. Después intercambiad las direcciones.'},
+  {icon:'❓',title:'Explicar si hace falta',main:'Usad la ayuda de explicación si cuesta comunicar el PORQUÉ.',sub:'La explicación para ti debe aparecer en español.'},
+  {icon:'🔁',title:'Intentarlo otra vez',main:'Repetid la conversación real.',sub:'Usa el inglés corregido de manera natural, no como un ejercicio de gramática.'}
+ ];
+ return classSide==='en_es'?she:me;
 }
-function copyExplain(type){
- const prompts={
-  hace:'Explain to a native English-speaking adult beginner why Spanish says “hace sol” instead of “está sol”. Use simple English, compare it with “it’s sunny”, avoid unnecessary grammar terminology, and give two everyday examples.',
-  nublado:'Explain to a native English-speaking adult beginner why Spanish says “está nublado” instead of “hace nublado”. Use simple English, contrast it with “hace sol”, and avoid unnecessary grammar terminology.',
-  english:'Explica a una persona hispanohablante adulta por qué en inglés se dice “It’s sunny” y no “It makes sun”. Usa español sencillo, compara el patrón con “hace sol” y da dos ejemplos cotidianos.'
- };
- copyText(prompts[type]);
+function renderClass(){
+ const cards=classCards(),x=cards[classIndex], classEs=(classSide==='es_en');
+ const ct=(es,en)=>classEs?es:en;
+ document.getElementById('root').innerHTML=`${header()}${topbar(ct('Modo juntas','Together mode'))}<div class="chips" style="margin-bottom:9px"><button class="btn chip ${classSide==='en_es'?'soft':''}" onclick="classSide='en_es';classIndex=0;renderClass()">🇬🇧 → 🇪🇸</button><button class="btn chip ${classSide==='es_en'?'soft':''}" onclick="classSide='es_en';classIndex=0;renderClass()">🇪🇸 → 🇬🇧</button></div><div class="progress-wrap"><div class="progress"><div style="width:${((classIndex+1)/cards.length)*100}%"></div></div><div class="counter">${classIndex+1} / ${cards.length}</div></div><div class="card class-card"><div class="flash-icon">${x.icon}</div><div class="class-instruction">${esc(x.title)}</div><div class="class-main">${esc(x.main)}</div><p>${esc(x.sub)}</p>${(x.title.startsWith('Explain')||x.title.startsWith('Explicar'))?`<button class="btn soft center" onclick="copyExplain()">${ct('COPIAR PROMPT DE EXPLICACIÓN','COPY EXPLANATION PROMPT')}</button>`:''}<div class="chips" style="margin-top:15px">${classIndex?`<button class="btn chip" onclick="classIndex--;renderClass()">←</button>`:''}${classIndex<cards.length-1?`<button class="btn chip primary" onclick="classIndex++;renderClass()">${ct('SIGUIENTE','NEXT')} →</button>`:`<button class="btn chip primary" onclick="go('home')">${ct('TERMINAR','FINISH')}</button>`}</div></div>`;
 }
-function saveClassNote(){
- const note=prompt(t('¿Qué ocurrió en clase? Escribe una nota breve si quieres.','What happened in class? Add a short note if you want.'));
- if(note){const s=S(),n=s.classNotes||[];n.push({date:new Date().toISOString(),direction:classDirection,note});save({classNotes:n})}
- go('home');
+function copyExplain(){
+ const p=classSide==='en_es'?'Explain the Spanish point we are discussing to a native English-speaking adult learner. Use simple English, compare Spanish and English directly, avoid unnecessary grammar terminology, and give two everyday examples.':'Explica el punto de inglés que estamos tratando a una persona adulta hispanohablante. Usa español sencillo, compara directamente inglés y español, evita terminología gramatical innecesaria y da dos ejemplos cotidianos.';
+ copyText(p);
 }
-function play(src){new Audio(src).play().catch(()=>alert(t('No se pudo reproducir el audio.','The audio could not play.')))}
-function copyText(x){navigator.clipboard.writeText(x).then(()=>alert(t('Copiado.','Copied.'))).catch(()=>prompt(t('Copia este texto:','Copy this text:'),x))}
-</script></body></html>
+function play(src){new Audio(src).play().catch(()=>alert(tr('No se pudo reproducir el audio.','The audio could not play.')))}
+function copyText(x){navigator.clipboard.writeText(x).then(()=>alert(tr('Copiado.','Copied.'))).catch(()=>prompt(tr('Copia este texto:','Copy this text:'),x))}
+</script>
+</body></html>

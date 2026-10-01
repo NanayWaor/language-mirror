@@ -1,5 +1,5 @@
 {
-  "app_version": 3,
+  "app_version": 4,
   "updated": "2026-10-01",
   "current_topic": "weather",
   "topics": {
@@ -744,6 +744,14 @@
         "es": "Comida y café"
       },
       "icon": "☕"
+    }
+  },
+  "next_week": {
+    "status": "choose_together",
+    "suggestion": "plants",
+    "label": {
+      "en": "We'll choose the next weekly topic together in class.",
+      "es": "Elegiremos juntas el próximo tema semanal durante la clase."
     }
   }
 }
