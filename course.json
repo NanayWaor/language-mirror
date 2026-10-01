@@ -1,5 +1,5 @@
 {
-  "app_version": 4,
+  "app_version": 5,
   "updated": "2026-10-01",
   "current_topic": "weather",
   "topics": {
@@ -293,6 +293,103 @@
             "Explain corrections briefly in English, ask me to repeat the corrected Spanish, then continue.",
             "Speak slowly and keep sentences short.",
             "Keep it natural and adult."
+          ],
+          "item_why": {
+            "sunny": {
+              "title": "Why “hace sol”?",
+              "body": "English says “it’s sunny”, but Spanish does not use ESTÁ for this idea. The everyday expression is HACE + SOL: “Hace sol.” Learn the whole weather phrase rather than translating word by word."
+            },
+            "hot": {
+              "title": "Why “hace calor”?",
+              "body": "For temperature, Spanish commonly uses HACE + a noun: “hace calor” and “hace frío”. English changes to an adjective: “it’s hot / cold”. The languages package the same situation differently."
+            },
+            "cold": {
+              "title": "Why “hace frío”?",
+              "body": "Temperature belongs to the HACE family here: “hace frío”. Do not translate English “it’s” as ESTÁ automatically."
+            },
+            "windy": {
+              "title": "Why “hace viento”?",
+              "body": "Spanish says HACE + VIENTO. English turns the noun wind into the adjective windy: “It’s windy.”"
+            },
+            "cloudy": {
+              "title": "Why “está nublado”?",
+              "body": "Nublado describes the state of the sky, so Spanish uses ESTÁ: “está nublado”. Contrast this with “hace sol / calor / frío / viento”."
+            },
+            "storm": {
+              "title": "Why “hay tormenta”?",
+              "body": "Here Spanish presents the storm as something that exists: HAY + TORMENTA. English uses the same idea in “There’s a storm.”"
+            },
+            "raining": {
+              "title": "Why “está lloviendo”?",
+              "body": "Lluvia is the noun “rain”; llover is the verb “to rain”. For the action happening now, Spanish can say “está lloviendo”. You are using a verb, not changing the noun lluvia."
+            },
+            "snowing": {
+              "title": "Why “está nevando”?",
+              "body": "This is an action happening now: nevar → nevando → “está nevando”. It belongs with “está lloviendo”, not with the HACE phrases."
+            }
+          },
+          "phrase_why": {
+            "what_weather": {
+              "title": "A useful conversation opener",
+              "body": "“¿Qué tiempo hace hoy?” works well as a complete conversation chunk. You do not need to translate each word first."
+            },
+            "cloudy_hot": {
+              "title": "Two patterns in one sentence",
+              "body": "This combines two Spanish weather families: ESTÁ nublado + HACE calor. “Pero” joins the contrast."
+            },
+            "very_windy": {
+              "title": "Adding intensity",
+              "body": "Start from “hace viento”. Add “mucho” to make it stronger: “hace mucho viento”."
+            },
+            "rain_now": {
+              "title": "Adding “now”",
+              "body": "“Ahora” places the action in the present moment. The core phrase remains “está lloviendo”."
+            },
+            "rainbow": {
+              "title": "Why HAY?",
+              "body": "You are saying a rainbow is present: “Hay un arcoíris” = “There’s a rainbow.”"
+            },
+            "thunder": {
+              "title": "An action happening now",
+              "body": "“Está tronando” describes thunder happening now. The tro-NANDO association is only a memory cue, not a grammar rule."
+            }
+          },
+          "extension_pool": [
+            {
+              "id": "w_ext_looks_rain",
+              "type": "recall",
+              "icon": "🌧️",
+              "prompt": "You think rain is coming. Say: “It looks like it’s going to rain.”",
+              "answer_text": "Parece que va a llover.",
+              "skill": "weather_next_level",
+              "why": "“Parece que…” says how something seems; “va a llover” says rain is coming."
+            },
+            {
+              "id": "w_ext_yesterday",
+              "type": "recall",
+              "icon": "🥶",
+              "prompt": "Say: “Yesterday it was very cold.”",
+              "answer_text": "Ayer hizo mucho frío.",
+              "skill": "weather_past",
+              "why": "The familiar HACE weather pattern moves into the past: hace → hizo."
+            },
+            {
+              "id": "w_ext_think_rain",
+              "type": "recall",
+              "icon": "☁️",
+              "prompt": "Ask: “Do you think it’s going to rain?”",
+              "answer_text": "¿Crees que va a llover?",
+              "skill": "weather_next_level",
+              "why": "“¿Crees que…?” is a reusable way to ask what someone thinks."
+            }
+          ],
+          "puzzle_words": [
+            "SOL",
+            "CALOR",
+            "FRIO",
+            "VIENTO",
+            "NUBE",
+            "LLUVIA"
           ]
         },
         "es_en": {
@@ -428,7 +525,7 @@
               ],
               "answer": 0,
               "skill": "weather_pattern",
-              "why": "Use It’s + adjective: It’s sunny."
+              "why": "Usa IT’S + adjetivo: “It’s sunny”. No traduzcas «hace» palabra por palabra."
             },
             {
               "id": "e_mc_wind",
@@ -442,7 +539,7 @@
               ],
               "answer": 1,
               "skill": "weather_pattern",
-              "why": "Wind is the noun; windy is the adjective."
+              "why": "Wind es el nombre «viento»; windy es el adjetivo que necesitamos en “It’s windy”."
             },
             {
               "id": "e_mc_cloud",
@@ -456,7 +553,7 @@
               ],
               "answer": 0,
               "skill": "weather_pattern",
-              "why": "Cloudy is the adjective after It’s."
+              "why": "Cloud es «nube»; cloudy es «nublado». Después de IT’S usamos aquí el adjetivo cloudy."
             },
             {
               "id": "e_mc_rain",
@@ -470,13 +567,13 @@
               ],
               "answer": 1,
               "skill": "rain_action",
-              "why": "For the action now: It’s raining."
+              "why": "Para la acción que ocurre ahora usamos “It’s raining”."
             },
             {
               "id": "e_recall_sun",
               "type": "recall",
               "icon": "☀️",
-              "prompt": "Say this aloud in English before you reveal it.",
+              "prompt": "Di esta frase en inglés antes de mostrar la respuesta.",
               "answer_text": "It's sunny.",
               "skill": "weather_pattern",
               "audio": "audio/en_its_sunny.mp3"
@@ -485,16 +582,16 @@
               "id": "e_fix",
               "type": "fix",
               "icon": "🔧",
-              "prompt": "Fix this English: “It makes sun.”",
+              "prompt": "Corrige este inglés: “It makes sun.”",
               "answer_text": "It's sunny.",
               "skill": "weather_pattern",
-              "why": "English uses It’s + adjective for this weather expression."
+              "why": "Para este tiempo usamos IT’S + adjetivo: “It’s sunny”."
             },
             {
               "id": "e_real",
               "type": "real",
               "icon": "🪟",
-              "prompt": "Look outside. Say one true sentence about the weather in English.",
+              "prompt": "Mira por la ventana. Di en inglés una frase verdadera sobre el tiempo.",
               "examples": [
                 "It's sunny.",
                 "It's cloudy.",
@@ -505,12 +602,101 @@
             }
           ],
           "ai_prompt": [
-            "You are my English conversation practice partner.",
-            "I am a native Spanish speaker practising everyday English.",
-            "Focus mainly on weather and simple small talk.",
-            "Ask one short question at a time and wait for my answer.",
-            "Correct literal translations briefly in Spanish and ask me to repeat the corrected English.",
-            "Keep the conversation natural and adult."
+            "Eres mi compañero de práctica de conversación en inglés.",
+            "Soy una persona hispanohablante que practica inglés cotidiano.",
+            "Céntrate principalmente en el tiempo y en una conversación breve y natural.",
+            "Hazme una pregunta corta cada vez y espera mi respuesta.",
+            "Corrige brevemente en español las traducciones demasiado literales y pídeme repetir el inglés corregido.",
+            "Mantén la conversación adulta y natural."
+          ],
+          "item_why": {
+            "sunny": {
+              "title": "¿Por qué “It’s sunny”?",
+              "body": "En inglés no traducimos «hace» palabra por palabra. Para esta situación usamos IT’S + adjetivo: “It’s sunny”."
+            },
+            "hot": {
+              "title": "¿Por qué “It’s hot”?",
+              "body": "«Hace calor» se expresa normalmente como IT’S + adjetivo: “It’s hot”. No necesitas encontrar una palabra inglesa para «hace»."
+            },
+            "cold": {
+              "title": "¿Por qué “It’s cold”?",
+              "body": "«Hace frío» → “It’s cold”. El inglés reúne muchas expresiones meteorológicas bajo IT’S + adjetivo."
+            },
+            "windy": {
+              "title": "¿Por qué “It’s windy”?",
+              "body": "Wind es «viento»; windy es «con viento / ventoso». Para «hace viento» usamos “It’s windy”, no “It’s wind”."
+            },
+            "cloudy": {
+              "title": "¿Por qué “It’s cloudy”?",
+              "body": "Cloud es «nube» y cloudy es «nublado». Para describir el tiempo usamos “It’s cloudy”."
+            },
+            "storm": {
+              "title": "¿Por qué “There’s a storm”?",
+              "body": "Aquí decimos que hay una tormenta, por eso encaja “There’s a storm” en vez de IT’S + adjetivo."
+            },
+            "raining": {
+              "title": "¿Por qué “It’s raining”?",
+              "body": "Para la acción que ocurre ahora usamos “It’s raining”. Es el equivalente natural de «está lloviendo»."
+            },
+            "snowing": {
+              "title": "¿Por qué “It’s snowing”?",
+              "body": "Para una acción que ocurre ahora usamos IT’S + verbo en -ING: “It’s snowing”."
+            }
+          },
+          "phrase_why": {
+            "what_weather": {
+              "title": "Una pregunta útil completa",
+              "body": "Aprende “What’s the weather like today?” como una unidad de conversación. No traduzcas «qué / tiempo / hace» palabra por palabra."
+            },
+            "cloudy_hot": {
+              "title": "Dos descripciones en una frase",
+              "body": "El inglés puede usar IT’S en las dos partes: “It’s cloudy, but it’s hot.” El español cambia entre ESTÁ y HACE."
+            },
+            "very_windy": {
+              "title": "Añadir intensidad",
+              "body": "Partimos de “It’s windy” y añadimos “very”: “It’s very windy today.”"
+            },
+            "rain_now": {
+              "title": "Acción en este momento",
+              "body": "“It’s raining now” usa raining para la acción y now para «ahora»."
+            }
+          },
+          "extension_pool": [
+            {
+              "id": "e_ext_looks_rain",
+              "type": "recall",
+              "icon": "🌧️",
+              "prompt": "Di: «Parece que va a llover».",
+              "answer_text": "It looks like it’s going to rain.",
+              "skill": "weather_next_level",
+              "why": "“It looks like…” expresa una impresión y “it’s going to rain” expresa lo que parece que ocurrirá."
+            },
+            {
+              "id": "e_ext_yesterday",
+              "type": "recall",
+              "icon": "🥶",
+              "prompt": "Di: «Ayer hizo mucho frío».",
+              "answer_text": "It was very cold yesterday.",
+              "skill": "weather_past",
+              "why": "Para ayer, “it’s” pasa a “it was”."
+            },
+            {
+              "id": "e_ext_think_rain",
+              "type": "recall",
+              "icon": "☁️",
+              "prompt": "Pregunta: «¿Crees que va a llover?»",
+              "answer_text": "Do you think it’s going to rain?",
+              "skill": "weather_next_level",
+              "why": "“Do you think…?” es un patrón muy reutilizable para preguntar una opinión."
+            }
+          ],
+          "puzzle_words": [
+            "SUNNY",
+            "HOT",
+            "COLD",
+            "WINDY",
+            "CLOUDY",
+            "RAIN"
           ]
         }
       }
@@ -746,12 +932,20 @@
       "icon": "☕"
     }
   },
-  "next_week": {
-    "status": "choose_together",
-    "suggestion": "plants",
-    "label": {
-      "en": "We'll choose the next weekly topic together in class.",
-      "es": "Elegiremos juntas el próximo tema semanal durante la clase."
+  "weekly_mission": {
+    "topic": "weather",
+    "title": {
+      "en": "A short chat with your neighbour",
+      "es": "Una conversación corta con tu vecina"
+    },
+    "subtitle": {
+      "en": "Weather & everyday small talk",
+      "es": "El tiempo y conversación cotidiana"
     }
+  },
+  "planning": {
+    "next_topic_hypothesis": "plants",
+    "status": "not_learner_facing",
+    "spiral_principle": "New weekly mission plus scheduled retrieval from earlier missions; revisit earlier domains later in richer situations."
   }
 }

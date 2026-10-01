@@ -72,6 +72,7 @@ textarea{width:100%;min-height:100px;border:1.5px solid var(--line);border-radiu
 .class-card{min-height:430px;display:flex;flex-direction:column;justify-content:center}
 .class-main{font-size:27px;font-weight:880;line-height:1.24;margin:10px 0}.class-instruction{font-size:16px;color:var(--muted)}
 @media(min-width:760px){main{max-width:780px}.home-grid.two{grid-template-columns:1fr 1fr}.flash{min-height:450px}}
+.puzzle-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-width:390px;margin:15px auto}.letter{aspect-ratio:1;border:1.5px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;background:#fff;font-weight:850;font-size:20px;cursor:pointer}.letter.selected{background:var(--soft);border-color:var(--accent)}.word-list{text-align:center;word-spacing:10px;line-height:1.8;font-weight:800}
 </style>
 </head>
 <body>
@@ -79,8 +80,8 @@ textarea{width:100%;min-height:100px;border:1.5px solid var(--line);border-radiu
 <div id="modalRoot"></div>
 <script>
 let C=null;
-const KEY='language_mirror_v4';
-let direction=localStorage.getItem('lm_v4_direction')||'en_es';
+const KEY='language_mirror_v5';
+let direction=localStorage.getItem('lm_v5_direction')||'en_es';
 let route='home';
 let activity=null;
 let titleTaps=[];
@@ -95,85 +96,67 @@ function D(topic='weather'){return C.topics[topic].directions[direction]}
 function go(r){route=r;activity=null;closeModal();scrollTo(0,0);render()}
 function header(){
  return `<div class="header">
-   <div class="header-title" onclick="secretTap()"><div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE 004</div><h1>Language Mirror</h1></div>
-   <button class="btn direction" onclick="switchDirection()">${direction==='en_es'?'EN → ES':'ES → EN'}</button>
+   <div class="header-title" onclick="secretTap()"><div class="eyebrow">LANGUAGE MIRROR · PROTOTYPE 005</div><h1>Language Mirror</h1></div>
+   <button class="btn direction" onclick="languageSettings()">${direction==='en_es'?'Learning Spanish':'Aprendo inglés'}</button>
  </div>`;
 }
+
 function topbar(title){
  return `<div class="topbar"><button class="btn back" onclick="go('home')">←</button><b>${esc(title)}</b><span class="spacer"></span></div>`;
 }
 function secretTap(){
  const now=Date.now();titleTaps=titleTaps.filter(x=>now-x<1400);titleTaps.push(now);
- if(titleTaps.length>=3){titleTaps=[];route='class';render();}
+ if(titleTaps.length>=3){titleTaps=[];startClass();}
 }
-function switchDirection(){
- direction=direction==='en_es'?'es_en':'en_es';localStorage.setItem('lm_v4_direction',direction);activity=null;render();
+function switchDirection(){ languageSettings(); }
+function languageSettings(){
+ document.getElementById('modalRoot').innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><button class="btn modal-close" onclick="closeModal()">×</button><h2>Language</h2><div class="menu-list"><button class="btn ${direction==='en_es'?'soft':''}" onclick="setDirection('en_es')">🇬🇧 I speak English · I’m learning Spanish</button><button class="btn ${direction==='es_en'?'soft':''}" onclick="setDirection('es_en')">🇪🇸 Hablo español · aprendo inglés</button></div></div></div>`;
 }
+function setDirection(d){ direction=d;localStorage.setItem('lm_v5_direction',d);activity=null;closeModal();render(); }
 
 fetch('course.json?ts='+Date.now()).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(x=>{
  C=x;
- const q=new URLSearchParams(location.search);if(q.get('class')==='1')route='class';
- render();
+ const q=new URLSearchParams(location.search);
+ if(q.get('class')==='1')startClass(); else render();
 }).catch(e=>document.getElementById('root').innerHTML='<div class="card">Could not load course.json.</div>');
 
 function render(){
  if(!C)return;
  document.documentElement.lang=direction==='en_es'?'en':'es';
- const routes={home:renderHome,today:()=>openPractice('recommended'),week:renderWeek,tricky:renderTricky,games:renderGames,explore:renderExplore,notes:renderNotes,ai:renderAI,class:renderClass,reference:renderReference};
+ const routes={home:renderHome,today:()=>openPractice('recommended'),week:renderWeek,tricky:renderTricky,games:renderGames,explore:renderExplore,notes:renderNotes,ai:renderAI,class:renderClass,reference:renderReference,puzzle:renderPuzzle};
  (routes[route]||renderHome)();
 }
 function homeButton(icon,title,sub,onclick,primary=false){
  return `<button class="btn home-btn ${primary?'primary':''}" onclick="${onclick}"><span class="home-icon">${icon}</span><span><b>${esc(title)}</b><br><span class="small">${esc(sub)}</span></span><span class="arrow">›</span></button>`;
 }
 function renderHome(){
- const next=C.next_week?.label?.[direction==='en_es'?'en':'es'];
  document.getElementById('root').innerHTML=`
  ${header()}
  <div class="section-label">${tr('HOY','TODAY')}</div>
- <div class="home-grid">${homeButton('▶',tr('Práctica de hoy','Today’s practice'),tr('Unos 7 minutos · puedes repetir cuando quieras','About 7 minutes · repeat whenever you want'),"openPractice('recommended')",true)}</div>
-
+ <div class="home-grid">${homeButton('▶',tr('Práctica de hoy','Today’s practice'),tr('Language Mirror elige qué conviene practicar','Language Mirror chooses what is useful to practise'),"openPractice('recommended')",true)}</div>
  <div class="section-label">${tr('ESTA SEMANA','THIS WEEK')}</div>
- <div class="home-grid">${homeButton('🌦️',tTitle('weather'),tr('Aprende · frases · practica · conversación real','Learn · phrases · practice · real-life conversation'),"go('week')")}</div>
-
- ${next?`<div class="section-label">${tr('PRÓXIMA SEMANA','NEXT WEEK')}</div><div class="info-card">${esc(next)}</div>`:''}
-
- <div class="section-label">${tr('MÁS PRÁCTICA','MORE PRACTICE')}</div>
- <div class="home-grid two">
-  ${homeButton('🧠',tr('Mis difíciles','My tricky ones'),tr('Repaso según tus errores y tiempo','Review based on errors and time'),"go('tricky')")}
-  ${homeButton('🎲',tr('Jugar y repasar','Play & review'),tr('Actividades tranquilas con lo ya aprendido','Calm activities using what you know'),"go('games')")}
-  ${homeButton('🗣️',tr('Hablar con IA','Talk with AI'),tr('Conversación guiada','Guided conversation'),"go('ai')")}
-  ${homeButton('📝',tr('Mis notas','My notes'),tr('Tus asociaciones y recuerdos','Your memory links'),"go('notes')")}
- </div>
-
+ <div class="home-grid">${homeButton('🌦️',tr('Una conversación corta con tu vecina','A short chat with your neighbour'),tr('El tiempo y conversación cotidiana','Weather & everyday small talk'),"go('week')")}</div>
  <div class="section-label">${tr('EXPLORAR','EXPLORE')}</div>
- <div class="home-grid">${homeButton('🗂️',tr('Explorar temas','Explore topics'),tr('Practica libremente otros temas disponibles','Freely practise other available topics'),"go('explore')")}</div>
-
- <details class="card" style="margin-top:28px">
-  <summary>${tr('Ayudar a mejorar Language Mirror (opcional)','Help improve Language Mirror (optional)')}</summary>
-  <p class="small muted">${tr('Solo si te apetece. Puedes ignorar completamente esta parte.','Only if you feel like it. You can completely ignore this.')}</p>
-  <div class="chips">
-   <button class="btn chip" onclick="feedbackTag('clear')">👍 ${tr('Claro','Clear')}</button>
-   <button class="btn chip" onclick="feedbackTag('examples')">🤔 ${tr('Más ejemplos','More examples')}</button>
-   <button class="btn chip" onclick="feedbackTag('confusing')">❓ ${tr('Algo confunde','Something is confusing')}</button>
-  </div>
-  <textarea id="improveText" placeholder="${esc(tr('Algo que cambiarías, quitarías o añadirías…','Anything you would change, remove or add…'))}"></textarea>
-  <button class="btn soft center" onclick="saveImprovement()">${tr('GUARDAR COMENTARIO','SAVE COMMENT')}</button>
-  <div id="improveStatus" class="small muted"></div>
- </details>`;
+ <div class="home-grid">${homeButton('🗂️',tr('Explorar temas','Explore topics'),tr('Abre y practica libremente otros temas disponibles','Open and freely practise available topics'),"go('explore')")}</div>
+ <details class="card" style="margin-top:28px"><summary>${tr('Ayudar a mejorar Language Mirror (opcional)','Help improve Language Mirror (optional)')}</summary><p class="small muted">${tr('No forma parte del estudio. Puedes ignorarlo completamente.','This is not part of your study. You can completely ignore it.')}</p><div class="chips"><button class="btn chip" onclick="feedbackTag('clear')">👍 ${tr('Claro','Clear')}</button><button class="btn chip" onclick="feedbackTag('confusing')">❓ ${tr('Algo confunde','Something is confusing')}</button><button class="btn chip" onclick="feedbackTag('missing')">💡 ${tr('Me falta algo','Something is missing')}</button></div><textarea id="improveText" placeholder="${esc(tr('Comentario opcional…','Optional comment…'))}"></textarea><button class="btn soft center" onclick="saveImprovement()">${tr('GUARDAR','SAVE')}</button><div id="improveStatus" class="small muted"></div></details>`;
 }
+
 function feedbackTag(tag){const s=S(),f=s.improvement||{};f.tag=tag;save({improvement:f});document.getElementById('improveStatus').textContent=tr('Guardado.','Saved.')}
 function saveImprovement(){const s=S(),f=s.improvement||{};f.text=document.getElementById('improveText').value.trim();save({improvement:f});document.getElementById('improveStatus').textContent=tr('Comentario guardado.','Comment saved.')}
 
 function renderWeek(){
  document.getElementById('root').innerHTML=`
- ${header()}${topbar(tTitle('weather'))}
- <div class="card"><span class="small muted">${tr('ESTA SEMANA','THIS WEEK')}</span><h2>🌦️ ${esc(tTitle('weather'))}</h2>
- <div class="menu-list">
-  ${homeButton('▶',tr('Empezar / continuar','Start / continue'),tr('Retoma la última tarjeta de este bloque','Resume from your last card in this block'),"startLearning('learn','weather')",true)}
-  ${homeButton('🪞',tr('Aprender','Learn'),tr('Tarjetas una a una · audio · ayuda ?','One card at a time · audio · ? help'),"startLearning('learn','weather')")}
+ ${header()}${topbar(tr('Esta semana','This week'))}
+ <div class="card"><span class="small muted">${tr('ESTA SEMANA','THIS WEEK')}</span><h2>🌦️ ${tr('Una conversación corta con tu vecina','A short chat with your neighbour')}</h2><p class="muted">${tr('El tiempo y conversación cotidiana','Weather & everyday small talk')}</p><button class="btn primary center" onclick="startLearning('learn','weather')">${tr('EMPEZAR / CONTINUAR','START / CONTINUE')}</button></div>
+ <div class="card"><div class="section-label" style="margin-top:0">${tr('ACTIVIDADES PRINCIPALES','CORE ACTIVITIES')}</div><div class="menu-list">
+  ${homeButton('🪞',tr('Aprender','Learn'),tr('Tarjetas · audio · ayuda ?','Cards · audio · ? help'),"startLearning('learn','weather')")}
   ${homeButton('💬',tr('Frases útiles','Useful phrases'),tr('Frases reales de conversación','Real conversation phrases'),"startLearning('phrases','weather')")}
-  ${homeButton('🧠',tr('Practicar','Practice'),tr('El sistema mezcla y repite según fallos','Mixed practice that adapts to mistakes'),"openPractice('topic','weather')")}
-  ${homeButton('🪟',tr('Conversación real','Real-life conversation'),tr('Una situación paso a paso','One situation, step by step'),"startLearning('conversation','weather')")}
+  ${homeButton('🧠',tr('Practicar','Practice'),tr('Recomendado · difíciles · aleatorio · patrones','Recommended · tricky · random · patterns'),"practiceMenu('weather')")}
+  ${homeButton('🪟',tr('Conversación real','Real-life conversation'),tr('Una situación que avanza paso a paso','A situation that moves step by step'),"startLearning('conversation','weather')")}
+ </div><div class="section-label">${tr('SI TE APETECE SEGUIR','IF YOU WANT MORE')}</div><div class="menu-list">
+  ${homeButton('🗣️',tr('Hablar con IA','Talk with AI'),tr('Conversación sobre esta misión','Conversation about this mission'),"go('ai')")}
+  ${homeButton('📝',tr('Mis notas','My notes'),tr('Notas y asociaciones de este tema','Notes and memory links for this topic'),"go('notes')")}
+  ${homeButton('🧩',tr('Pausa de puzle','Puzzle break'),tr('Una actividad distinta, sin contar como progreso','Something different; it does not count as progress'),"go('puzzle')")}
   ${homeButton('📖',tr('Ver todo','View everything'),tr('Consulta rápida de la lección','Quick reference for the whole lesson'),"go('reference')")}
  </div></div>`;
 }
@@ -195,8 +178,11 @@ function gradeItem(topic,item,ok){
  all[k]=z;save({schedule:all});
 }
 function allPracticeTopics(){
- return Object.entries(C.topics).filter(([id,x])=>x.directions && (x.status==='current'||x.status==='review')).map(([id])=>id);
+ const ids=new Set([C.current_topic]),st=getSchedule();
+ Object.keys(st).forEach(k=>{const p=k.split('|');if(p[0]===direction&&C.topics[p[1]]?.directions)ids.add(p[1]);});
+ return [...ids];
 }
+
 function candidates(topicIds=allPracticeTopics()){
  const schedule=getSchedule(),out=[];
  topicIds.forEach(topic=>{(D(topic).practice_pool||[]).forEach(item=>{
@@ -212,13 +198,16 @@ function candidates(topicIds=allPracticeTopics()){
 }
 function buildSession(mode,topic=null,filter=null){
  let cands=candidates(topic?[topic]:allPracticeTopics());
- if(mode==='tricky')cands=cands.filter(x=>x.z.wrong>0||x.z.due<=Date.now());
+ if(mode==='tricky')cands=cands.filter(x=>x.z.wrong>0);
  if(filter?.skill)cands=cands.filter(x=>x.item.skill===filter.skill);
- if(mode==='random')cands.sort(()=>Math.random()-.5);
- else cands.sort((a,b)=>b.priority-a.priority||Math.random()-.5);
+ if(mode==='random')cands.sort(()=>Math.random()-.5); else cands.sort((a,b)=>b.priority-a.priority||Math.random()-.5);
  if(!cands.length)cands=candidates(topic?[topic]:allPracticeTopics()).sort(()=>Math.random()-.5);
- return cands.slice(0,8).map(x=>({topic:x.topic,item:x.item}));
+ let items=cands.slice(0,8).map(x=>({topic:x.topic,item:x.item}));
+ const extTopic=topic||C.current_topic,base=candidates([extTopic]),correct=base.reduce((a,x)=>a+x.z.correct,0),wrong=base.reduce((a,x)=>a+x.z.wrong,0),seen=base.filter(x=>x.z.seen).length;
+ if(seen>=4&&correct>=8&&correct>=wrong*2&&D(extTopic).extension_pool?.length){const e=D(extTopic).extension_pool[Math.floor(Math.random()*D(extTopic).extension_pool.length)];items.splice(Math.min(5,items.length),0,{topic:extTopic,item:e,extension:true});}
+ return items.slice(0,8);
 }
+
 function openPractice(mode='recommended',topic=null,filter=null){
  activity={kind:'practice',mode,topic,items:buildSession(mode,topic,filter),index:0,answered:false,results:[],extra:[]};
  route='activity';renderActivity();
@@ -233,22 +222,22 @@ function startLearning(kind,topic){
  activity={kind,topic,items,index:Math.min(saved,Math.max(0,items.length-1)),answered:false,results:[]};route='activity';renderActivity();
 }
 function conversationCards(topic){
- const es=direction==='en_es';
- if(topic==='weather'){
-  return es?[
-   {type:'conversation',topic,icon:'👋',prompt:'You meet your neighbour outside. Start naturally.',answer:'Hola, ¿qué tal?'},
-   {type:'conversation',topic,icon:'🪟',prompt:'Look outside. She asks: “¿Qué tiempo hace?” Answer with one true sentence.',answer:'Example: Está nublado, pero hace calor.'},
-   {type:'conversation',topic,icon:'💬',prompt:'Keep it going. Ask her one weather question.',answer:'¿Qué tiempo hace hoy?'},
-   {type:'conversation',topic,icon:'🌦️',prompt:'Now combine two ideas in one sentence.',answer:'Example: Está nublado, pero hace calor.'}
-  ]:[
-   {type:'conversation',topic,icon:'👋',prompt:'Te encuentras con tu vecina fuera. Empieza de forma natural.',answer:'Hi, how are you?'},
-   {type:'conversation',topic,icon:'🪟',prompt:'Mira fuera. Te pregunta por el tiempo. Responde con una frase verdadera.',answer:'Example: It’s cloudy, but it’s hot.'},
-   {type:'conversation',topic,icon:'💬',prompt:'Mantén la conversación. Haz una pregunta sobre el tiempo.',answer:'What’s the weather like today?'},
-   {type:'conversation',topic,icon:'🌦️',prompt:'Ahora combina dos ideas en una frase.',answer:'Example: It’s cloudy, but it’s hot.'}
-  ];
- }
- return [];
+ if(topic!=='weather')return [];
+ return direction==='en_es'?[
+  {type:'conversation',topic,icon:'👋',prompt:'You meet your neighbour outside. Start naturally in Spanish.',answer:'Hola, ¿qué tal?'},
+  {type:'conversation',topic,icon:'🪟',prompt:'Look outside. Your neighbour asks: “¿Qué tiempo hace?” Answer with one true sentence.',answer:'Example: Está nublado, pero hace calor.'},
+  {type:'conversation',topic,icon:'↪️',prompt:'She answers. Keep the conversation going with one short reaction or question.',answer:'Examples: Sí, hace mucho viento. / ¿Crees que va a llover?'},
+  {type:'conversation',topic,icon:'🌦️',prompt:'Say two things about today in one sentence.',answer:'Example: Está nublado, pero hace calor.'},
+  {type:'conversation',topic,icon:'👋',prompt:'Finish the short neighbour chat naturally.',answer:'Example: Bueno, nos vemos luego.'}
+ ]:[
+  {type:'conversation',topic,icon:'👋',prompt:'Te encuentras con tu vecina. Empieza de forma natural en inglés.',answer:'Hi, how are you?'},
+  {type:'conversation',topic,icon:'🪟',prompt:'Mira fuera. Tu vecina te pregunta por el tiempo. Responde con una frase verdadera.',answer:'Example: It’s cloudy, but it’s hot.'},
+  {type:'conversation',topic,icon:'↪️',prompt:'Ella responde. Mantén la conversación con una reacción o pregunta corta.',answer:'Examples: Yes, it’s very windy. / Do you think it’s going to rain?'},
+  {type:'conversation',topic,icon:'🌦️',prompt:'Di dos cosas sobre hoy en una sola frase.',answer:'Example: It’s cloudy, but it’s hot.'},
+  {type:'conversation',topic,icon:'👋',prompt:'Termina la conversación de vecinas de forma natural.',answer:'Example: Anyway, see you later.'}
+ ];
 }
+
 function renderActivity(){
  const total=activity.items.length;
  if(activity.index>=total){renderActivityEnd();return}
@@ -308,25 +297,27 @@ function nextCard(){
  activity.answered=false;renderActivity();
 }
 function helpForEntry(entry){
- const topic=entry.topic||activity.topic||'weather';
- const d=D(topic),x=entry.data||entry;
- if(topic==='weather'){
-  if(direction==='en_es'){
-   const fam=x.family?`This expression belongs to the ${x.family} weather pattern.`:'The key idea is to choose the Spanish weather pattern instead of translating “it is” word by word.';
-   return {title:'WHY?',body:fam+' '+d.why.remember,more:d.why.more};
-  } else {
-   return {title:'¿POR QUÉ?',body:'No traduzcas «hace» palabra por palabra. '+d.why.remember,more:d.why.more};
-  }
- }
- return {title:tr('AYUDA','HELP'),body:d.why?.remember||'',more:d.why?.more||''};
+ const topic=entry.topic||activity.topic||'weather',d=D(topic),x=entry.data||entry;
+ if(entry.type==='learn'&&d.item_why?.[x.id])return d.item_why[x.id];
+ if(entry.type==='phrase'&&d.phrase_why?.[x.id])return d.phrase_why[x.id];
+ if(entry.type==='conversation')return {title:tr('AYUDA','HELP'),body:tr('Piensa en qué quieres conseguir en la conversación. No hace falta una frase perfecta para continuar.','Think about what you want to do in the conversation. You do not need a perfect sentence to keep it moving.')};
+ return {title:tr('AYUDA','HELP'),body:d.why?.remember||''};
 }
+
 function showHelp(obj){
  document.getElementById('modalRoot').innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><button class="btn modal-close" onclick="closeModal()">×</button><h2>${esc(obj.title)}</h2><p>${esc(obj.body)}</p>${obj.more?`<details><summary>${tr('Más explicación','More explanation')}</summary><p>${esc(obj.more)}</p></details>`:''}</div></div>`;
 }
 function closeModal(){document.getElementById('modalRoot').innerHTML=''}
 
+function practiceHelp(entry){
+ const item=entry.item,d=D(entry.topic),map={w_recall_sun:'sunny',w_fix_sun:'sunny',w_recall_cloud:'cloudy',w_fix_cloud:'cloudy',w_recall_rain:'raining',e_recall_sun:'sunny',e_fix:'sunny'};
+ if(map[item.id]&&d.item_why?.[map[item.id]])return d.item_why[map[item.id]];
+ if(item.why)return {title:tr('¿POR QUÉ?','WHY?'),body:item.why};
+ if(item.type==='real')return {title:tr('AYUDA','HELP'),body:tr('No busques una frase perfecta: di una cosa verdadera con lo que ya sabes.','Do not look for a perfect sentence: say one true thing with what you already know.')};
+ return {title:tr('AYUDA','HELP'),body:tr('Piensa en el patrón de esta situación, no en traducir palabra por palabra.','Think about the pattern for this situation rather than translating word by word.')};
+}
 function renderPracticeCard(entry){
- const item=entry.item,help={title:tr('AYUDA','HELP'),body:item.why||tr('Piensa en el patrón que has aprendido.','Think about the pattern you have learned.'),more:''};
+ const item=entry.item,help=practiceHelp(entry);
  if(item.type==='mc'){
   return `<button class="btn help-btn" onclick='showHelp(${JSON.stringify(help)})'>?</button><div class="flash-icon">${item.icon||'💬'}</div><div class="flash-prompt">${esc(item.prompt)}</div><div class="options">${item.options.map((o,i)=>`<button class="btn center" id="opt${i}" onclick="answerMC(${i})">${esc(o)}</button>`).join('')}</div><div id="practiceFeedback"></div>`;
  }
@@ -372,6 +363,22 @@ function renderActivityEnd(){
  document.getElementById('root').innerHTML=`${header()}${topbar(tr('Terminado','Finished'))}<div class="card"><h2>${tr('Sesión terminada','Practice complete')}</h2><p>${wrong?tr('Lo que ha costado queda programado para volver a aparecer.','Anything that was difficult is scheduled to return.') : tr('Buen repaso. Estas ideas volverán más adelante para comprobar que siguen disponibles.','Good review. These ideas will return later so you can retrieve them again.')}</p><button class="btn primary center" onclick="openPractice('recommended')">${tr('PRACTICAR OTRA VEZ','PRACTISE AGAIN')}</button><button class="btn center" style="margin-top:8px" onclick="go('home')">${tr('VOLVER AL INICIO','BACK HOME')}</button></div>`;
 }
 
+function practiceMenu(topic){
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Practicar','Practice'))}<div class="card"><div class="menu-list">
+ ${homeButton('▶',tr('Recomendado','Recommended'),tr('Lo que conviene recuperar ahora','What is useful to retrieve now'),`openPractice('recommended','${topic}')`,true)}
+ ${homeButton('🧠',tr('Mis difíciles','My tricky ones'),tr('Errores de todos los temas que ya hayas practicado','Mistakes from topics you have already practised'),"go('tricky')")}
+ ${homeButton('🔀',tr('Mezcla aleatoria','Random mix'),tr('Este tema, sin orden de prioridad','This topic, without priority order'),`openPractice('random','${topic}')`)}
+ ${homeButton('🧩',tr('Por patrón','By pattern'),tr('Agrupa ideas que se confunden','Groups ideas that are easy to confuse'),`showTopicPatterns('${topic}')`)}
+ </div></div>`;
+}
+function patternDescription(sk){
+ const m={hace_vs_esta:tr('sol, calor, frío, viento ↔ nublado','sun, heat, cold, wind ↔ cloudy'),lluvia_llover:tr('nombre ↔ verbo ↔ acción ahora','noun ↔ verb ↔ action now'),combine_patterns:tr('combinar dos familias en una frase','combine two families in one sentence'),weather_pattern:tr('sunny, hot, cold, windy, cloudy','sunny, hot, cold, windy, cloudy'),rain_action:tr('rain ↔ raining','rain ↔ raining'),real_life:tr('decir algo verdadero de la situación','say something true about the situation')};return m[sk]||'';
+}
+function showTopicPatterns(topic){
+ const skills=[...new Set(candidates([topic]).map(x=>x.item.skill))];
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Por patrón','By pattern'))}<div class="card"><p class="small muted">${tr('Agrupamos ideas que se confunden entre sí. Así practicas la lógica sin estudiar una explicación gramatical larga.','We group ideas that are easy to confuse. You practise the pattern without studying a long grammar explanation.')}</p><div class="menu-list">${skills.map(sk=>homeButton('🧩',patternLabel(sk),patternDescription(sk),`openPractice('recommended','${topic}',{skill:'${sk}'})`)).join('')}</div></div>`;
+}
+
 function renderTricky(){
  const skills=[...new Set(candidates().filter(x=>x.z.wrong>0).map(x=>x.item.skill))];
  const topics=[...new Set(candidates().filter(x=>x.z.wrong>0).map(x=>x.topic))];
@@ -412,8 +419,9 @@ function startGame(kind){
 
 function renderExplore(){
  const available=Object.entries(C.topics).filter(([id,x])=>x.directions);
- document.getElementById('root').innerHTML=`${header()}${topbar(tr('Explorar temas','Explore topics'))}<div class="card"><h2>🗂️ ${tr('Explorar','Explore')}</h2><p>${tr('Puedes abrir cualquier tema disponible y practicarlo por curiosidad. Eso no cambia automáticamente la lección semanal.','You can open any available topic and practise it out of curiosity. This does not automatically change the weekly lesson.')}</p><div class="menu-list">${available.map(([id,x])=>homeButton(x.icon,tTitle(id),x.status==='current'?tr('Tema de esta semana','This week'):tr('Disponible para explorar','Available to explore'),`openExploreTopic('${id}')`)).join('')}</div></div>`;
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Explorar temas','Explore topics'))}<div class="card"><h2>🗂️ ${tr('Explorar','Explore')}</h2><p>${tr('Explorar no cambia lo que toca esta semana. Simplemente abre algo que te apetezca mirar o practicar.','Exploring does not change this week’s plan. Just open anything you feel like looking at or practising.')}</p><div class="menu-list">${available.map(([id,x])=>homeButton(x.icon,tTitle(id),x.status==='current'?tr('Tema actual','Current topic'):tr('Disponible','Available'),`openExploreTopic('${id}')`)).join('')}</div></div>`;
 }
+
 function openExploreTopic(id){
  document.getElementById('root').innerHTML=`${header()}${topbar(tTitle(id))}<div class="card"><h2>${C.topics[id].icon} ${esc(tTitle(id))}</h2><div class="menu-list">
  ${homeButton('🪞',tr('Aprender','Learn'),tr('Tarjetas una a una','One card at a time'),`startLearning('learn','${id}')`,true)}
@@ -432,44 +440,58 @@ function noteUI(topic,id){
 }
 function saveNote(k){const s=S(),n=s.notes||{};n[k]=document.getElementById('note_'+safe(k)).value.trim();save({notes:n});}
 function renderNotes(){
- const rows=Object.entries(S().notes||{}).filter(([,v])=>v);
- document.getElementById('root').innerHTML=`${header()}${topbar(tr('Mis notas','My notes'))}<div class="card"><h2>📝 ${tr('Mis notas y asociaciones','My notes & memory links')}</h2>${rows.length?rows.map(([k,v])=>`<div class="ref-item"><div class="small muted">${esc(k.split('|').slice(1).join(' · '))}</div>${esc(v)}</div>`).join(''):`<p>${tr('Todavía no has guardado notas.','You have not saved any notes yet.')}</p>`}</div>`;
+ const rows=Object.entries(S().notes||{}).filter(([k,v])=>v&&k.startsWith(direction+'|weather|'));
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Mis notas','My notes'))}<div class="card"><h2>📝 ${tr('Notas de esta semana','This week’s notes')}</h2>${rows.length?rows.map(([k,v])=>`<div class="ref-item">${esc(v)}</div>`).join(''):`<p>${tr('Todavía no has guardado notas en este tema.','You have not saved any notes for this topic yet.')}</p>`}</div>`;
 }
+
 function renderAI(){
  const p=D('weather').ai_prompt.join('\n');
  document.getElementById('root').innerHTML=`${header()}${topbar(tr('Hablar con IA','Talk with AI'))}<div class="card"><h2>🗣️ ${tr('Conversación guiada','Guided conversation')}</h2><p>${tr('Copia este texto, abre tu profesor de IA y pégalo.','Copy this text, open your AI teacher and paste it.')}</p><button class="btn primary center" onclick='copyText(${JSON.stringify(p)})'>📋 ${tr('COPIAR TEXTO','COPY PRACTICE TEXT')}</button><details style="margin-top:12px"><summary>${tr('Ver texto','See text')}</summary><pre style="white-space:pre-wrap;font-size:14px">${esc(p)}</pre></details></div>`;
 }
 
+let puzzleGrid=null,puzzleSelection=[];
+function buildPuzzleGrid(words){
+ const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ',g=Array(36).fill('');
+ words.slice(0,4).forEach((raw,idx)=>{const w=raw.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();if(idx%2===0){const row=idx+1,start=Math.max(0,6-w.length);for(let i=0;i<w.length&&start+i<6;i++)g[row*6+start+i]=w[i];}else{const col=idx+1,start=Math.max(0,6-w.length);for(let i=0;i<w.length&&start+i<6;i++)g[(start+i)*6+col]=w[i];}});
+ return g.map(x=>x||letters[Math.floor(Math.random()*letters.length)]);
+}
+function renderPuzzle(){
+ const words=D('weather').puzzle_words||[],g=puzzleGrid||buildPuzzleGrid(words);puzzleGrid=g;
+ document.getElementById('root').innerHTML=`${header()}${topbar(tr('Pausa de puzle','Puzzle break'))}<div class="card"><h2>🔎 ${tr('Encuentra palabras','Find the words')}</h2><p>${tr('Es una pausa opcional: no es examen y no cambia tu progreso.','This is an optional puzzle break: it is not a test and does not change your progress.')}</p><div class="word-list">${words.slice(0,4).map(esc).join(' · ')}</div><div class="puzzle-grid">${g.map((l,i)=>`<button class="letter ${puzzleSelection.includes(i)?'selected':''}" onclick="togglePuzzleLetter(${i})">${l}</button>`).join('')}</div><button class="btn soft center" onclick="newPuzzle()">${tr('OTRO PUZLE','ANOTHER PUZZLE')}</button></div>`;
+}
+function togglePuzzleLetter(i){if(puzzleSelection.includes(i))puzzleSelection=puzzleSelection.filter(x=>x!==i);else puzzleSelection.push(i);renderPuzzle();}
+function newPuzzle(){puzzleGrid=null;puzzleSelection=[];renderPuzzle();}
+
 /* Hidden face-to-face mode */
-let classSide='en_es',classIndex=0;
-function classCards(){
- const she=[
-  {icon:'👋',title:'Warm-up',main:'Talk normally for one minute.',sub:'Use Spanish as much as possible. If communication breaks, use English briefly and return to Spanish.'},
-  {icon:'🪟',title:'Real life',main:'Look outside together.',sub:'Ask: “¿Qué tiempo hace?” Let the answer grow into a real neighbour conversation.'},
-  {icon:'🔧',title:'Fix my Spanish',main:'Say deliberately: “Está sol.”',sub:'Can she correct you? Ask her to repeat the correct sentence naturally.'},
-  {icon:'🪞',title:'Mirror',main:'You say: “It’s windy.”',sub:'She says the Spanish. Then she gives you a Spanish phrase and you give the English.'},
-  {icon:'❓',title:'Explain if needed',main:'If either of you knows something is right but cannot explain why, use the explanation helper.',sub:'The explanation should be in the learner’s strong language.'},
-  {icon:'🔁',title:'Try again',main:'Return to the window conversation.',sub:'Use the corrected language in a fresh sentence. End with one note about what appeared naturally.'}
+let classSession=null;
+function buildClassCards(){
+ return [
+ {person:'Susan',dir:'en_es',icon:'💨',prompt:'Eli says: “It’s windy.” Say the natural Spanish.',help:'Target: Hace viento.'},
+ {person:'Susan',dir:'en_es',icon:'🔧',prompt:'Eli deliberately says: “Está sol.” Correct the Spanish.',help:'Target: Hace sol.'},
+ {person:'Susan',dir:'en_es',icon:'🪟',prompt:'Ask Eli in Spanish what the weather is like. Then react to the answer.',help:'Useful start: ¿Qué tiempo hace?'},
+ {person:'Susan',dir:'en_es',icon:'☁️🔥',prompt:'Say one sentence that combines cloudy + hot.',help:'Target: Está nublado, pero hace calor.'},
+ {person:'Susan',dir:'en_es',icon:'↪️',prompt:'Tell Eli one true thing about the weather, then ask a short follow-up question.',help:'Keep the conversation moving; perfection is not the goal.'},
+ {person:'Eli',dir:'es_en',icon:'🥶',prompt:'Susan says: “Hace frío.” Di la forma natural en inglés.',help:'Objetivo: It’s cold.'},
+ {person:'Eli',dir:'es_en',icon:'🔧',prompt:'Susan dice a propósito: “It makes sun.” Corrige el inglés.',help:'Objetivo: It’s sunny.'},
+ {person:'Eli',dir:'es_en',icon:'🪟',prompt:'Pregúntale a Susan en inglés qué ve por la ventana y sigue su respuesta.',help:'Puedes empezar: What can you see from the window?'},
+ {person:'Eli',dir:'es_en',icon:'☁️🔥',prompt:'Di una frase en inglés que combine nublado + calor.',help:'Objetivo: It’s cloudy, but it’s hot.'},
+ {person:'Eli',dir:'es_en',icon:'↪️',prompt:'Cuenta una cosa verdadera sobre el tiempo y haz una pregunta corta para continuar.',help:'El objetivo es mantener la conversación, no construir una frase perfecta.'}
  ];
- const me=[
-  {icon:'👋',title:'Calentamiento',main:'Hablad con normalidad durante un minuto.',sub:'Usa inglés todo lo posible. Utiliza español brevemente solo cuando una aclaración realmente ayude.'},
-  {icon:'🪟',title:'Vida real',main:'Mirad por la ventana juntas.',sub:'Ella te pregunta por el tiempo. Responde de forma natural en inglés y deja que la conversación continúe.'},
-  {icon:'🔧',title:'Fix my English',main:'Ella dice deliberadamente: “It makes sun.”',sub:'Corrígelo: “It’s sunny.” Después usa tú mismo el patrón correcto.'},
-  {icon:'🪞',title:'Mirror',main:'Ella dice: “Hace viento.”',sub:'Tú dices la frase en inglés. Después intercambiad las direcciones.'},
-  {icon:'❓',title:'Explicar si hace falta',main:'Usad la ayuda de explicación si cuesta comunicar el PORQUÉ.',sub:'La explicación para ti debe aparecer en español.'},
-  {icon:'🔁',title:'Intentarlo otra vez',main:'Repetid la conversación real.',sub:'Usa el inglés corregido de manera natural, no como un ejercicio de gramática.'}
- ];
- return classSide==='en_es'?she:me;
+}
+function startClass(){
+ const all=buildClassCards(),susan=all.filter(x=>x.person==='Susan').sort(()=>Math.random()-.5),eli=all.filter(x=>x.person==='Eli').sort(()=>Math.random()-.5),items=[],startSusan=Math.random()<0.5;
+ for(let i=0;i<10;i++){const useSusan=(i%2===0)?startSusan:!startSusan;items.push((useSusan?susan:eli).shift());}
+ classSession={items:items.filter(Boolean),index:0};route='class';renderClass();
 }
 function renderClass(){
- const cards=classCards(),x=cards[classIndex], classEs=(classSide==='es_en');
- const ct=(es,en)=>classEs?es:en;
- document.getElementById('root').innerHTML=`${header()}${topbar(ct('Modo juntas','Together mode'))}<div class="chips" style="margin-bottom:9px"><button class="btn chip ${classSide==='en_es'?'soft':''}" onclick="classSide='en_es';classIndex=0;renderClass()">🇬🇧 → 🇪🇸</button><button class="btn chip ${classSide==='es_en'?'soft':''}" onclick="classSide='es_en';classIndex=0;renderClass()">🇪🇸 → 🇬🇧</button></div><div class="progress-wrap"><div class="progress"><div style="width:${((classIndex+1)/cards.length)*100}%"></div></div><div class="counter">${classIndex+1} / ${cards.length}</div></div><div class="card class-card"><div class="flash-icon">${x.icon}</div><div class="class-instruction">${esc(x.title)}</div><div class="class-main">${esc(x.main)}</div><p>${esc(x.sub)}</p>${(x.title.startsWith('Explain')||x.title.startsWith('Explicar'))?`<button class="btn soft center" onclick="copyExplain()">${ct('COPIAR PROMPT DE EXPLICACIÓN','COPY EXPLANATION PROMPT')}</button>`:''}<div class="chips" style="margin-top:15px">${classIndex?`<button class="btn chip" onclick="classIndex--;renderClass()">←</button>`:''}${classIndex<cards.length-1?`<button class="btn chip primary" onclick="classIndex++;renderClass()">${ct('SIGUIENTE','NEXT')} →</button>`:`<button class="btn chip primary" onclick="go('home')">${ct('TERMINAR','FINISH')}</button>`}</div></div>`;
+ if(!classSession){startClass();return;} if(classSession.index>=classSession.items.length){renderClassEnd();return;}
+ const x=classSession.items[classSession.index],es=x.dir==='es_en',pct=classSession.index/classSession.items.length*100;
+ document.getElementById('root').innerHTML=`${header()}<div class="small muted" style="text-align:center;margin-bottom:8px">TOGETHER · WEATHER & SMALL TALK</div><div class="progress-wrap"><div class="progress"><div style="width:${pct}%"></div></div><div class="counter">${classSession.index+1} / ${classSession.items.length}</div></div><div class="card class-card"><button class="btn help-btn" onclick='showHelp(${JSON.stringify({title:es?'AYUDA':'HELP',body:x.help})})'>?</button><div class="class-instruction">${x.person} · ${es?'aprende inglés':'learns Spanish'}</div><div class="flash-icon">${x.icon}</div><div class="class-main">${esc(x.prompt)}</div><p>${es?'Susan escucha y corrige si hace falta.':'Eli listens and corrects if needed.'}</p><button class="btn primary center" onclick="classNext()">${es?'SIGUIENTE':'NEXT'} →</button></div>`;
 }
-function copyExplain(){
- const p=classSide==='en_es'?'Explain the Spanish point we are discussing to a native English-speaking adult learner. Use simple English, compare Spanish and English directly, avoid unnecessary grammar terminology, and give two everyday examples.':'Explica el punto de inglés que estamos tratando a una persona adulta hispanohablante. Usa español sencillo, compara directamente inglés y español, evita terminología gramatical innecesaria y da dos ejemplos cotidianos.';
- copyText(p);
-}
+function classNext(){classSession.index++;renderClass();}
+function renderClassEnd(){document.getElementById('root').innerHTML=`${header()}<div class="card"><h2>Session complete · Sesión terminada</h2><p>Write down only something that genuinely appeared and is worth revisiting. · Anotad solo algo que haya aparecido de verdad y merezca volver.</p><textarea id="classNote" placeholder="e.g. Susan still says ‘está sol’…"></textarea><button class="btn primary center" onclick="saveClassNote()">SAVE & FINISH</button></div>`;}
+function saveClassNote(){const note=document.getElementById('classNote').value.trim(),s=S(),n=s.classNotes||[];if(note)n.push({date:new Date().toISOString(),topic:C.current_topic,note});save({classNotes:n});classSession=null;go('home');}
+
 function play(src){new Audio(src).play().catch(()=>alert(tr('No se pudo reproducir el audio.','The audio could not play.')))}
 function copyText(x){navigator.clipboard.writeText(x).then(()=>alert(tr('Copiado.','Copied.'))).catch(()=>prompt(tr('Copia este texto:','Copy this text:'),x))}
 </script>
