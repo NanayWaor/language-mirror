@@ -37,7 +37,7 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function currentTopic(){return C.topics[C.current_topic]}
 function dirData(topicId=C.current_topic,dir=direction){return C.topics[topicId].directions[dir]}
 function go(r){route=r;window.scrollTo(0,0);render()}
-function top(title){
+function renderTopBar(title){
  return `<div class="topbar"><button class="btn back" onclick="go('home')">←</button><div><b>${esc(title)}</b></div><div class="spacer"></div></div>`;
 }
 
@@ -132,7 +132,7 @@ function renderToday(){
  if(!session){startSession('today');return}
  const item=session.items[session.index], pct=Math.round((session.index/session.items.length)*100);
  document.getElementById('root').innerHTML=`
- ${top(sessionMode==='tricky'?t('Mis difíciles','My tricky ones'):t('Práctica','Practice'))}
+ ${renderTopBar(sessionMode==='tricky'?t('Mis difíciles','My tricky ones'):t('Práctica','Practice'))}
  <div class="progress"><div style="width:${pct}%"></div></div>
  <div class="card activity">
   <div class="small muted">${session.index+1} / ${session.items.length}</div>
@@ -192,7 +192,7 @@ function nextActivity(){
 function renderSessionEnd(){
  const wrong=session.results.filter(x=>!x.ok).length;
  document.getElementById('root').innerHTML=`
- ${top(t('Práctica terminada','Practice complete'))}
+ ${renderTopBar(t('Práctica terminada','Practice complete'))}
  <div class="card">
   <h2>${t('Práctica terminada','Practice complete')}</h2>
   <p>${wrong?t('Has encontrado algunas cosas que conviene repetir. Ya las hemos guardado en «Mis difíciles».','You found a few things worth repeating. They are now in “My tricky ones”.'):t('Buen repaso. Volverán a aparecer más adelante para comprobar que siguen disponibles.','Good review. These ideas will return later so you can retrieve them again.')}</p>
@@ -206,7 +206,7 @@ function renderWeek(){renderTopic(C.current_topic,true)}
 function renderTopic(topicId,isCurrent=false){
  const topic=C.topics[topicId],d=dirData(topicId);
  document.getElementById('root').innerHTML=`
- ${top(topic.title[direction==='en_es'?'en':'es'])}
+ ${renderTopBar(topic.title[direction==='en_es'?'en':'es'])}
  <div class="card"><span class="pill">${isCurrent?t('ESTA SEMANA','THIS WEEK'):t('EXPLORAR','EXPLORE')}</span><h2 style="margin-top:8px">${topic.icon} ${esc(topic.title[direction==='en_es'?'en':'es'])}</h2>
  ${!isCurrent?`<button class="btn soft center" onclick="markInterest('${topicId}')">${t('ME GUSTARÍA APRENDER ESTO PRONTO','I WANT TO LEARN THIS SOON')}</button>`:''}
  </div>
@@ -237,22 +237,22 @@ function markInterest(topicId){const s=S(),i=s.interests||{};i[topicId]=(i[topic
 
 function renderTricky(){session=null;startSession('tricky',C.current_topic)}
 function renderReview(){
- document.getElementById('root').innerHTML=`${top(t('Lecciones anteriores','Previous lessons'))}<div class="card"><h2>${t('Todavía no hay una lección anterior','No previous lesson yet')}</h2><p>${t('Cuando paséis a la siguiente semana, Weather quedará aquí para seguir repasándolo cuando quieras.','When you move to the next weekly topic, Weather will stay here so you can review it whenever you want.')}</p></div>`;
+ document.getElementById('root').innerHTML=`${renderTopBar(t('Lecciones anteriores','Previous lessons'))}<div class="card"><h2>${t('Todavía no hay una lección anterior','No previous lesson yet')}</h2><p>${t('Cuando paséis a la siguiente semana, Weather quedará aquí para seguir repasándolo cuando quieras.','When you move to the next weekly topic, Weather will stay here so you can review it whenever you want.')}</p></div>`;
 }
 function renderExplore(){
  const topics=Object.entries(C.topics);
- document.getElementById('root').innerHTML=`${top(t('Explorar','Explore'))}<div class="topic-grid">${topics.map(([id,x])=>`
+ document.getElementById('root').innerHTML=`${renderTopBar(t('Explorar','Explore'))}<div class="topic-grid">${topics.map(([id,x])=>`
  <div class="topic-card"><div class="topic-icon">${x.icon}</div><div class="topic-title">${esc(x.title[direction==='en_es'?'en':'es'])}</div><div class="small muted">${x.status==='current'?t('Tema de esta semana','This week'):x.status==='explore'?t('Disponible para explorar','Available to explore'):t('Tema futuro','Future topic')}</div>
  ${x.directions?`<button class="btn soft center" style="margin-top:8px" onclick="${id===C.current_topic?"go('week')":id==="plants"?"go('plants')":""}">${t('ABRIR','OPEN')}</button>`:`<button class="btn center" style="margin-top:8px" onclick="markInterest('${id}')">${t('ME INTERESA','I’M INTERESTED')}</button>`}
  </div>`).join('')}</div>`;
 }
 function renderAI(){
  const p=dirData().ai_prompt.join('\n');
- document.getElementById('root').innerHTML=`${top(t('Hablar con IA','Talk with AI'))}<div class="card"><h2>🗣️ ${t('Práctica de conversación','Conversation practice')}</h2><p>${t('Copia este texto, abre tu profesor de IA en el móvil o el ordenador y pégalo.','Copy this text, open your AI teacher on your phone or computer, and paste it.')}</p><button class="btn primary center" onclick="copyText(${JSON.stringify(p)})">📋 ${t('COPIAR TEXTO','COPY PRACTICE TEXT')}</button><details style="margin-top:12px"><summary>${t('Ver texto','See text')}</summary><pre style="white-space:pre-wrap;font-size:15px">${esc(p)}</pre></details></div>`;
+ document.getElementById('root').innerHTML=`${renderTopBar(t('Hablar con IA','Talk with AI'))}<div class="card"><h2>🗣️ ${t('Práctica de conversación','Conversation practice')}</h2><p>${t('Copia este texto, abre tu profesor de IA en el móvil o el ordenador y pégalo.','Copy this text, open your AI teacher on your phone or computer, and paste it.')}</p><button class="btn primary center" onclick="copyText(${JSON.stringify(p)})">📋 ${t('COPIAR TEXTO','COPY PRACTICE TEXT')}</button><details style="margin-top:12px"><summary>${t('Ver texto','See text')}</summary><pre style="white-space:pre-wrap;font-size:15px">${esc(p)}</pre></details></div>`;
 }
 function renderNotes(){
  const notes=S().notes||{},rows=Object.entries(notes).filter(([k,v])=>v);
- document.getElementById('root').innerHTML=`${top(t('Mis notas','My notes'))}<div class="card"><h2>📝 ${t('Mis asociaciones','My memory links')}</h2>${rows.length?rows.map(([k,v])=>`<div class="learn-item"><div class="small muted">${esc(k.split('|').slice(1).join(' · '))}</div>${esc(v)}</div>`).join(''):`<p>${t('Todavía no has guardado ninguna nota.','You have not saved any notes yet.')}</p>`}</div>`;
+ document.getElementById('root').innerHTML=`${renderTopBar(t('Mis notas','My notes'))}<div class="card"><h2>📝 ${t('Mis asociaciones','My memory links')}</h2>${rows.length?rows.map(([k,v])=>`<div class="learn-item"><div class="small muted">${esc(k.split('|').slice(1).join(' · '))}</div>${esc(v)}</div>`).join(''):`<p>${t('Todavía no has guardado ninguna nota.','You have not saved any notes yet.')}</p>`}</div>`;
 }
 
 const classSteps={
@@ -282,7 +282,7 @@ function renderTogether(){
    <button class="btn" onclick="copyExplain('english')">Why “It’s sunny”, not “it makes sun”?</button>
   </div>`;
  }
- document.getElementById('root').innerHTML=`${top(t('Modo clase','Class mode'))}
+ document.getElementById('root').innerHTML=`${renderTopBar(t('Modo clase','Class mode'))}
  <div class="choice card"><button class="btn ${classDirection==='en_es'?'soft':''}" onclick="classDirection='en_es';classIndex=0;renderTogether()">🇬🇧 → 🇪🇸 ${t('Ella aprende español','She learns Spanish')}</button><button class="btn ${classDirection==='es_en'?'soft':''}" onclick="classDirection='es_en';classIndex=0;renderTogether()">🇪🇸 → 🇬🇧 ${t('Yo aprendo inglés','I learn English')}</button></div>
  <div class="progress"><div style="width:${Math.round(((classIndex+1)/steps.length)*100)}%"></div></div>
  <div class="card class-step">

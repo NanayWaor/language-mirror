@@ -1,31 +1,42 @@
-# Language Mirror · Prototype 002
+# Language Mirror · Prototype 003
 
-Mobile-first iteration of Weather / El tiempo.
+## What this prototype tests
 
-## Upload to GitHub Pages
+A calm, mobile-first structure with guidance but freedom:
+
+- TODAY: short adaptive practice, one activity at a time.
+- THIS WEEK: full current lesson.
+- REVIEW: tricky items and previous lessons.
+- EXPLORE: freely inspect other topics.
+- TOGETHER: face-to-face Class Mode.
+- TALK WITH AI: copy the weekly contextual prompt.
+- MY NOTES: personal memory associations.
+
+Weather remains the official weekly topic.
+Plants is included only as an exploratory branch to test free exploration.
+
+## Adaptive practice
+
+This is intentionally simple:
+- mistakes increase future frequency;
+- when possible, a mistake returns a few activities later in a different format;
+- strong items gradually receive less weight;
+- the learner can practise again without a daily limit.
+
+No points, streaks, lives, leaderboards or motivational gamification.
+
+## Upload to the existing GitHub repository
+
 Replace:
 - `index.html`
 - `course.json`
 
-And add the complete:
+Replace/add the complete:
 - `audio/` folder
 
-Keep the same repository and GitHub Pages URL.
+The GitHub Pages URL stays the same.
 
-## Main changes
-- Mobile-first layout with much larger text and buttons.
-- Real audio files instead of browser speech synthesis.
-- Learn cards reveal meaning without 3D flipping.
-- More visual WHY section.
-- Useful everyday phrases.
-- Look & Say active-recall activity.
-- Quiz feedback with green/red + short WHY reminder.
-- Per-item personal notes stored in localStorage.
-- Optional reviewed memory tricks.
-- Clear AI-teacher instructions.
-- Feedback and report export remain local.
+## Data
 
-## Important
-The included MP3s are synthetic placeholder voices generated locally for functional testing.
-They are intentionally packaged as actual audio files so playback is more reliable than browser speech synthesis.
-They can later be replaced with higher-quality recordings without changing the web structure.
+All practice state, interests, notes and class notes remain in localStorage on that browser.
+There is still no account, backend or remote analytics.
